@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		  <link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+	    <script language="JavaScript" src="js/bootstrap.min.js"></script>
+	    <script language="JavaScript">
+//	    	以事件的方式绑定导航栏点击事件
+	    	$(function(){
+	    		$('.nav a').click(function(e){
+//	    			取消事件的默认动作。
+//	    			e.preventDefault();
+    			$(this).tab('show');
+	    		})
+	    	})
+	    </script>
+	</head>
+	<body>
+		
+			<!--<ul class="nav nav-tabs fade in">
+				<li><a href="#pan1" data-toggle="tab">搜索</a></li>
+				<li><a href="#pan2" data-toggle="tab">常规</a></li>
+				<li><a href="#pan3" data-toggle="tab">查看</a></li>
+			</ul>-->
+			<nav class="navbar navbar-default">
+				<div class="container-fluid">
+					<div class="navbar=header">
+					<!--<a href="#"class="navbar-brand">导航
+					</a>-->
+					<ul class="nav nav-pills nav-justified">
+				<li><a href="#pan1" >搜索</a></li>
+				<li><a href="#pan2">常规</a></li>
+				<li><a href="#pan3" >查看</a></li>
+			</ul>
+				</div>
+				<div class="container-fluid">
+									<div class="tab-content">
+				<div class="tab-pane active fade in" id="pan1">
+					搜索内容搜索内容搜索内容搜索内容搜索内容搜索内容搜索内容搜索内容
+				</div>
+				<div class="tab-pane" id="pan2">
+					常规内容常规内容常规内容常规内容常规内容常规内容常规内容常规内容
+				</div>
+				<div class="tab-pane" id="pan3">
+					查看内容查看内容查看内容查看内容查看内容查看内容查看内容查看内容
+				</div>
+			</div>
+				</div>
+
+				</div>
+				
+			</nav>
+			<!--<nav class="navbar navbar-inverse navbar-static-top">-->
+				
+		<!--	</nav>-->
+			
+			
+
+	</body>
+</html>
