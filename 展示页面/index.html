@@ -6,13 +6,23 @@
 		 <link rel="stylesheet" href="css/bootstrap.min.css" />
 		<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
 	    <script language="JavaScript" src="js/bootstrap.min.js"></script>
+	           <style type="text/css">
+        	@media (min-width: 768px) {
+        		#mysearch{
+        			width:150px;
+        			margin-top:0px;
+        			position: absolute;
+        			z-index:1;
+        		}
+        	}
+        	 </style> 
 	</head>
 	
 		<body>
 
     <nav class="navbar navbar-default navbar-static-top navbar-inverse">
     	<div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -27,8 +37,7 @@
        <!-- <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>   -->    
        <li class="active"><button class="btn btn-primary" type="button" style="margin-top:10px">
   消息 <span class="badge">4</span>
-</button></a></li>
-       
+</button></a></li>       
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户操作 <span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -41,7 +50,35 @@
         </li>
       </ul>
     </nav>
-
+    <!--将折叠的内容放在.navbar-collapse中-->
+<div class="navbar-default navbar-collapse navbar-inverse"  id="mysearch">
+	<ul class="nav">
+		<li>
+			<div class="input-group">
+				<input type="text" class="form-control"/>
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default">
+						<span class="glyphicon glyphicon-zoom-out"></span>
+					</button>
+				</span>
+			</div>
+		</li>
+		<li>
+			 <!--data-toggle，用于告诉 js需要对按钮做什么-->
+			 <!--collapse即是折叠-->
+			 <!--<a href="#sub1" data-toggle="collapse">系统功能</a>-->
+			 <!--data-target指示要切换到哪一个元素-->
+			<a href="#" data-toggle="collapse" data-target="#sub1">系统功能&nbsp;<span class="glyphicon glyphicon-cog"></span></a>
+			<ul id="sub1" class="nav collapse">
+				<li><a href="#"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;系统信息</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-user"></span>&nbsp;管理员管理</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-envelope"></span>&nbsp;日志信息</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-off"></span>&nbsp;退出</a></li>
+			</ul>
+		</li>
+			<li><a href="#">栏目功能</a></li>
+	</ul>
+</div>
     <div class="container">
 
       <div class="starter-template">
