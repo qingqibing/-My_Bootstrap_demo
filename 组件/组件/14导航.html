@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+	    <script language="JavaScript" src="js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<hr />
+		<div class="container">
+			<h1>导航菜单</h1>
+			<!--使用nav以及nav-tabs，作为父级ul
+			里面使用li-->
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#">首页</a></li>
+				<li ><a href="#">消息</a></li>
+				<li ><a href="#">权限</a></li>
+			</ul>
+			<h1>胶囊式标签页</h1>
+			<!--nav-stacked实现垂直排列-->
+			<ul class="nav nav-pills">
+				<li ><a href="#">首页</a></li>
+				<li><a href="#">消息</a></li>
+				<li><a href="#">权限</a></li>
+			</ul>
+			<h1>自适应标签页</h1>
+			<!--当小于768后会变成垂直排列-->
+			<ul class="nav nav-tabs nav-justified">
+				<li ><a href="#">首页</a></li>
+				<li><a href="#">消息</a></li>
+				<li><a href="#">权限</a></li>
+			</ul>
+			<h1>添加下拉菜单</h2>
+			<ul class="nav nav-tabs">
+				<li><a href="#">消息</a></li>
+				<li><a href="#">权限</a></li>
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+					下拉菜单<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="#">Items</a></li>
+				    	<li><a href="#">Items</a></li>
+				    	<li><a href="#">Items</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>
