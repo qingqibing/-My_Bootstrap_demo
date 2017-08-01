@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="application/javascript" src="js/bootstrap.min.js"></script>
+		<style type="text/css">
+			.row-margin-top {
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+	<div class="container">
+		<div class="col-md-3">
+			<div class="panel panel-primary ">
+				<div class="panel-heading">预报信息</div>
+				<div class="panel-body">
+					<div class="col-md-8">
+						<div class="row row-margin-top">
+							预报要素
+							<select id="drops" class="form-control">
+								<option value="00" selected>风向</option>
+								<option value="06" selected>风速</option>
+								<option value="12" selected>潮位</option>
+								<option value="18" selected>波浪</option>
+							</select>
+						</div>
+						<div class="row row-margin-top">
+							预报层级
+							<select id="drops" class="form-control">
+								<option value="00" selected>海面风</option>
+								<option value="06" selected>06时</option>
+								<option value="12" selected>12时</option>
+								<option value="18" selected>18时</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<!--<div class="panel-footer">页脚</div>-->
+			</div>
+		</div>	
+	</div>
+</body>
+
+</html>
