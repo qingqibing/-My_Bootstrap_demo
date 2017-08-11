@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script type="application/javascript" src="js/jquery-3.2.1.js"></script>
+		<script type="application/javascript" src="js/bootstrap.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>
+		
+		<style type="text/css">
+			div#mypage {
+				margin-left: 150px;
+			}
+			
+			.pagediv {
+				padding-left: 0px;
+				padding-right: 0px;
+			}
+			
+			#mysearch {
+				width: 150px;
+				margin-top: 0px;
+				position: absolute;
+				z-index: 1;
+				/*height:600px;*/
+				height: 100%;
+				/*设置右侧导航栏填满屏幕*/
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="create" style="visibility: ">
+			<h2>添加任务</h2>
+			<br/>
+			<div class="form-horizontal">
+				<div class="form-group">
+					<label for="taskName" class="col-sm-2 control-label">名称 *</label>
+					<div class="col-sm-10">
+						<input type="text" data-bind="value: name" class="form-control" id="taskName" name="taskName" placeholder="名称">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="taskDesc" class="col-sm-2 control-label">描述</label>
+					<div class="col-sm-10">
+						<textarea class="form-control" data-bind="value: description" rows="3" id="taskDesc" name="taskDesc" placeholder="描述"></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="taskOwner" class="col-sm-2 control-label">负责人 *</label>
+					<div class="col-sm-10">
+						<input class="form-control" id="taskOwner" name="taskOwner" data-bind="value: owner" placeholder="负责人">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="taskFinish" class="col-sm-2 control-label">预计完成时间 *</label>
+					<div class="col-sm-10">
+						<!--<input class="form-control datepicker" id="taskFinish" data-bind="value: finishTime" name="taskFinish">-->
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="taskOwner" class="col-sm-2 control-label">状态 *</label>
+					<div class="col-sm-10">
+						<select id="taskState" class="form-control" data-bind="value: state">
+							<option value="0">Active</option>
+							<option value="1">Completed</option>
+						</select>
+
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button class="btn btn-primary" data-bind="click:handleSaveClick">Save</button>
+						<!--<button data-bind="click: handleBackClick" class="btn btn-primary">Back</button>-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+<script type="application/javascript">
+			$(function() {
+//				var taskListViewModel = {
+//					tasks: ko.observableArray(),
+//					canCreate: ko.observable(true)
+//				};
+
+				var taskModel = function() {
+					this.id = 0;
+					this.name = ko.observable();
+					this.description = ko.observable();
+					this.finishTime = ko.observable();
+					this.owner = ko.observable();
+					this.state = ko.observable();
+//					this.handleSaveClick=handleSaveClick();
+//					this.handleSaveClick=handleSaveClick()
+					this.handleSaveClick=function(obj){
+						handleSaveClick(obj)
+					};
+//					this.handleBackClick:function(){
+//						handleBackClick()
+//					}
+					this.fromJS = function(data) {
+						this.id = data.id;
+						this.name(data.name);
+						this.description(data.description);
+						this.finishTime(data.finishTime);
+						this.owner(data.owner);
+						this.state(data.state);
+					};
+				};
+
+				function getAllTasks() {
+//					sendAjaxRequest("GET", function(data) {
+//						taskListViewModel.tasks.removeAll();
+//						for(var i = 0; i < data.length; i++) {
+//							taskListViewModel.tasks.push(data[i]);
+//						}
+//					}, 'GetByState', {
+//						'state': 'all'
+//					});
+				}
+
+//				function setTaskList(state) {
+//					sendAjaxRequest("GET", function(data) {
+//						taskListViewModel.tasks.removeAll();
+//						for(var i = 0; i < data.length; i++) {
+//							taskListViewModel.tasks.push(data[i]);
+//						}
+//					}, 'GetByState', {
+//						'state': state
+//					});
+//				}
+
+				function remove(item) {
+					sendAjaxRequest("DELETE", function() {
+						getAllTasks();
+					}, item.id);
+				}
+
+				var task = new taskModel();
+
+				function handleCreateOrUpdate(item) {
+					task.fromJS(item);
+					initDatePicker();
+//					taskListViewModel.canCreate(false);
+					$('#create').css('visibility', 'visible');
+				}
+
+				function handleBackClick() {
+//					taskListViewModel.canCreate(true);
+					$('#create').css('visibility', 'hidden');
+				}
+
+//				function handleSaveClick(){
+//					
+//				}
+
+				function handleSaveClick(item) {
+					if(item.id == undefined) {
+						sendAjaxRequest("POST", function(newItem) { //newitem是返回的对象。
+//							taskListViewModel.tasks.push(newItem);
+						}, null, {
+							name: item.name,
+							description: item.description,
+							finishTime: item.finishTime,
+							owner: item.owner,
+							state: item.state
+						});
+					} else {
+						sendAjaxRequest("PUT", function() {
+							getAllTasks();
+						}, null, {
+							id: item.id,
+							name: item.name,
+							description: item.description,
+							finishTime: item.finishTime,
+							owner: item.owner,
+							state: item.state
+						});
+					}
+
+//					taskListViewModel.canCreate(true);
+					$('#create').css('visibility', 'hidden');
+				}
+
+				function sendAjaxRequest(httpMethod, callback, url, reqData) {
+					$.ajax("/api/tasks" + (url ? "/" + url : ""), {
+						type: httpMethod,
+						success: callback,
+						data: reqData
+					});
+				}
+
+				var initDatePicker = function() {
+					$('#create .datepicker').datepicker({
+						autoclose: true
+					});
+				};
+
+				$('.nav').on('click', 'li', function() {
+					$('.nav li.active').removeClass('active');
+					$(this).addClass('active');
+				});
+
+				$(document).ready(function() {
+					getAllTasks();
+					// 使用KnockoutJs进行绑定
+//					ko.applyBindings(taskListViewModel, $('#list').get(0));
+					ko.applyBindings(task, $('#create').get(0));
+				});
+			})
+		</script>
+		
+</html>
