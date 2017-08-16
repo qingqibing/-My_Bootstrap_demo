@@ -16,6 +16,12 @@
 	$(function() {
 		//1 编辑窗口关闭
 //		getTargetIdDiv()
+		var obj={
+			name:'11',
+			age:29
+		}
+		
+		ko.observable(obj.name)
 		var viewModel = {actions:[{
 			"ActionInfoName": "TEST1",
 			"ActionMethodName": "Index",			
