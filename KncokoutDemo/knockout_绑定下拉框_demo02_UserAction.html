@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="application/javascript" src="js/jquery-3.2.1.js"></script>
+		<script type="application/javascript" src="js/bootstrap.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>
+		<script type="application/javascript">
+			// Constructor for an object with two properties
+			var Country = function(name, population) {
+				this.countryName = name;
+				this.countryPopulation = population;
+			};
+
+			var viewModel = {
+				availableCountries: ko.observableArray([
+					new Country("UK", 65000000),
+					new Country("USA", 320000000),
+					new Country("Sweden", 29000000)
+				]),
+				selectedCountry: ko.observable() // Nothing selected by default
+			};	
+			
+			function MyViewModel(){
+				var self=this;
+				
+				self.availableCountries=ko.observableArray([
+					new Country("UK", 65000000),
+					new Country("USA", 320000000),
+					new Country("Sweden", 29000000)
+				]),
+				self.selectedCountry=ko.observable() // Nothing selected by default
+			}
+			
+			$(function(){
+//				ko.applyBindings(new MyViewModel());
+				ko.applyBindings(viewModel);
+			})
+//			
+//			$(function(){
+//				ko.applyBindings(new MyViewModel());
+//			})
+			
+//			$(function(){
+//				ko.applyBindings(new viewModel())
+//			})
+		</script>
+	</head>
+
+	<body>
+		<p>
+			Your country:
+			<!--
+				options：被监控的数组（availableCountries）
+				optionsText :对应的是本示例中的监控数组（availableCountries）中的对象的一个属性countryName，即对应的是下拉框显示的内容（text）
+				value ：selectedCountry
+			-->
+			<select data-bind="options: availableCountries,
+                       optionsText: 'countryName',
+                      
+                       value: selectedCountry,
+                       optionsCaption: 'Choose...'"></select>
+		</p>
+
+		<div data-bind="visible: selectedCountry">
+			<!-- Appears when you select something -->
+			You have chosen a country with population
+			<span data-bind="text: selectedCountry() ? selectedCountry().countryPopulation : 'unknown'"></span>.
+		</div>
+	</body>
+
+</html>

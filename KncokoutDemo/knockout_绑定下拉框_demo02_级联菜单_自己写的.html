@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="application/javascript" src="js/jquery-3.2.1.js"></script>
+		<script type="application/javascript" src="js/bootstrap.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>
+		<script type="application/javascript">		
+			
+			var Action=function(id,name,method){
+				this.id=id;
+				this.name=name;
+				this.method=method
+			}
+			
+			var User=function(id,name,pwd){
+				this.id=id;
+				this.name=name;
+				this.pwd=pwd;
+			}
+			
+			
+			
+			var viewModel_actions=function(){
+				var self=this;
+				self.users=ko.observableArray([
+					new Action(1, "测试权限1","post"),
+					new Action(2, "测试权限2","post"),
+					new Action(3, "测试权限3","post")
+				]);
+				
+			}
+			
+			
+//			var groupViewModel=function(){
+//				self=this;
+//				self.Name;
+//				
+//			}
+			
+			
+			var groupViewModel={
+				Name:ko.observable("测试名称"),
+				profession:ko.observable("pm")
+			};
+			
+			
+
+			$(function() {
+				var model = new viewModel_actions();
+				ko.applyBindings(groupViewModel);
+				
+				$("#name").on("input",function(){
+					temp=$(this).val();
+					groupViewModel.Name(temp);
+				})
+				
+//				ko.applyBindings(model);
+//				for(i;i<10;i++){
+//					users.push(new Action(i,"名字"+i,"post"))
+//				}
+			})
+		</script>
+	</head>
+
+	<body>
+		<a href=""></a>
+		<hr/>
+		<div>
+			姓名：<label data-bind="text:Name"></label><input id="name" type="text"/><br/>
+			职业：<label data-bind="text:profession"></label><input type="text" data-bind="textinput:profession"/>
+		</div>
+		
+		<lable>权限名称</lable>
+		<!--<input type="text" -->
+		<!--<select data-bind="options: users,
+                     optionsText: 'name',
+                     optionsCaption: '选择年级'">
+		</select>-->
+		
+	</body>
+
+</html>

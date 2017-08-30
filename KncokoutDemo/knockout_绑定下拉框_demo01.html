@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="application/javascript" src="js/jquery-3.2.1.js"></script>
+		<script type="application/javascript" src="js/bootstrap.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>
+		<script type="application/javascript">
+			function MyViewModel(){
+				var self=this;
+				self.selectOptions=[
+					{name:'张三',id:1},
+					{name:'李四',id:2},
+					{name:'王五',id:3}
+				];
+				self.result=ko.observable(2);
+				self.change2Defualt=function(){
+					self.result(3);
+				}
+				
+			}
+			
+			$(function(){
+				ko.applyBindings(new MyViewModel());
+			})
+		</script> 
+	</head>
+
+	<body>
+		<a href="http://www.cnblogs.com/rohelm/p/3190295.html">原文链接</a>
+		<hr />
+		<!-- 指定options来源，option text/value对应的属性名称 -->
+		<select data-bind="options:selectOptions, 
+			optionsText: 'name', 
+			optionsValue: 'id', 
+			value:result">
+		</select><br/> 排行：
+		<span data-bind="text:result"></span ><br/>
+    	<!-- 指定按钮click事件调用ViewModel中的特定函數修改result值 -->
+   		<input  type ="button"  value ="重置"  data-bind ="click: change2Defualt"/>
+	</body>
+</html>
