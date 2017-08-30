@@ -11,12 +11,13 @@
 			var GroupModel=function(){
 				self=this;
 				self.Name=ko.observable();
+//				设置可监控的数组
 				self.PersonList=ko.observableArray([{"name":"张三","age":18},
 			{"name":"李四","age":18},
 			{"name":"王五","age":18}]);
 			};
 			
-			
+//			创建js对象
 			var viewModel=new GroupModel();
 			
 			function DoAdd(){

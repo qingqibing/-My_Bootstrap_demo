@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="application/javascript" src="js/jquery-3.2.1.js"></script>
+		<script type="application/javascript" src="js/bootstrap.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>
+		<script type="application/javascript">
+			var element_level_R = function() {
+				var self = this;
+
+				self.Element = [{
+
+						'level': [{
+							'id': '1',
+							'name': '海面',
+							'interval': [{
+									'id': '1',
+									'name': '0'
+								}, {
+									'id': '2',
+									'name': '6'
+								},
+								{
+									'id': '3',
+									'name': '12'
+								}
+							]
+						}],
+						'eid': '1',
+						'ename': '海浪'
+					}, {
+
+						'level': [{
+							'id': '1',
+							'name': '表面',
+							'interval': [{
+									'id': '1',
+									'name': '0'
+								}, {
+									'id': '2',
+									'name': '6'
+								},
+								{
+									'id': '3',
+									'name': '12'
+								}
+							]
+						}, {
+							'id': '2',
+							'name': '250'
+						}, {
+							'id': '3',
+							'name': '500'
+						}],
+						'eid': '2',
+						'ename': '风'
+					},
+
+				];
+
+				self.element = ko.observable();
+				self.level = ko.observable();
+				self.interval = ko.observable();
+			}
+
+			var model = new element_level_R();
+
+			$(function() {
+
+				ko.applyBindings(model);
+
+				//				for(var i in model.Grades) {
+				//					if(model.Grades[i].arid == "2") {
+				//						model.grade(model.Grades[i]);
+				//						break;
+				//					}
+				//				}
+			})
+		</script>
+	</head>
+
+	<body>
+		<a href="">自己的示例</a>
+		<select data-bind="  
+                     options: Element,
+                     optionsText: 'ename',
+                     value:element,
+                     optionsCaption: '选择要素'">
+		</select>
+
+		<!-- ko with:element -->
+		<select data-bind="
+                        visible:$parent.element,
+                        options: level,
+                        optionsText: 'name',
+                        value:$parent.level,
+                        optionsCaption: '选择层级'">
+		</select>
+		<!-- /ko -->
+
+		<!-- ko with:level -->
+		<select data-bind="
+                        visible:$data,
+                        options: interval,
+                        optionsText: 'name',
+                        value:$data,
+                        optionsCaption: '选择层级'">
+		</select>
+		<!-- /ko -->
+	</body>
+
+</html>
