@@ -73,9 +73,16 @@
 
 				ko.applyBindings(model);
 
-				//				for(var i in model.Grades) {
-				//					if(model.Grades[i].arid == "2") {
-				//						model.grade(model.Grades[i]);
+				for(var i in model.Element) {
+					if(model.Element[i].eid == "1") {
+						var element_obj = model.element(model.Element[i]);
+						//						model.level(element_obj.Element[i].level)
+						break;
+					}
+				}
+				//				for(var i in model.level) {
+				//					if(model.level[i].id == "1") {
+				//						model.level(model.level[i]);
 				//						break;
 				//					}
 				//				}
@@ -85,32 +92,53 @@
 
 	<body>
 		<a href="">自己的示例</a>
-		<select data-bind="  
+		<br />
+		<form action="/home" method="post">
+			<input name="test_name"/>
+			<select name="test">
+				<option value="1">1</option>
+				<option value="2">2</option>
+			</select>
+			<select name="element" data-bind="  
                      options: Element,
                      optionsText: 'ename',
                      value:element,
                      optionsCaption: '选择要素'">
-		</select>
+			</select>
 
-		<!-- ko with:element -->
-		<select data-bind="
+			<!-- ko with:element -->
+			<!--<select data-bind="
                         visible:$parent.element,
                         options: level,
                         optionsText: 'name',
                         value:$parent.level,
                         optionsCaption: '选择层级'">
-		</select>
-		<!-- /ko -->
+		</select>-->
+			<select name="level" data-bind="options: level,
+                        optionsText: 'name',
+                        value:$parent.level,
+                        optionsCaption: '选择层级'">
+			</select>
+			<!-- /ko -->
 
-		<!-- ko with:level -->
-		<select data-bind="
+			<!-- ko with:level -->
+			<!--<select data-bind="
                         visible:$data,
                         options: interval,
                         optionsText: 'name',
                         value:$data,
                         optionsCaption: '选择层级'">
-		</select>
-		<!-- /ko -->
+		</select>-->
+			<select name="interval" data-bind="options: interval,
+                        optionsText: 'name',
+                        value:$data,
+                        optionsCaption: '选择层级'">
+			</select>
+			<!-- /ko -->
+			<br/>
+			<button type="submit">提交</button>
+		</form>
+
 	</body>
 
 </html>
