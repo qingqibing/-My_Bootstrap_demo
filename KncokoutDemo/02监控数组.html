@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="application/javascript" src="js/jquery-3.2.1.js"></script>
+		<script type="application/javascript" src="js/bootstrap.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>
+		<script type="application/javascript">
+			var GroupModel=function(){
+				self=this;
+				self.Name=ko.observable();
+//				设置可监控的数组
+				self.PersonList=ko.observableArray([{"name":"张三","age":18},
+			{"name":"李四","age":18},
+			{"name":"王五","age":18}]);
+			};
+			
+//			创建js对象
+			var viewModel=new GroupModel();
+			
+			function DoAdd(){
+//				var myObservableArray=ko.observableArray();
+//				myObservableArray.push({"name":"刘能","age":20})
+				viewModel.PersonList.push({"name":"刘能","age":20});
+			}
+			
+			$(function(){
+				ko.applyBindings(viewModel);
+			})
+		</script>
+	</head>
+	<body>
+		<ul data-bind="foreach:PersonList">
+			<li data-bind="text:name"></li>
+		</ul>
+		<button onclick="DoAdd()">添加</button>
+	</body>
+</html>
