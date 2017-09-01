@@ -85,7 +85,7 @@
 		<br />
 		<form action="/home" method="post">
 			<input name="test_name" />
-			<select name="test">
+			<select id="test" name="test">
 				<option value="1">1</option>
 				<option value="2">2</option>
 			</select>
@@ -97,14 +97,7 @@
 			</select>
 
 			<!-- ko with:element -->
-			<!--<select data-bind="
-                        visible:$parent.element,
-                        options: level,
-                        optionsText: 'name',
-                        value:$parent.level,
-                        optionsCaption: '选择层级'">
-		</select>-->
-			<select name="level" data-bind="options: level,
+			<select id="level" name="level" data-bind="options: level,
                         optionsText: 'name',
                         value:$parent.level,
                         optionsCaption: '选择层级'">
@@ -112,13 +105,6 @@
 			<!-- /ko -->
 
 			<!-- ko with:level -->
-			<!--<select data-bind="
-                        visible:$data,
-                        options: interval,
-                        optionsText: 'name',
-                        value:$data,
-                        optionsCaption: '选择层级'">
-		</select>-->
 			<select name="interval" data-bind="options: interval,
                         optionsText: 'name',
                         value:$data,

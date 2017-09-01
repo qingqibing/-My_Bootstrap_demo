@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="application/javascript" src="js/jquery-3.2.1.js"></script>
+		<script type="application/javascript" src="js/bootstrap.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>
+	</head>
+
+	<body>
+		<!--<form action="/home" method="post" data-bind="submit:formSubmit">
+			姓名<input type="text" data-bind="text: name">
+			<br/> 年龄
+			<input type="text" data-bind="text:age">
+			<br />
+			<label data-bind="text:name">姓名</label>
+			<label data-bind="text:age">年龄</label>
+			<button type="submit">提交</button>
+		</form>-->
+		<hr />
+		<form action="/home" method="post">
+		<!--<form data-bind="submit: doSomething">-->
+			<div class="form-group">
+				<label for="exampleInputEmail1">firstName<span data-bind="text:firstName"></span></label>
+				<input class="form-control" name="firstName" id="exampleInputEmail1" placeholder="Email" data-bind="value:firstName">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputPassword1">lastName<span data-bind="text:lastName"></span></label>
+				<input class="form-control" name="lastName" id="exampleInputPassword1" placeholder="Password" data-bind="value:lastName">
+				
+				<input type="hidden" class="form-control" name="age" id="exampleInputPassword1" placeholder="age">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputPassword1">firstName+lastName:</label>
+				<label for="exampleInputPassword1"><span data-bind="text:fullName"></span></label>
+			</div>
+			<button class="btn btn-default" data-bind="click:capitalizeLastName">lastName To Upper</button>
+			<button class="btn btn-default" type="submit">提交</button>
+		</form>
+	</body>
+	<script type="application/javascript">
+		var Country = function(name, population) {
+			this.countryName = name;
+			this.countryPopulation = population;
+		};
+
+		var viewModel = {
+			name: ko.observable(),
+			age: ko.observable(),
+
+			formSubmit: function(formelement) {
+				var t = formelement;
+
+				var jsonData = ko.toJSON(formelement);
+			}
+		};
+
+		var User = function(id, name) {
+			self = this;
+			self.id = ko.observable(id);
+			self.name = ko.observable(name);
+			self.editing = ko.observable(false);
+			self.edit = function() { //这里的this是当前调用的对象，而不是UserList，而self才是UserList对象，这也是为什么要使用var self = this语句的原因
+				this.editing(true);
+			}
+		};
+
+		person = function() {
+			self = this;
+			self.name = ko.observable("张三"),
+				self.age = ko.observable("23");
+			self.formSubmit = function(formelement) {
+				var t = formelement;
+				var jsonData = ko.toJSON(formelement);
+			}
+		}
+
+		function ViewModel() {
+			//		以下为单向绑定
+			//			this.firstName="Tommy",
+			//			this.lastName="Li"
+			//通过observable可以实现双向绑定
+			//		以下为双向绑定
+			//			this.firstName=ko.observable("Tommoy"),
+			//			this.lastName=ko.observable("Li")
+			//	若使用observable方法时,不加参数,则会实现不带默认值的绑定
+			//			this.firstName=ko.observable(),
+			//			this.lastName=ko.observable()
+
+			this.firstName = ko.observable("Tommoy");
+			this.lastName = ko.observable("Li");
+
+			this.fullName = ko.computed(function() {
+				return this.firstName() + " " + this.lastName();
+			}, this);
+
+			this.capitalizeLastName = function() {
+				this.lastName(this.lastName().toUpperCase());
+			};
+			
+			this.doSomething=function(formElement){
+				var obj=formElement;
+			}
+		}
+
+		$(function() {
+			//				var viewmodel=new person();
+			//				ko.applyBindings(viewmodel);
+			//				ko.applyBindings(submit_Model);
+
+			ko.applyBindings(new ViewModel());
+		})
+	</script>
+
+</html>

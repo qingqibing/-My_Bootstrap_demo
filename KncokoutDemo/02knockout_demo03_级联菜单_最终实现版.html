@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="application/javascript" src="js/jquery-3.2.1.js"></script>
+		<script type="application/javascript" src="js/bootstrap.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>
+		<script type="application/javascript">
+			var City = function(name, code,provincecode) {
+				this.Name = name;
+				this.Code = code;
+				this.ProvinceCode=provincecode;
+			}
+			//省份
+			var Province = function(name, code) {
+				this.Name = name;
+				this.Code = code;
+			}
+
+			var Area = function(name, code, citycode) {
+				this.Name = name;
+				this.Code = code;
+				this.CityCode = citycode;
+			}
+
+			var ViewModel = function() {
+				var self = this;
+
+				self.Name = ko.observable();
+				self.Area = ko.observable();
+				self.City = ko.observable();
+				self.Province=ko.observable();
+//				以下三个list是全部的初始list
+				self.AreaList = ko.observable([
+					new Area("西城区", "110102", 110),
+					new Area("东城区", "110101", 110),
+					new Area("静安区", "120101", 120),
+					new Area("浦东区", "120103", 120),
+				]);
+				self.CityList = ko.observableArray([
+					new City("北京", 110,1),
+					new City("上海", 120,2)
+
+				]);
+				self.ProvinceList=ko.observable([
+					new Province("河北",1),
+					new Province("江苏",2)
+				])
+
+				//注意有两个return
+				//将CurrentCityList赋值为与self.Province()相等的City
+				self.CurrentCityList = ko.computed(function() {
+					//将满足条件的area对象返回，并赋值给CurrentAreaList
+					//arrayFilter——使用指定的函数测试所有元素（self.CityList()），并创建一个包含所有通过测试的元素的新数组。
+					return ko.utils.arrayFilter(self.CityList(), function(city) {
+						//遍历self.CityList，并判断当前viewModel中的可观察变量Province是否与当前遍历的City的ProvinceCode相等，若相等则返回该City；
+						//如此遍历生成一个新的City集合
+						//注意此处的Province是1（也就是id）
+						return city.ProvinceCode == self.Province();
+					});
+				}, self);
+				
+				self.CurrentAreaList=ko.computed(function() {
+					return ko.utils.arrayFilter(self.AreaList(), function(area, index) {
+						//function 遍历的是 self.ProvinceList 其中都是 Province 对象
+						return area.CityCode == self.City();
+					});
+				}, self);
+
+			}
+
+			$(function() {
+				ko.applyBindings(new ViewModel());
+			})
+		</script>
+	</head>
+
+	<body>
+		<a href="">自己的示例</a>
+		<br />
+		<form action="/home" method="post">
+			<input type="hidden" name="hide">
+			<!--<div>
+				<label>姓名</label>
+				<input data-bind="value:Name"></input>
+			</div>-->
+			<!--<select name="test">
+				<option value="1">1</option>
+				<option value="2">2</option>
+			</select>
+			<br />-->
+			<div>
+				<!--value 选中后将值赋予那个属性-->
+				<!--options：将被添加至select下的options-->
+				<!--optionsText：相当于options对象的text ProvinceList数组中的对象的Name属性来填充options的text-->
+				<!--optionsValue：相当于options的value ProvinceList数组中的对象的Code属性来填充options的value-->
+				<!--value：选择后value会为谁赋值-->
+				<select name="province" data-bind="options:ProvinceList,
+					optionsText:'Name',
+					optionsValue:'Code',
+					value:Province,		
+					optionsCaption:'请选择省份'">
+				</select>
+				
+				<select name="city" data-bind="options:CurrentCityList,
+					optionsText:'Name',
+					optionsValue:'Code',
+					value:City,
+					optionsCaption:'请选择城市'">
+				</select>
+
+				<select name="area" data-bind="options:CurrentAreaList,
+					optionsText:'Name',
+					optionsValue:'Code',
+					value:Area,
+					optionsCaption:'请选择区县'">
+				</select>
+
+			</div>
+			<button type="submit">提交</button>
+		</form>
+
+	</body>
+
+</html>

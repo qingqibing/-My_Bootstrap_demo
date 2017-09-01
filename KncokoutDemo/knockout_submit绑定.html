@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="application/javascript" src="js/jquery-3.2.1.js"></script>
+		<script type="application/javascript" src="js/bootstrap.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>
+
+	</head>
+
+	<body>
+		<form action="~/Views/Home/Index" data-bind="submit: formSubmit">
+			<input type="text" name="a" />
+			<button type="submit">提交</button>
+		</form>
+	</body>
+	<script type="application/javascript">
+		var appViewModel = function() {
+			var self = this;
+			this.formSubmit = function(formelement) {
+				var t = formelement;
+			}
+		}
+
+		ko.applyBindings(new appViewModel());
+	</script>
+
+</html>

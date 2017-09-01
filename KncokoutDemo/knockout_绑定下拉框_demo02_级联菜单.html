@@ -89,14 +89,14 @@
 
 	<body>
 		<a href="http://www.cnblogs.com/lori/p/3619530.html">网上示例</a>
-		<select data-bind="  
+		<select id="grades"data-bind="  
                      options: Grades,
                      optionsText: 'name',
                      value:grade,
                      optionsCaption: '选择年级'">
 		</select>
 		<!-- ko with:grade -->
-		<select data-bind="
+		<select id="subjects" data-bind="
                         visible:$parent.grade,
                         options: subjects,
                         optionsText: 'name',
