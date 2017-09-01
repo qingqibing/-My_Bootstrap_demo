@@ -94,7 +94,7 @@
 		<a href="">自己的示例</a>
 		<br />
 		<form action="/home" method="post">
-			<input name="test_name"/>
+			<input name="test_name" />
 			<select name="test">
 				<option value="1">1</option>
 				<option value="2">2</option>
@@ -106,14 +106,14 @@
                      optionsCaption: '选择要素'">
 			</select>
 
-			<!-- ko with:element -->
 			<!--<select data-bind="
                         visible:$parent.element,
                         options: level,
                         optionsText: 'name',
                         value:$parent.level,
                         optionsCaption: '选择层级'">
-		</select>-->
+			</select>-->
+			<!-- ko with:element -->
 			<select name="level" data-bind="options: level,
                         optionsText: 'name',
                         value:$parent.level,
@@ -121,17 +121,18 @@
 			</select>
 			<!-- /ko -->
 
-			<!-- ko with:level -->
+			
 			<!--<select data-bind="
                         visible:$data,
                         options: interval,
                         optionsText: 'name',
-                        value:$data,
+                        value:id,
                         optionsCaption: '选择层级'">
-		</select>-->
+			</select>-->
+			<!-- ko with:level -->
 			<select name="interval" data-bind="options: interval,
                         optionsText: 'name',
-                        value:$data,
+                        value:id,
                         optionsCaption: '选择层级'">
 			</select>
 			<!-- /ko -->
