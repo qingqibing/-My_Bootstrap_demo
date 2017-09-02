@@ -34,7 +34,7 @@
 				self.City = ko.observable();
 				self.Province=ko.observable();
 //				以下三个list是全部的初始list
-				self.AreaList = ko.observable([
+				self.AreaList = ko.observableArray([
 					new Area("西城区", "110102", 110),
 					new Area("东城区", "110101", 110),
 					new Area("静安区", "120101", 120),
@@ -45,7 +45,7 @@
 					new City("上海", 120,2)
 
 				]);
-				self.ProvinceList=ko.observable([
+				self.ProvinceList=ko.observableArray([
 					new Province("河北",1),
 					new Province("江苏",2)
 				])
@@ -105,7 +105,7 @@
 					optionsCaption:'请选择省份'">
 				</select>
 				
-				<select name="city" data-bind="options:CurrentCityList,
+				<select name="city"  data-bind="options:CurrentCityList,
 					optionsText:'Name',
 					optionsValue:'Code',
 					value:City,
