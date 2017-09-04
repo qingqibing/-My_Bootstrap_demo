@@ -83,11 +83,42 @@
 					});
 				}, self);
 			}
+			
+			
+			
+			//将表单对象提交至指定url
+			function doSubmit() {
+				//1、将表单对象进行序列化
+				var myFormData = $("#editForm").serialize();
+				//
+				$.ajax({
+					type: "GET",
+					url: "virtual_data.json",
+					processData: true,
+					dataType: "json",
+					data: myFormData,
+					success: function(data) {
+						//若state为1则为成功
+						if(data.state == "1") {
+							//获取img的url
+							var img_url= data.imgurl;
+							$("#returnimg").attr('src',img_url); 
+							//显示modal框
+							showme();
+						}
+					}
+				});
+			}
 
+
+			function showme(){
+				$("#myModal").modal();
+			}
+				
 			$(function() {
 
 				ko.applyBindings(new myViewModel());
-
+				//showme();
 			})
 		</script>
 	</head>
@@ -99,7 +130,8 @@
 					<div class="panel-heading">预报信息</div>
 					<div class="panel-body" style="padding:2px">
 						<div action="/home" method="post" class="form-horizontal col-md-12">
-							<form action="/home" method="post">
+							<!--<form action="/home" id="editForm" method="post">-->
+							<form  id="editForm">
 								<!--基础信息-->
 								<div class="form-group col-md-2">
 									<fieldset>
@@ -183,7 +215,7 @@
 												<label class="col-md-12 control-label">预报要素</label>
 											</div>
 											<div class="col-md-6">
-												<select name="element" class="form-control"  data-bind="options:ElementList,
+												<select name="element" class="form-control" data-bind="options:ElementList,
 					optionsText:'Name',
 					optionsValue:'Id',
 					value:Element,		
@@ -227,8 +259,13 @@
 											</div>
 										</div>
 
-										<div class="form-group" action="/home" method="post">
-											<button class="btn btn-danger col-md-10" type="submit" style="">绘图</button>
+										<!--<div class="form-group" action="/home" method="post">-->
+											<div class="form-group">
+											<!--备份-->
+											<!--<button class="btn btn-danger col-md-10" type="submit" onclick="doSubmit" style="">绘图</button>-->											
+											<button type="button" class="btn btn-primary col-md-10" onclick="doSubmit()">
+  绘图
+											</button>									
 										</div>
 									</fieldset>
 
@@ -295,6 +332,51 @@
 				</div>
 			</div>
 
+			<!-- Modal -->
+			<!--<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">标题1</h4>
+						</div>
+						<div class="modal-body">
+							<img id="returnimg" src="" class="img-responsive">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+
+						</div>
+					</div>
+				</div>
+			</div>-->
+
+
+
+
+
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">标题1</h4>
+						</div>
+						<div class="modal-body">
+							<img id="returnimg" src="" class="img-responsive">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		
 	</body>
 
 </html>

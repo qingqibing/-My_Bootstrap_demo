@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="application/javascript" src="js/bootstrap.min.js"></script>
+		<script type="application/javascript">
+			function showme(){
+				$("#myModal").modal();
+			}
+			//将表单对象提交至指定url
+			function doSubmit() {				
+				//
+				$.ajax({
+					type: "GET",
+					url: "virtual_data.json",
+					processData: true,
+					dataType: "json",
+					data: "",
+					success: function(data) {
+						//若state为1则为成功
+						if(data.state == "1") {
+							//获取img的url
+							var img_url= data.imgurl;
+							$("#returnimg").attr('src',img_url); 
+							//显示modal框
+							showme();
+						}
+					}
+				});
+			}
+			
+			$(function(){
+				//$("#myModal").modal();
+				doSubmit();
+			})
+			
+		</script>
+	</head>
+
+	<body>
+		<hr />
+		<div class="container">
+			<!--<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  测试加载图片莫待框
+			</button>-->
+	<button type="button" class="btn btn-primary btn-lg" onclick="showme()">
+  测试加载图片莫待框
+</button>
+			<!-- Modal -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">标题1</h4>
+						</div>
+						<div class="modal-body">
+							<img id="returnimg" src="img/img001.jpg/" class="img-responsive">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+
+</html>
