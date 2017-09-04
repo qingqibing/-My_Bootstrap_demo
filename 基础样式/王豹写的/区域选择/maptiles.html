@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>WebGIS</title>
+        <meta name="description" content="">       
+		<meta name="viewport" content="width=device-width, initial-scale=1" /> 
+		<link rel="stylesheet" href="css/leaflet.css">  
+		<link rel="stylesheet" href="css/style.css" media="all">  
+        
+    </head>
+	<script>
+	
+	  
+	</script>
+    <body>
+        <div id="map" style="height:800px;width:1600px;"><!-- Map container --></div>
+		<button id="rectangleSel" > 区域选择 </button>
+		
+        <script src="js/leaflet.js"></script>
+    	<script src="js/maptiles.js"></script>
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="label/libs/leaflet/leaflet-src.js"></script>
+        <script src="label/src/Label.js"></script>
+        <script src="label/src/BaseMarkerMethods.js"></script>
+        <script src="label/src/CircleMarker.Label.js"></script>
+        <script src="label/src/Map.Label.js"></script>
+		
+		<script>	
+		var map;
+		$(function(){
+		    map = L.map('map').setView([25, 120], 4);
+            mapLink = 'mosic/';
+            L.tileLayer(
+                 'mosic/{z}/{x}/{y}.jpg', {
+                 attribution: '',
+                 maxZoom: 8,
+			     minZoom: 2			
+                }).addTo(map);
+		    $("#rectangleSel").unbind('click').bind('click',function(){
+                map.on('mousedown', rectangleMeasure.mousedown).on('mouseup', rectangleMeasure.mouseup);
+            });
+		});
+		var rectangleMeasure = {
+            startPoint: null,
+            endPoint: null,
+            rectangle:null,
+            tips:null,
+            layer: L.layerGroup(),
+            color: "#0D82D7",
+            addRectangle:function(){
+                rectangleMeasure.destory();
+                var bounds = [];
+                bounds.push(rectangleMeasure.startPoint);
+                bounds.push(rectangleMeasure.endPoint);
+                rectangleMeasure.rectangle = L.rectangle(bounds, {color: rectangleMeasure.color, weight: 1});
+                rectangleMeasure.rectangle.addTo(rectangleMeasure.layer);        
+                
+                var northWestPoint = rectangleMeasure.rectangle.getBounds().getNorthWest(),
+                    southEastPoint = rectangleMeasure.rectangle.getBounds().getSouthEast();                
+                rectangleMeasure.layer.addTo(map);
+            },               
+            mousedown: function(e){
+                rectangleMeasure.rectangle = null;
+                rectangleMeasure.tips = null;
+                map.dragging.disable();
+                rectangleMeasure.startPoint = e.latlng;
+                map.on('mousemove',rectangleMeasure.mousemove)
+            },
+            mousemove:function(e){
+                rectangleMeasure.endPoint = e.latlng;
+                rectangleMeasure.addRectangle();
+                map.off('mousedown ', rectangleMeasure.mousedown).on('mouseup', rectangleMeasure.mouseup);
+            },
+            mouseup: function(e){                        
+                map.dragging.enable();
+                map.off('mousemove',rectangleMeasure.mousemove).off('mouseup', rectangleMeasure.mouseup).off('mousedown', rectangleMeasure.mousedown);
+            },
+            destory:function(){
+                if(rectangleMeasure.rectangle)
+                    rectangleMeasure.layer.removeLayer(rectangleMeasure.rectangle);
+                if(rectangleMeasure.tips)
+                    rectangleMeasure.layer.removeLayer(rectangleMeasure.tips);
+            }
+         }
+		</script>
+        <div id="latlon">
+          <!-- <p>This is a paragraph.</p> -->
+        </div>
+    </body>
+</html>
+
+
+
+
+
+
+
+

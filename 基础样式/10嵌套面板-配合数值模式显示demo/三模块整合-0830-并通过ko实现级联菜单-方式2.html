@@ -40,7 +40,7 @@
 				this.Name = name;
 				this.Eid = eid;
 			}
-			//时效（此处起名为间隔）
+			//时效（此处起名为间隔）			
 			var Interval = function(id, name, lid) {
 				this.Id = id;
 				this.Name = name;
@@ -52,7 +52,7 @@
 				self.Element = ko.observable();
 				self.Level = ko.observable();
 				self.Interval = ko.observable();
-
+//				{"id":1,"name":"风暴潮"}
 				self.ElementList = ko.observableArray([
 					new Element(1, "海浪"),
 					new Element(2, "风"),
@@ -220,6 +220,7 @@
 					optionsValue:'Id',
 					value:Element,		
 					optionsCaption:'要素'">
+					<!--<option value="1">一</option>-->
 												</select>
 											</div>
 
