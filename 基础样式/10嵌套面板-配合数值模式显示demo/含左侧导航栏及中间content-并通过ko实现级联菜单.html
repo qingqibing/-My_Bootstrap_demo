@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="application/javascript" src="js/bootstrap.min.js"></script>
+		<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>
+		<script type="application/javascript" src="js/leaflet.js"></script>
+		<link rel="stylesheet" href="css/leaflet.css" />
+		<link rel="stylesheet" href="css/style.css" media="all" />
+		
+		<style type="text/css">
+			/*对于使用了bootstrap的navbar并固定在顶部时下面的div填充满整个屏幕的解决办法*/			
+			html,
+			body {
+				height: 100%;
+				margin: 0px;
+				padding: 0px;
+				background-color: #BBBBBB;
+				padding-top: 25px;
+			}
+			
+			#main {
+				height: 100%;
+			}
+			
+			#nav {
+				height: 100%;
+				background: #00B83F;
+			}
+			
+			#content {
+				background-color: #F5E79E;
+				height: 100%;
+			}
+			#ul_nav{
+				position: absolute;
+				height: 100%;
+			}
+			
+			.row-margin-top {
+				margin-top: 10px;
+			}
+			
+			.form-horizontal .form-group {
+				margin-left: 0px;
+			}
+			
+			.col-padding-2 {
+				padding-left: 2px;
+				padding-right: 2px;
+			}
+			
+			.col-padding-left-2 {
+				padding-left: 2px;
+			}
+			
+			.mycol_disPadding{
+				padding-left: 0px;
+				padding-right: 0px;
+			}
+		</style>
+		
+		<script type="application/javascript">
+			//要素
+			var Element = function(id, name) {
+				this.Id = id;
+				this.Name = name
+			}
+
+			//层级
+			var Level = function(id, name, eid) {
+				this.Id = id;
+				this.Name = name;
+				this.Eid = eid;
+			}
+			//时效（此处起名为间隔）			
+			var Interval = function(id, name, lid) {
+				this.Id = id;
+				this.Name = name;
+				this.Lid = lid;
+			}
+
+			var myViewModel = function() {
+				self = this;
+				self.Element = ko.observable();
+				self.Level = ko.observable();
+				self.Interval = ko.observable();
+//				{"id":1,"name":"风暴潮"}
+				self.ElementList = ko.observableArray([
+					new Element(1, "海浪"),
+					new Element(2, "风"),
+					new Element(3, "海流"),
+					new Element(4, "气压"),
+				]);
+				self.LevelList = ko.observableArray([
+					new Level(1, "海平面", 2),
+					new Level(2, "250", 2),
+					new Level(3, "500", 2),
+					new Level(4, "700", 2),
+					new Level(5, "850", 2)
+				]);
+				self.IntervalList = ko.observableArray([
+					new Interval(1, "0", 2),
+					new Interval(2, "1", 2),
+				]);
+
+				self.CurrentLevelList = ko.computed(function() {
+					return ko.utils.arrayFilter(self.LevelList(), function(level) {
+						return level.Eid == self.Element();
+					});
+				}, self);
+
+				self.CurrentIntervalList = ko.computed(function() {
+					return ko.utils.arrayFilter(self.IntervalList(), function(interval) {
+						return interval.Lid == self.Level();
+					});
+				}, self);
+			}
+			
+			
+			
+			//将表单对象提交至指定url
+			function doSubmit() {
+				//1、将表单对象进行序列化
+				var myFormData = $("#editForm").serialize();
+				//
+				$.ajax({
+					type: "GET",
+					url: "virtual_data.json",
+					processData: true,
+					dataType: "json",
+					data: myFormData,
+					success: function(data) {
+						//若state为1则为成功
+						if(data.state == "1") {
+							//获取img的url
+							var img_url= data.imgurl;
+							$("#returnimg").attr('src',img_url); 
+							//显示modal框
+							showme();
+						}
+					}
+				});
+			}
+
+
+			function showme(){
+				$("#myModal").modal();
+			}
+				
+			$(function() {
+
+				ko.applyBindings(new myViewModel());
+				//showme();
+			})
+		</script>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" style="margin-bottom: 0px;">
+			<div class="navbar-header" id="my_navbar">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse">
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+				<a class="navbar-brand" href="#">数值预报显示系统</a>
+			</div>
+		</nav>
+		<div id="main" style="">
+			<div id="nav" class="col-md-2" style="padding-left: 0px;">
+				<ul id="ul_nav" class="nav nav-pills nav-stacked navbar-inverse ">
+					<li>
+						<div class="input-group">
+							<input type="text" class="form-control" />
+							<span class="input-group-btn">
+					<button type="button" class="btn btn-default">
+						<span class="glyphicon glyphicon-zoom-out"></span>
+							</button>
+							</span>
+						</div>
+					</li>
+					<li>
+						<!--data-toggle，用于告诉 js需要对按钮做什么-->
+						<!--collapse即是折叠-->
+						<!--<a href="#sub1" data-toggle="collapse">系统功能</a>-->
+						<!--data-target指示要切换到哪一个元素-->
+						<a href="#" data-toggle="collapse" data-target="#sub1">系统功能&nbsp;<span class="glyphicon glyphicon-cog"></span></a>
+						<ul id="sub1" class="nav collapse">
+							<li>
+								<a href="#"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;系统信息</a>
+							</li>
+							<li>
+								<a href="#"><span class="glyphicon glyphicon-user"></span>&nbsp;管理员管理</a>
+							</li>
+							<li>
+								<a href="#"><span class="glyphicon glyphicon-envelope"></span>&nbsp;日志信息</a>
+							</li>
+							<li>
+								<a href="#"><span class="glyphicon glyphicon-off"></span>&nbsp;退出</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#" data-toggle="collapse" data-target="#sub2">数值预报系统&nbsp;<span class="glyphicon glyphicon-cog"></span></a>
+						<ul id="sub2" class="nav collapse">
+							<li>
+								<a href="#"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;航线绘制</a>
+							</li>
+							<li>
+								<a href="#"><span class="glyphicon glyphicon-user"></span>&nbsp;预报数据叠加显示</a>
+							</li>
+							<li>
+								<a href="#"><span class="glyphicon glyphicon-envelope"></span>&nbsp;航线搜索</a>
+							</li>							
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			<div id="content" class="col-md-10 mycol_disPadding" >
+				<div class="col-md-12 mycol_disPadding">
+				<div class="panel panel-primary " style="margin-bottom: 0px;">
+					<div class="panel-heading">预报信息</div>
+					<div class="panel-body" style="padding:2px">
+						<div action="/home" method="post" class="form-horizontal col-md-12">
+							<!--<form action="/home" id="editForm" method="post">-->
+							<form  id="editForm">
+								<!--基础信息-->
+								<div class="form-group col-md-2">
+									<fieldset>
+										<legend>基础信息</legend>
+
+										<div class="form-group" style="margin-bottom:2px">
+											<div class="col-md-5 col-padding-2">
+												<label class="col-md-12 control-label">时间</label>
+											</div>
+											<div class="col-md-7 col-padding-left-2">
+												<select id="drops" class="form-control" name="date">
+													<option value="00" selected>00时</option>
+												</select>
+											</div>
+
+										</div>
+									</fieldset>
+								</div>
+								<!--区域信息-->
+								<div class="form-group col-md-4">
+									<fieldset>
+										<legend>预报区域</legend>
+										<div class="form-group">
+											<div class="col-md-2" style="padding:4px">
+												<label class="col-md-12 control-label col-padding-2">经度</label>
+											</div>
+											<div class="col-md-3 col-padding-2">
+												<input type="text" placeholder="起始" name="lon_start" class="form-control ">
+											</div>
+											<div class="col-md-3 col-padding-2">
+												<input type="text" placeholder="结束" name="lon_finish" class="form-control">
+											</div>
+											<div class="col-md-4">
+												<!--<button class="btn btn-primary col-md-12">常用区域</button>-->
+												<!--注意此处在Button外侧不用再套一个div 因为会默认有一个padding-->
+												<!--<div class="btn-group col-md-12">-->
+												<button type="button" class="btn btn-primary dropdown-toggle col-md-12" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    常用区域 <span class="caret"></span>
+  </button>
+												<ul class="dropdown-menu">
+													<li>
+														<a href="#">北海</a>
+													</li>
+													<li>
+														<a href="#">东海</a>
+													</li>
+													<li>
+														<a href="#">南海</a>
+													</li>
+													<li class="divider"></li>
+													<li>
+														<a href="#">其他</a>
+													</li>
+												</ul>
+												<!--</div>-->
+											</div>
+										</div>
+										<div class="form-group" style="margin-bottom:2px">
+											<div class="col-md-2" style="padding:4px">
+												<label class="col-md-12 control-label col-padding-2">纬度</label>
+											</div>
+											<div class="col-md-3 col-padding-2">
+												<input type="text" placeholder="起始" name="lat_start" class="form-control col-md-4">
+											</div>
+											<div class="col-md-3 col-padding-2">
+												<input type="text" placeholder="结束" name="lat_finish" class="form-control col-md-4">
+											</div>
+											<div class="col-md-4">
+												<button class="btn btn-success col-md-12">框选区域</button>
+											</div>
+										</div>
+									</fieldset>
+								</div>
+
+								<!--预报信息-->
+								<div class="form-group col-md-3">
+									<fieldset>
+										<legend>预报信息</legend>
+										<div class="form-group">
+											<div class="col-md-6">
+												<label class="col-md-12 control-label">预报要素</label>
+											</div>
+											<div class="col-md-6">
+												<select name="element" class="form-control" data-bind="options:ElementList,
+					optionsText:'Name',
+					optionsValue:'Id',
+					value:Element,		
+					optionsCaption:'-要素-'">
+					<!--<option value="1">一</option>-->
+												</select>
+											</div>
+
+										</div>
+										<div class="form-group" style="margin-bottom:2px">
+											<div class="col-md-6">
+												<label class="col-md-12 control-label">预报层级</label>
+											</div>
+											<div class="col-md-6">
+												<select name="level" class="form-control" data-bind="options:CurrentLevelList,
+					optionsText:'Name',
+					optionsValue:'Id',
+					value:Level,		
+					optionsCaption:'-层级-'">
+												</select>
+
+											</div>
+
+										</div>
+									</fieldset>
+								</div>
+								<!--绘图按钮-->
+								<div class="form-group col-md-2">
+									<fieldset>
+										<legend>操作</legend>
+										<div class="form-group" action="/home" method="post" style="">
+											<div class="col-md-3 col-padding-2" style="">
+												<label class=" control-label col-padding-2">时效</label>
+											</div>
+											<div class="col-md-7 col-padding-2">
+												<select name="interval" class="form-control" data-bind="options:CurrentIntervalList,
+					optionsText:'Name',
+					optionsValue:'Id',
+					value:Interval,		
+					optionsCaption:'-时效-'">
+												</select>
+											</div>
+										</div>
+
+										<!--<div class="form-group" action="/home" method="post">-->
+											<div class="form-group">
+											<!--备份-->
+											<!--<button class="btn btn-danger col-md-10" type="submit" onclick="doSubmit" style="">绘图</button>-->											
+											<button type="button" class="btn btn-primary col-md-10" onclick="doSubmit()">
+  绘图
+											</button>									
+										</div>
+									</fieldset>
+
+								</div>
+
+							</form>
+						</div>
+					</div>
+					<!--<div class="panel-footer">页脚</div>-->
+				</div>
+			</div>
+			<!--中间的导航栏-->
+			<div class="col-md-12 mycol_disPadding">
+				<nav class="navbar navbar-default" style="margin-bottom: 0px;">
+					<div class="container-fluid">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+							<a class="navbar-brand" href="#">位置</a>
+						</div>
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							<ul class="nav navbar-nav">
+								<li class="active">
+									<a href="#"><span class="glyphicon glyphicon-map-marker
+"></span>全图 <span class="sr-only">(current)</span></a>
+								</li>
+								<li>
+									<a href="#"><span class="glyphicon glyphicon-screenshot"></span>漫游</a>
+								</li>
+								<li>
+									<a href="#">西太平洋</a>
+								</li>
+								</li>
+								<li>
+									<a href="#">北印度洋</a>
+								</li>
+							</ul>
+							<ul class="nav navbar-nav navbar-right">
+								<li>
+									<a href="#"><span class="glyphicon glyphicon-zoom-in"></span>放大</a>
+								</li>
+								<li>
+									<a href="#"><span class="glyphicon glyphicon-zoom-out"></span>缩小</a>
+								</li>
+							</ul>
+						</div>
+						<!-- /.navbar-collapse -->
+
+					</div>
+					<!-- /.container-fluid -->
+				</nav>
+
+			</div>
+			<!--下部的巨幕-->
+			<div class="col-md-12 mycol_disPadding" style="height: 640px;">
+				<div id="basemap" style="height: 640px; width: 100%;">
+					</div>
+					<!--<div class="row col-md-12" style="width: 100%;">
+						<h5>请在地图中绘制航线... </h5>
+					</div>-->
+			</div>
+
+			<!-- Modal -->
+			<!--<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">标题1</h4>
+						</div>
+						<div class="modal-body">
+							<img id="returnimg" src="" class="img-responsive">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+
+						</div>
+					</div>
+				</div>
+			</div>-->
+
+
+
+
+
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">标题1</h4>
+						</div>
+						<div class="modal-body">
+							<img id="returnimg" src="" class="img-responsive">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+<script type="application/javascript" src="js/maptiles.js"></script>
+	</body>
+
+</html>
