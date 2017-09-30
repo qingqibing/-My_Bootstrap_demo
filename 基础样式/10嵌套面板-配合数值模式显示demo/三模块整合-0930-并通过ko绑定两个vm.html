@@ -9,6 +9,10 @@
 		<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
 		<script type="application/javascript" src="js/bootstrap.min.js"></script>
 		<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>
+		<script type="application/javascript" src="js/ko/jquery.livequery.js"></script>
+		<script type="application/javascript" src="js/ko/knockout.multimodels-0.1.js"></script>
+		<script type="application/javascript" src="js/viewmodel/Forecast/ElementContentMenu.js"></script>
+		<script type="application/javascript" src="js/viewmodel/map/RectangleMeasureViewModel.js"></script>
 		<style type="text/css">
 			.row-margin-top {
 				margin-top: 10px;
@@ -28,98 +32,13 @@
 			}
 		</style>
 		<script type="application/javascript">
-			//要素
-			var Element = function(id, name) {
-				this.Id = id;
-				this.Name = name
-			}
-
-			//层级
-			var Level = function(id, name, eid) {
-				this.Id = id;
-				this.Name = name;
-				this.Eid = eid;
-			}
-			//时效（此处起名为间隔）			
-			var Interval = function(id, name, lid) {
-				this.Id = id;
-				this.Name = name;
-				this.Lid = lid;
-			}
-
-			var myViewModel = function() {
-				self = this;
-				self.Element = ko.observable();
-				self.Level = ko.observable();
-				self.Interval = ko.observable();
-//				{"id":1,"name":"风暴潮"}
-				self.ElementList = ko.observableArray([
-					new Element(1, "海浪"),
-					new Element(2, "风"),
-					new Element(3, "海流"),
-					new Element(4, "气压"),
-				]);
-				self.LevelList = ko.observableArray([
-					new Level(1, "地面", 2),
-					new Level(2, "250", 2),
-					new Level(3, "500", 2),
-					new Level(4, "700", 2),
-					new Level(5, "850", 2)
-				]);
-				self.IntervalList = ko.observableArray([
-					new Interval(1, "0", 2),
-					new Interval(2, "1", 2),
-				]);
-
-				self.CurrentLevelList = ko.computed(function() {
-					return ko.utils.arrayFilter(self.LevelList(), function(level) {
-						return level.Eid == self.Element();
-					});
-				}, self);
-
-				self.CurrentIntervalList = ko.computed(function() {
-					return ko.utils.arrayFilter(self.IntervalList(), function(interval) {
-						return interval.Lid == self.Level();
-					});
-				}, self);
-			}
-			
-			
-			
-			//将表单对象提交至指定url
-			function doSubmit() {
-				//1、将表单对象进行序列化
-				var myFormData = $("#editForm").serialize();
-				//
-				$.ajax({
-					type: "GET",
-					url: "virtual_data.json",
-					processData: true,
-					dataType: "json",
-					data: myFormData,
-					success: function(data) {
-						//若state为1则为成功
-						if(data.state == "1") {
-							//获取img的url
-							var img_url= data.imgurl;
-							$("#returnimg").attr('src',img_url); 
-							//显示modal框
-							showme();
-						}
-					}
-				});
-			}
-
-
-			function showme(){
-				$("#myModal").modal();
-			}
-				
-			$(function() {
-
-				ko.applyBindings(new myViewModel());
-				//showme();
-			})
+			$(function() { 
+				var elementVM=new ElementViewModel();
+//				 ko.applyBindings(elementVM);
+				 ko.attach("ElementViewModel",elementVM); 
+				 
+				 /*showme();*/ 
+				 })
 		</script>
 	</head>
 
@@ -131,7 +50,7 @@
 					<div class="panel-body" style="padding:2px">
 						<div action="/home" method="post" class="form-horizontal col-md-12">
 							<!--<form action="/home" id="editForm" method="post">-->
-							<form  id="editForm">
+							<form id="editForm">
 								<!--基础信息-->
 								<div class="form-group col-md-2">
 									<fieldset>
@@ -207,7 +126,7 @@
 								</div>
 
 								<!--预报信息-->
-								<div class="form-group col-md-3" id="elementInfo">
+								<div class="form-group col-md-3" id="elementInfo" data-model="ElementViewModel">
 									<fieldset>
 										<legend>预报信息</legend>
 										<div class="form-group">
@@ -220,7 +139,7 @@
 					optionsValue:'Id',
 					value:Element,		
 					optionsCaption:'要素'">
-					<!--<option value="1">一</option>-->
+													<!--<option value="1">一</option>-->
 												</select>
 											</div>
 
@@ -261,12 +180,12 @@
 										</div>
 
 										<!--<div class="form-group" action="/home" method="post">-->
-											<div class="form-group">
+										<div class="form-group">
 											<!--备份-->
-											<!--<button class="btn btn-danger col-md-10" type="submit" onclick="doSubmit" style="">绘图</button>-->											
+											<!--<button class="btn btn-danger col-md-10" type="submit" onclick="doSubmit" style="">绘图</button>-->
 											<button type="button" class="btn btn-primary col-md-10" onclick="doSubmit()">
   绘图
-											</button>									
+											</button>
 										</div>
 									</fieldset>
 
@@ -353,13 +272,7 @@
 				</div>
 			</div>-->
 
-
-
-
-
-
-
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -377,7 +290,7 @@
 					</div>
 				</div>
 			</div>
-		
+
 	</body>
 
 </html>
