@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="application/javascript" src="js/bootstrap.min.js"></script>
+		<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>
+		<script type="application/javascript">
+			$(function() {
+				//先隐藏该modal窗口
+				$("#test").css("background-color","yellow");
+				$("#mymsgcontent").css({"overflow":"auto","height":"150px"});
+				$("#errorModal").modal('hide');				
+
+			})
+			//加载并显示错误的消息框
+			function loaderrmsg() {
+				/*
+				 * 加载错误信息
+				 * 1、根据后台返回的obj获取message放在modal-body中的mymsgcontent中
+				 * 2、设定mymsgcontent的固定高度
+				 * 3、显示滚动条
+				 * 4、显示modal框				 * 
+				 */
+				var msg = "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试";
+//				$("mymsgcontent").attr("overflow","auto");
+				
+				document.getElementById("mymsgcontent").innerHTML = msg;
+				$("#errorModal").modal();
+			}
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+			<hr/>
+			<div id="test" style="background-color:#ffffff;padding-left:10px;">测试jQuery动态获取padding-left</div> 
+			<button onclick="loaderrmsg()">加载错误modal</button>
+			<!--若后台返回的代码是错误代码时弹出的modal框-->
+			<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myProgressLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myProgressLabel" >请稍后</h4>
+						</div>
+						<div class="modal-body">
+							<!--<div id="mymsgcontent" class="mymsgcontent" style="height: 150px;overflow: auto;">此处填充返回的内容</div>-->
+							<!--使用动态添加css的方式不直接指定样式了-->
+							<div id="mymsgcontent" class="mymsgcontent">此处填充返回的内容</div>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
