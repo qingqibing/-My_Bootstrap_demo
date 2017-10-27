@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<!--<link rel="stylesheet" href="css/dashboard.css" />-->
+		<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="application/javascript" src="js/bootstrap.min.js"></script>
+		<style type="text/css">
+			html,
+			body {
+				height: 100%;
+				margin: 0;
+				padding: 0
+			}
+			
+			#dHead {
+				height: 100px;
+				line-height: 100px;
+				background: #690;
+				width: 100%;
+				position: absolute;
+				z-index: 5;
+				top: 0;
+				text-align: center;
+			}
+			
+			#dBody {
+				background: #FC0;
+				width: 100%;
+				overflow: auto;
+				top: 50px;
+				position: absolute;
+				z-index: 10;
+				bottom: 50px;
+			}
+			
+			.mycontent {
+				height: 100%;
+				padding: 20px;
+				background-color: #B92C28;
+			}
+			
+			#dFoot {
+				height: 50px;
+				line-height: 50px;
+				background: #690;
+				width: 100%;
+				position: absolute;
+				z-index: 200;
+				bottom: 0;
+				text-align: center;
+			}
+			
+			.leftbar {
+				background-color: #2B669A;
+				height: 100%;
+				position: fixed;
+				left: 0px;
+				top: 50px;
+				bottom: 0px;
+			}
+			
+			
+			/*注意需要设置nav div中的ul的样式为绝对定位,且设置高度为100%*/
+			
+			#ul_nav {
+				position: absolute;
+				height: 100%;
+			}
+			.rightbar {
+				background-color: #0044CC;
+				height: 100%;
+				/*position: relative;*/
+			}
+			#mapper{
+				position: absolute;
+				background-color: #BBBBBB;
+				top: 50px;
+				left:0px;
+				right: 0px;
+				bottom: 0px;
+				/*height: 100%;*/
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--顶部固定导航栏-->
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+					<a class="navbar-brand" href="#">Project name</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="#">Dashboard</a>
+						</li>
+						<li>
+							<a href="#">Settings</a>
+						</li>
+						<li>
+							<a href="#">Profile</a>
+						</li>
+						<li>
+							<a href="#">Help</a>
+						</li>
+					</ul>
+					<form class="navbar-form navbar-right">
+						<input type="text" class="form-control" placeholder="Search...">
+					</form>
+				</div>
+			</div>
+		</nav>
+		<div id="dBody">
+			<div class="mycontent">
+				<!--<div class="col-md-2 leftbar" style=""></div>-->
+				<div id="nav" class="col-md-2 leftbar" style="padding-left: 0px;">
+					<ul id="ul_nav" class="nav nav-pills nav-stacked navbar-inverse ">
+						<li>
+							<div class="input-group"><input type="text" class="form-control" /><span class="input-group-btn"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-zoom-out"></span></button>
+								</span>
+							</div>
+						</li>
+						<li>
+							<a href="#">栏目功能</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="col-md-10 col-md-offset-2 rightbar" style="">
+					<!--中间的导航栏-->
+					<div style="height: 50px;background-color: yellow;"></div>
+					
+					<div class="col-md-12 subtractPadding">
+						<nav class="navbar navbar-default" style="margin-bottom: 0px;">
+							<div class="container-fluid">								
+								<div class="navbar-header">
+									<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+									<a class="navbar-brand" href="#">位置</a>
+								</div>
+								<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+									<ul class="nav navbar-nav">
+										<li class="active">
+											<a href="#"><span class="glyphicon glyphicon-map-marker
+"></span>全图 <span class="sr-only">(current)</span></a>
+										</li>
+										<li>
+											<a href="#"><span class="glyphicon glyphicon-screenshot"></span>漫游</a>
+										</li>
+										<li>
+											<a href="#">西太平洋</a>
+										</li>
+										</li>
+										<li>
+											<a href="#">北印度洋</a>
+										</li>
+									</ul>
+								</div>	
+							</div>							
+						</nav>
+
+					</div>
+					<!--下部的巨幕-->
+					<div id="mapper" class="col-md-12 subtractPadding" style="">
+						
+						<!--<div class="" style="height:100%;background-color: #00B83F;">
+							<h1>即将显示地图</h1>
+							<p>...</p>
+						</div>-->
+					</div>
+
+				</div>
+				<!--<div class="row" style="height: 100%;">
+					
+				</div>-->
+			</div>
+		</div>
+		<div id="dFoot">固定尾部50px</div>
+	</body>
+
+</html>
