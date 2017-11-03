@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="application/javascript" src="js/bootstrap.min.js"></script>
+		<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>
+		<script type="application/javascript">
+			$(function() {
+				list_element = [];
+				list_interval = [];
+				list_level = [];
+				$.ajax({
+					type: "GET",
+					url: "django_data.json",
+					dataType: "json",
+					success: function(data) {
+						list_element_str = data['list_element']
+						list_interval_str = data['list_interval']
+						list_level_str = data['list_level']
+						//注意$().each与$.each()的区别
+						//$().each主要对于dom元素用的较多
+						//$.each()主要处理数组
+						$.each(JSON.parse(list_element_str), function(index, temp) {
+							list_element.push(temp.fields);
+						});
+						$.each(JSON.parse(list_interval_str), function(index, temp) {
+							list_interval.push(temp.fields)
+						})
+						$.each(JSON.parse(list_level_str), function(index, temp) {
+							list_level.push(temp.fields)
+						})
+						//						model=JSON.parse(data);
+						//						model=$.parseJSON(data)
+					}
+				});
+
+			})
+			//			function traverse_obj(index,element)
+		</script>
+	</head>
+	<body>
+	</body>
+</html>
