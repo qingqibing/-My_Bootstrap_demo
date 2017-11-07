@@ -16,38 +16,8 @@
 				height: 100%;
 				margin: 0;
 				padding: 0
-			}
+			}		
 			
-			#center_Body {
-				background: #FC0;
-				width: 100%;
-				overflow: auto;
-				top: 100px;
-				position: absolute;
-				/*z-index: 10;*/
-				bottom: 100px;
-			}
-			
-			.mycontent {
-				/*height: 500px;*/
-				/*top: 50px;*/
-				height: 100%;
-				display: flex;
-				flex-direction: column;
-				background-color: #B92C28;
-			}
-			
-			.testdiv {
-				background-color: #0088CC;
-				margin-top: 2px;
-				/*position: absolute;*/
-			}
-			
-			#my_mapper {
-				background-color: red;
-				/*height: 100%;*/
-				/*position: absolute;*/
-			}
 			
 			#nav {
 				position: fixed;
@@ -75,11 +45,40 @@
 				/*z-index: 10;*/
 				bottom: 0px;
 			}
+			#mycontent {
+				/*height: 500px;*/
+				/*top: 50px;*/
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+				background-color: #B92C28;
+			}
+			#top-body{
+				/*height: 100%;
+				display: inline-flex;
+				flex-direction:column;*/
+			}
+			#center-body{
+				/*height: 100%;
+				display: inline-flex;
+				flex-direction:column;*/
+			}
+			#bottom-body {
+				height: 100%;
+				display: inline-flex;
+				flex-direction:column;
+				/*position: absolute;*/
+			}
+			
+			.innerdiv {
+				background-color: #00B83F;
+				height: 100%;
+				width: 100%;
+				/*width: 500px;*/
+				/*height: inherit;*/
+			}
 		</style>
 		<script type="application/javascript">
-			//		$(function(){
-			//			alert("测试");
-			//		})
 			function doSubmit() {
 				$("#progressModal").modal();
 			}
@@ -135,9 +134,9 @@
 				</ul>
 			</div>
 
-			<div class="mycontent col-md-offset-2">
+			<div id="mycontent" class="col-md-offset-2">
 				<!--顶部的按钮组-->
-				<div class="col-md-12 subtractPadding" style="height: 300px;">
+				<div id="top-body">
 					<div class="panel panel-primary " style="margin-bottom: 0px;">
 						<div class="panel-heading">预报信息</div>
 						<div class="panel-body" style="padding:2px">
@@ -290,10 +289,8 @@
 						<!--<div class="panel-footer">页脚</div>-->
 					</div>
 				</div>
-
-				<!--<div class="testdiv" style="height: 100px;"></div>-->
 				<!--中间的导航栏-->
-				<div class="col-md-12 subtractPadding" style="height: 70px;">
+				<div id="center-body">
 					<nav class="navbar navbar-default" style="margin-bottom: 0px;">
 						<div class="container-fluid">
 							<!-- Brand and toggle get grouped for better mobile display -->
@@ -339,9 +336,10 @@
 					</nav>
 
 				</div>
-
-				<!--<div class="testdiv" style="height: 100px;"></div>-->
-				<div class="testdiv" id="my_mapper" style="height: 100%"></div>
+				
+				<div id="bottom-body" >
+					<div class="innerdiv"></div>
+				</div>
 
 			</div>
 			<div class="modal fade" id="progressModal" tabindex="-1" role="dialog" aria-labelledby="myProgressLabel" style="z-index: 9999;">
