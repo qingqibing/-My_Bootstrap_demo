@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/jquery-3.2.1.js"></script>
+
+		<link href="css/bootstrap.css" rel="stylesheet" />
+		<link href="css/bootstrap-theme.css" rel="stylesheet" />
+		<!--当列头出现两个的时候说明没有引用猎头的css文件，此处需要注意-->
+		<link href="js/bootstrap-table.css" rel="stylesheet" />
+		<script src="js/bootstrap.js"></script>
+		<!--<link href="css/square/red.css" rel="stylesheet">-->
+		<script src="js/icheck.js"></script>
+		<!--加入bootstrap的js文件-->
+		<script src="js/bootstrap-table.js"></script>
+		<style type="text/css">
+			.myrow {
+				margin-bottom: 20px;
+				padding-right: 0px;
+			}
+		</style>
+		<script type="application/javascript">
+			$(function() {
+				//				$('.icheckbox').iCheck({
+				//					checkboxClass: 'icheckbox_square',
+				//					radioClass: 'iradio_square',
+				//					increaseArea: '20%' // optional
+				//				});
+			})
+
+			//加载并显示错误的消息框
+			function loaderrmsg() {
+				/*
+				 * 加载错误信息
+				 * 1、根据后台返回的obj获取message放在modal-body中的mymsgcontent中
+				 * 2、设定mymsgcontent的固定高度
+				 * 3、显示滚动条
+				 * 4、显示modal框				 * 
+				 */
+				var msg = "测试测试测";
+				var title = "权限"
+				//				$("mymsgcontent").attr("overflow","auto");
+				document.getElementById("mymsgtitle").innerHTML = title;
+				//				document.getElementById("mymsgcontent").innerHTML = msg;
+				$("#errorModal").modal();
+			}
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+			<hr />
+			<button onclick="loaderrmsg()">加载错误modal</button>
+			<hr />
+			<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myProgressLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="mymsgtitle">请稍后</h4>
+						</div>
+						<div class="modal-body">
+							<form class="form-horizontal">
+								<!--输入权限名称以及是否选中信息-->
+								<!--权限基本信息-->
+								<fieldset>
+									<!--域的标题-->
+									<legend>权限基本信息</legend>
+									<!--单独的表单控件会被自动赋予一些全局样式。										
+									所有设置了 .form-control 类的 <input>、<textarea> 和 <select> 元素都将被默认设置宽度属性为 width: 100%;。 
+										将 label 元素和前面提到的控件包裹在 .form-group 中可以获得最好的排列。-->
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="ds_host">权限名称</label>
+										<div class="col-sm-4">
+											<input class="form-control" id="ds_host" type="text" placeholder="权限" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="ds_username">appname</label>
+										<div class="col-sm-4">
+											<input class="form-control" id="ds_username" type="text" placeholder="Forecast" />
+										</div>
+										<label class="col-sm-2 control-label" for="ds_username">方法名称</label>
+										<div class="col-sm-4">
+											<input class="form-control" id="ds_username" type="text" placeholder="Index" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="ds_host">权限全名称</label>
+										<div class="col-sm-4">
+											<input class="form-control" id="ds_host" type="text" placeholder="" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="ds_host">顺序</label>
+										<div class="col-sm-4">
+											<input class="form-control" id="ds_host" type="text" placeholder="" />
+										</div>
+									</div>
+								</fieldset>
+								<!--归属信息-->
+								<fieldset>
+									<!--域的标题-->
+									<legend>归属信息</legend>
+
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="ds_username">父级菜单</label>
+										<div class="col-sm-4">
+											<select id="disabledSelect" class="form-control">
+												<option>禁止选择</option>
+												<option>禁止选择</option>
+											</select>
+										</div>
+										<label class="col-sm-2 control-label" for="ds_username">type</label>
+										<div class="col-sm-4">
+											<select id="disabledSelect" class="form-control">
+												<option>禁止选择</option>
+												<option>禁止选择</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="ds_host">是否显示</label>
+										<div class="col-sm-4">
+											<input class="form-control" id="ds_host" type="text" placeholder="" />
+										</div>
+									</div>
+								</fieldset>
+								<!--显示样式-->
+								<fieldset>
+									<!--域的标题-->
+									<legend>显示样式</legend>
+									<!--单独的表单控件会被自动赋予一些全局样式。										
+									所有设置了 .form-control 类的 <input>、<textarea> 和 <select> 元素都将被默认设置宽度属性为 width: 100%;。 
+										将 label 元素和前面提到的控件包裹在 .form-group 中可以获得最好的排列。-->
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="ds_host">高度</label>
+										<div class="col-sm-4">
+											<input class="form-control" id="ds_host" type="text" placeholder="100px" />
+										</div>
+										<label class="col-sm-2 control-label" for="ds_username">宽度</label>
+										<div class="col-sm-4">
+											<input class="form-control" id="ds_username" type="text" placeholder="50px" />
+										</div>
+									</div>
+									<div class="form-group">										
+										<label class="col-sm-2 control-label" for="ds_username">类</label>
+										<div class="col-sm-4">
+											<input class="form-control" id="ds_username" type="text" placeholder="Cls" />
+										</div>
+										<label class="col-sm-2 control-label" for="ds_host">类名</label>
+										<div class="col-sm-4">
+											<input class="form-control" id="ds_host" type="text" placeholder="ClsName" />
+										</div>
+									</div>									
+									
+								</fieldset>
+								
+							</form>
+
+							<!--<div class="row">
+								<div class="col-md-2 myrow">权限名称</div>
+								<div class="col-md-4">
+									<div class="controls">
+            <input placeholder="placeholder" class="input-xlarge" type="text">
+            <p class="help-block">Supporting help text</p>
+          </div>
+								</div>
+								<div class="col-md-2 myrow">是否显示</div>
+								<div class="col-md-2"><input class="icheckbox" type="checkbox">是否显示</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2 myrow">权限全名称</div>
+								<div class="col-md-8"><input type="text" name="name" /></div>
+
+							</div>-->
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<!-- /container -->
+	</body>
+
+</html>
