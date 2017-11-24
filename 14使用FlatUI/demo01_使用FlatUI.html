@@ -15,33 +15,59 @@
 		<link href="css/flat-ui.css" rel="stylesheet">
 		<!--引入ico文件-->
 		<link rel="shortcut icon" href="img/favicon.ico">
-		<style>
-
+		<style type="text/css">
+			.select {
+				position: relative;
+				display: inline-block;
+				vertical-align: top;
+				min-width: 50px;
+				width: auto;
+			}
 		</style>
 	</head>
 
 	<body style="padding: 50px;">
 		<div class="container">
-			 <select data-toggle="select" class="form-control select select-inverse mrs mbm">
-        <option value="0">My Profile here is</option>
-        <option value="1">My Friends</option>
-        <option value="2">My Profile</option>
-        <option value="3">My Friends</option>
-      </select>
+			<!--设置宽度时，select有一个最小的尺寸，不能低于该尺寸-->
+			<select data-toggle="select" class="select select-inverse mrs mbm" style="width:150px">
+				<option value="0">测试权限1</option>
+				<option value="1">测试权限2</option>
+				<option value="2">测试权限3</option>
+				<option value="3">测试权限4</option>
+			</select>
+			<hr />
+			<div class="form-group col-md-2">
+				<select data-toggle="select" class="col-md-6 form-control select select-inverse mrs mbm">
+					<option value="0">My Profile here is</option>
+					<option value="1">My Friends</option>
+					<option value="2">My Profile</option>
+					<option value="3">My Friends</option>
+				</select>
+			</div>
+			<hr />
+			<div class="form-group col-md-2" data-style="width:50%">
+				<select data-toggle="select" class="col-md-6 form-control select">
+					<option value="0">My Profile here is</option>
+					<option value="1">My Friends</option>
+					<option value="2">My Profile</option>
+					<option value="3">My Friends</option>
+				</select>
+			</div>
 		</div>
 
-    <!--<script src="flatui/dist/js/vendor/jquery.min.js"></script>-->
-    <script src="js/jquery-1.11.1.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <!--<script src="flatui/dist/js/flat-ui.min.js"></script>-->
-	<script src="js/flat-ui.js"></script>
-    <script src="flatui/docs/assets/js/application.js"></script>
+		<!--<script src="flatui/dist/js/vendor/jquery.min.js"></script>-->
+		<script src="js/jquery-1.11.1.min.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<!--<script src="flatui/dist/js/flat-ui.min.js"></script>-->
+		<script src="js/flat-ui.js"></script>
+		<!--注意必须加入这个js文件否则无法显示flatui的样式-->
+		<script src="flatui/docs/assets/js/application.js"></script>
 
-	<!--<script src="js/vendor/jquery.min.js"></script>
+		<!--<script src="js/vendor/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <!--<script src="js/flat-ui.min.js"></script>-->
-<!--<script src="assets/js/application.js"></script>-->
-    <!--<script src="../assets/js/application.js"></script>-->
+		<!--<script src="js/flat-ui.min.js"></script>-->
+		<!--<script src="assets/js/application.js"></script>-->
+		<!--<script src="../assets/js/application.js"></script>-->
 	</body>
 
 </html>
