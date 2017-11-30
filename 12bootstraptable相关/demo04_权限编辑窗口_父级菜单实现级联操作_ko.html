@@ -53,17 +53,25 @@
 				this.name = name;
 				this.pid = pid;
 			}
-
-			var myViewModel = function() {
+			
+			var Menu_Model=function(list_father,list_son){
+				this.list_father=list_father;
+				this.list_son=list_son;
+			}
+			
+			var myViewModel = function(list_father,list_son) {
 				self = this;
 				self.Menu = ko.observable();
-				self.FatherMenuList = ko.observableArray([
-					new Menu(1, "父权限", 0)
-
-				])
-				self.SonMenuList = ko.observableArray([
-					new Menu(2, "子权限", 1)
-				])
+//				self.FatherMenuList = ko.observableArray([
+//					new Menu(1, "父权限", 0)
+//
+//				])
+//				self.SonMenuList = ko.observableArray([
+//					new Menu(2, "子权限", 1)
+//				])
+				
+				self.FatherMenuList = ko.observableArray(list_father);
+				self.SonMenuList = ko.observableArray(list_son);
 
 				self.CurrentFatherList = ko.computed(function() {
 					return ko.utils.arrayFilter(self.SonMenuList(), function(son) {
@@ -79,7 +87,35 @@
 					})
 				})
 			};
-
+			
+			var loadSelectData=function(url){
+				//请求指定url根据返回的json菜单集合，并返回Menu_Model
+				$.ajax({
+					type: "GET",
+					url: url,
+					dataType: "json",
+					success: function(data) {
+						//所有的父级菜单的数组
+						list_menu_father=new Array();
+//						list_menu_temp=[];
+						//所有的子级菜单的数组
+						list_menu_son=new Array();
+						$.each(data, function(index, temp) {
+//						$.each(JSON.parse(data), function(index, temp) {
+							menu_temp=new Menu(temp.id,temp.name,temp.pid);
+							if(menu_temp.pid==0){
+								list_menu_father.push(menu_temp);
+							}
+							else{
+								list_menu_son.push(menu_temp);
+							}
+						});
+						ko.applyBindings(new myViewModel(list_menu_father,list_menu_son));
+//						return new Menu_Model(list_menu_father,list_menu_son);
+					}
+				});
+			}
+			
 			$(function() {
 
 				$('#mySwitch input').bootstrapSwitch();
@@ -118,8 +154,9 @@
 						value = data.value;
 					console.log(e, $el, value);
 				});
-
-				ko.applyBindings(new myViewModel());
+//				var temp= loadSelectData('data/select_data.json');
+				loadSelectData('data/select_data.json');
+//				ko.applyBindings(new myViewModel(temp.list_father,temp.list_son));
 			})
 
 			//加载并显示错误的消息框
