@@ -117,8 +117,11 @@
 			}
 			
 			$(function() {
-
+				//switch初始化
 				$('#mySwitch input').bootstrapSwitch();
+				//默认显示的开关是关闭的
+//				$('#mySwitch').bootstrapSwitch('setState', false);
+    			$('#mySwitch input').bootstrapSwitch('state',false);  
 				//注意使用flatui的switch标签,是依赖于bootstrap-switch的,要对flatui的switch进行操作,可参考bootstrap-switch的api
 				$('#mySwitch input').on('switchChange.bootstrapSwitch', function(event, state) {
 					//打开时state是true(on)
@@ -128,7 +131,10 @@
 				$('#custom-switch-03').on('switchChange.bootstrapSwitch', function(event, state) {
 					alert(state);
 				});
-
+				
+//				$('#showStyleDesign').bootstrapSwitch('setState', false);
+//				$('#showStyleDesign input').bootstrapSwitch('state',false); 
+				
 				//为显示样式switch添加事件——showStyleDesign
 				$('#showStyleDesign').on('switchChange.bootstrapSwitch', function(event, state) {
 					//					alert(state);
@@ -145,6 +151,7 @@
 
 				});
 				
+				$('#showStyleDesign input').bootstrapSwitch('state',false); 
 				$("#sonMenuSelect").slideUp("slow");
 				
 
