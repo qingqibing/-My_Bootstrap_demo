@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/jquery-3.2.1.js"></script>
+
+		<link href="css/bootstrap.css" rel="stylesheet" />
+		<link href="css/bootstrap-theme.css" rel="stylesheet" />
+		<!--当列头出现两个的时候说明没有引用猎头的css文件，此处需要注意-->
+		<link href="js/bootstrap-table.css" rel="stylesheet" />
+		<script src="js/bootstrap.js"></script>
+
+		<!--加入bootstrap的js文件-->
+		<script src="js/bootstrap-table.js"></script>
+
+		<script type="application/javascript">
+			$(function() {
+			
+			})
+
+			//加载并显示错误的消息框
+			function loaderrmsg() {
+				/*
+				 * 加载错误信息
+				 * 1、根据后台返回的obj获取message放在modal-body中的mymsgcontent中
+				 * 2、设定mymsgcontent的固定高度
+				 * 3、显示滚动条
+				 * 4、显示modal框				 * 
+				 */
+				var msg = "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试";
+				var title="error"
+//				$("mymsgcontent").attr("overflow","auto");
+				document.getElementById("mymsgtitle").innerHTML = title;
+//				document.getElementById("mymsgcontent").innerHTML = msg;
+				$("#errorModal").modal();
+			}
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+			<hr />
+			<button onclick="loaderrmsg()">加载错误modal</button>
+			<hr />
+			<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myProgressLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="mymsgtitle">请稍后</h4>
+						</div>
+						<div class="modal-body">
+							<table class="table table-bordered">
+								<tr>
+									<td class="col-md-2">权限名称</td><td class="col-md-4"><input type="text" name="name" /></td>
+									<td class="col-md-2">是否显示</td><td class="col-md-4"><input type="checkbox"></td>
+								</tr>
+								<tr>
+									<td class="col-md-2">权限全名称</td><td class="col-md-8 " colspan="3"><input type="text" name="name" /></td>
+								</tr>
+								<tr>
+									<td class="col-md-2">app名称</td><td class="col-md-4">&nbsp;</td>
+									<td class="col-md-2">Func名称</td><td class="col-md-4">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="col-md-2">图标高度</td><td class="col-md-4">&nbsp;</td>
+									<td class="col-md-2">图标宽度</td><td class="col-md-4">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="col-md-2">图标样式</td><td class="col-md-4">&nbsp;</td>
+									<td class="col-md-2">样式名称</td><td class="col-md-4">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="col-md-2">父级菜单</td><td class="col-md-4">&nbsp;</td>
+									<td class="col-md-2">权限种类</td><td class="col-md-4">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="col-md-2">顺序</td><td class="col-md-8 " colspan="3">&nbsp;</td>
+								</tr>
+							</table>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<!-- /container -->
+	</body>
+
+</html>
