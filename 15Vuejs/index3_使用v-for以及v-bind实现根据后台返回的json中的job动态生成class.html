@@ -13,6 +13,8 @@
 		<link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="css/default.css">
 		<link rel="stylesheet" href="dist/material-cards.css">
+		
+		
 		<style type="text/css">
 			html {
 				position: relative;
@@ -52,7 +54,7 @@
 					<div id="app">
 						<div v-for="item in items">
 							<div class="col-md-4 col-sm-6 col-xs-12">
-								<article class="material-card Indigo">
+								<article class="material-card" v-bind:class="item.color">
 									<h2>
 		                    <span>{{item.name}}</span>
 		                    <strong>
@@ -91,23 +93,28 @@
 		<script src="js/jquery.material-cards.min.js"></script>
 		<script src="js/vue.js"></script>
 		<script>
+			var dic = new Array();
+			dic["主班"] = "Indigo"
+			dic["副班"] = "Deep-Purple"
+			dic["警报班"] = "Pink"
+
 			$(function() {
-//				$('.material-card').materialCard({
-//					icon_close: 'fa-chevron-left',
-//					icon_open: 'fa-thumbs-o-up',
-//					icon_spin: 'fa-spin-fast',
-//					card_activator: 'click'
-//				});
+				//				$('.material-card').materialCard({
+				//					icon_close: 'fa-chevron-left',
+				//					icon_open: 'fa-thumbs-o-up',
+				//					icon_spin: 'fa-spin-fast',
+				//					card_activator: 'click'
+				//				});
 
 				//        $('.active-with-click .material-card').materialCard();
 
-//				window.setTimeout(function() {
-//					$('.material-card:eq(1)').materialCard('open');
-//				}, 2000);
+				//				window.setTimeout(function() {
+				//					$('.material-card:eq(1)').materialCard('open');
+				//				}, 2000);
 
-//				$('.material-card').on('shown.material-card show.material-card hide.material-card hidden.material-card', function(event) {
-//					console.log(event.type, event.namespace, $(this));
-//				});
+				//				$('.material-card').on('shown.material-card show.material-card hide.material-card hidden.material-card', function(event) {
+				//					console.log(event.type, event.namespace, $(this));
+				//				});
 				var url = "data.json"
 				var vm
 				//页面加载时ajax到获取人员list的方法
@@ -116,11 +123,25 @@
 					url: "data.json",
 					dataType: "json",
 					success: function(data) {
+						finial_objs = [];
+						//此处会出错:
+						//xx.each is not a function
+						//注意需要将js对象转成jquery对象，才可以使用jquery的each function
+						$(data).each(function(index, element) {
+							element.color = dic[element.job];
+							//此处会出错
+							//Uncaught TypeError: finial_objs.append is not a function
+							//注意只有jquery有append方法
+							//对于js的数组需要使用push方法
+							//					finial_objs.append(element)
+							finial_objs.push(element)
+						})
+
 						//成功后解析
 						vm = new Vue({
 							el: '#app',
 							data: {
-								items: data
+								items: finial_objs
 								//								items:[{name: "预报员1", department: "预警室", group: "风暴潮", job: "主班"},
 								//								{name: "预报员2", department: "预警室", group: "风暴潮", job: "主班"}]
 							}

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>页面Loading效果 | Demo 5</title>
+
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/demo.css" />
+
+		<!--必要样式-->
+		<!--此样式是必须的不能移除-->
+		<link rel="stylesheet" type="text/css" href="css/component.css" />
+		<script src="js/snap.svg-min.js"></script>
+		<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+		<style type="text/css">
+			.container {
+			/*display: inline;*/
+			}
+			fullscreen{
+				padding: 3em 1em 10em;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<div id="pagewrap" class="pagewrap">-->
+		<div id="pagewrap" class="pagewrap">
+			<section>
+			<div>
+				<h1>123123</h1>
+			</div>
+			</section>
+			<header class="htmleaf-header">
+				<h1>国家海洋环境预报中心 <span>九楼值班平台</span></h1>
+			</header>
+			<div class="container">
+				<div class="page-header" style="height: 200px;">
+					<h1>暂时不添加<br>
+		            <small>测试测试</small></h1>
+				</div>
+				</div>
+			<!--<div class="container show" id="page-1">
+
+				<section class="columns clearfix">
+					
+					<div class="column">
+						<p>开始加载Loading页面:</p>
+						
+					</div>
+				</section>
+
+			</div>-->
+
+			<div id="loader" class="pageload-overlay" data-opening="M -18 -26.90625 L -18 86.90625 L 98 86.90625 L 98 -26.90625 L -18 -26.90625 Z M 40 29.96875 C 40.01804 29.96875 40.03125 29.98196 40.03125 30 C 40.03125 30.01804 40.01804 30.03125 40 30.03125 C 39.98196 30.03125 39.96875 30.01804 39.96875 30 C 39.96875 29.98196 39.98196 29.96875 40 29.96875 Z">
+				<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice">
+					<path d="M -18 -26.90625 L -18 86.90625 L 98 86.90625 L 98 -26.90625 L -18 -26.90625 Z M 40 -25.6875 C 70.750092 -25.6875 95.6875 -0.7500919 95.6875 30 C 95.6875 60.750092 70.750092 85.6875 40 85.6875 C 9.2499078 85.6875 -15.6875 60.750092 -15.6875 30 C -15.6875 -0.7500919 9.2499078 -25.6875 40 -25.6875 Z" />
+				</svg>
+			</div>			
+		</div>
+		<!-- /pagewrap -->
+		<script src="js/classie.js"></script>
+		<script src="js/svgLoader.js"></script>
+		<script>
+			(function() {
+				var pageWrap = document.getElementById('pagewrap'),
+//					pages = [].slice.call(pageWrap.querySelectorAll('div.container')),
+//					currentPage = 0,
+//					triggerLoading = [].slice.call(pageWrap.querySelectorAll('a.pageload-link')),
+					loader = new SVGLoader(document.getElementById('loader'), {
+						speedIn: 300,
+						easingIn: mina.easeinout
+					});
+
+				loader.show();
+				// after some time hide loader
+				setTimeout(function() {
+					loader.hide();
+
+//					classie.removeClass(pages[0], 'show');
+//					// update..
+////					currentPage = currentPage ? 0 : 1;
+//					classie.addClass(pages[0], 'show');
+
+				}, 2000);
+			})();
+		</script>
+	</body>
+
+</html>
