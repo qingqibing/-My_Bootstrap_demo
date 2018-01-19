@@ -45,7 +45,8 @@
 			<header class="htmleaf-header">
 				<h1>国家海洋环境预报中心 <span>九楼值班平台</span></h1>
 			</header>
-			<section class="container">
+			<section>
+			<!--<section class="container">-->
 				<div class="page-header">
 					<h1>暂时不添加<br>
 		            <small>测试测试</small></h1>
@@ -53,13 +54,13 @@
 				<div class="row active-with-click">
 					<div id="app">
 						<div v-for="item in items">
-							<div class="col-md-4 col-sm-6 col-xs-12">
+							<div class="col-md-2 col-sm-6 col-xs-12">
 								<article class="material-card" v-bind:class="item.color">
 									<h2>
 		                    <span>{{item.name}}</span>
 		                    <strong>
 		                        <i class="fa fa-fw fa-star"></i>
-		                        风暴潮
+		                        {{item.department}}
 		                    </strong>
 		                </h2>
 									<div class="mc-content">
