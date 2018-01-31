@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="application/javascript" src="js/bootstrap.min.js"></script>
+		<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>
+		<script type="application/javascript" src="js/leaflet.js"></script>
+		<link rel="stylesheet" href="css/leaflet.css" />
+
+		<link rel="stylesheet" href="css/style.css" media="all" />
+		<script type="application/javascript" src="js/map/leaflet.shpfile.js"></script>
+		<script type="application/javascript" src="js/map/shp.js"></script>
+		<style type="text/css">
+			/*对于使用了bootstrap的navbar并固定在顶部时下面的div填充满整个屏幕的解决办法*/
+			
+			html,
+			body {
+				height: 100%;
+				margin: 0px;
+				padding: 0px;
+				background-color: #BBBBBB;
+				padding-top: 25px;
+			}
+			
+			#main {
+				height: 100%;
+			}
+			
+			#nav {
+				height: 100%;
+				background: #00B83F;
+			}
+			
+			#content {
+				background-color: #F5E79E;
+				height: 100%;
+			}
+			
+			#ul_nav {
+				position: absolute;
+				height: 100%;
+			}
+			
+			.row-margin-top {
+				margin-top: 10px;
+			}
+			
+			.form-horizontal .form-group {
+				margin-left: 0px;
+			}
+			
+			.col-padding-2 {
+				padding-left: 2px;
+				padding-right: 2px;
+			}
+			
+			.col-padding-left-2 {
+				padding-left: 2px;
+			}
+			
+			.mycol_disPadding {
+				padding-left: 0px;
+				padding-right: 0px;
+			}
+			
+			.info {
+				padding: 6px 8px;
+				font: 14px/16px Arial, Helvetica, sans-serif;
+				background: white;
+				background: rgba(255, 255, 255, 0.8);
+				box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+				border-radius: 5px;
+			}
+			
+			.info h4 {
+				margin: 0 0 5px;
+				color: #777;
+			}
+			.legend {
+				text-align: left;
+				line-height: 18px;
+				color: #555;
+			}
+			.legend i {
+				width: 18px;
+				height: 18px;
+				float: left;
+				margin-right: 8px;
+				opacity: 0.7;
+			}
+		</style>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" style="margin-bottom: 0px;">
+			<div class="navbar-header" id="my_navbar">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse">
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+				<a class="navbar-brand" href="#">沿海网格化产品显示系统</a>
+			</div>
+		</nav>
+		<div id="main" style="">
+			<div id="content" class="col-md-10 mycol_disPadding">
+				<!--中间的导航栏-->
+				<div class="col-md-12 mycol_disPadding">
+					<nav class="navbar navbar-default" style="margin-bottom: 0px;">
+						<div class="container-fluid">
+							<!-- Brand and toggle get grouped for better mobile display -->
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+								<a class="navbar-brand" href="#">位置</a>
+							</div>
+							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								<ul class="nav navbar-nav">
+									<li class="active">
+										<a href="#"><span class="glyphicon glyphicon-map-marker
+"></span>全图 <span class="sr-only">(current)</span></a>
+									</li>
+									<li>
+										<a href="#"><span class="glyphicon glyphicon-screenshot"></span>漫游</a>
+									</li>
+									<li>
+										<a href="#">东海海区</a>
+									</li>
+									</li>
+									<li>
+										<a href="#">南海海区</a>
+									</li>
+								</ul>
+								<ul class="nav navbar-nav navbar-right">
+									<li>
+										<a href="#"><span class="glyphicon glyphicon-zoom-in"></span>放大</a>
+									</li>
+									<li>
+										<a href="#"><span class="glyphicon glyphicon-zoom-out"></span>缩小</a>
+									</li>
+								</ul>
+							</div>
+							<!-- /.navbar-collapse -->
+
+						</div>
+						<!-- /.container-fluid -->
+					</nav>
+
+				</div>
+				<!--下部的巨幕-->
+				<div class="col-md-12 mycol_disPadding" style="height: 640px;">
+					<div id="basemap" style="height: 640px; width: 100%;">
+						<div class="leaflet-control-container">
+							<div class="leaflet-top leaflet-left">
+								<div class="leaflet-control-zoom leaflet-bar leaflet-control">
+									<a class="leaflet-control-zoom-in" href="http://leafletjs.com/examples/choropleth/example.html#" title="Zoom in" role="button" aria-label="Zoom in">+</a>
+									<a class="leaflet-control-zoom-out" href="http://leafletjs.com/examples/choropleth/example.html#" title="Zoom out" role="button" aria-label="Zoom out">−</a>
+								</div>
+							</div>
+							<div class="leaflet-top leaflet-right">
+								<!--<div class="info leaflet-control">
+									<h4>网格概述</h4>未选择网格
+								</div>-->
+							</div>
+							<div class="leaflet-bottom leaflet-left"></div>
+							<div class="leaflet-bottom leaflet-right">
+								<div class="info legend leaflet-control">
+									<i style="background:blue"></i> 0-2<br>
+									<i style="background:yellow"></i> 2-4<br>
+									<i style="background:orange"></i> 4-8<br>
+									<i style="background:red"></i> 8-12<br>									
+								</div>
+								<div class="leaflet-control-attribution leaflet-control">
+									<!--<a href="http://leafletjs.com/" title="A JS library for interactive maps">Leaflet</a> | Map data ©
+									<a href="http://openstreetmap.org/">OpenStreetMap</a> contributors,
+									<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery ©-->
+									<a href="http://nmefc.com/">nmefc</a>版权所有 ©
+									<a href="http://nmefc.com/">nmefc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+									
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<script type="application/javascript" src="js/maptiles.js"></script>
+			<script type="application/javascript">
+				var forecast_dict = new Array();
+
+				function random_forecast(count, max) {
+					for(var i = 0; i < count; i++) {
+						var dict_key = "S"
+						if(i < 10) {
+							dict_key += "0" + i;
+						} else {
+							dict_key += i
+						}
+						forecast_dict[dict_key] = parseInt(Math.random() * max, 10) + 1;
+
+					}
+				}
+
+				function addShapeFile() {
+					//使用第二种方式，此种方式不再使用
+					//				map.setView([34.74161249883172, 18.6328125], 2);
+					var geo = L.geoJson({
+						features: []
+					}, {
+						onEachFeature: function popUp(f, l) {
+							//console.info(f);
+							var out = [];
+							if(f.properties) {
+								for(var key in f.properties) {
+									out.push(key + ": " + f.properties[key]);
+
+								}
+								l.bindPopup(out.join("<br />"));
+							}
+						}
+					}) //.addTo(map);
+
+					//保存到 图层数组
+					map_layers.push(geo);
+					//此处指向shapefile的zip文件即可
+					var base = 'files/south.zip';
+					shp(base).then(function(data) {
+						console.info(data);
+						geo.addData(data);
+					});
+
+				}
+
+				function getColorbar(value) {
+					//根据传入的数值（int类型），判断其所属的区件并获取区件的颜色
+					var value_color;
+					if(value >= 2 && value < 4) {
+						value_color = "rgb(0,0,255)";
+					} else if(value >= 4 && value < 8) {
+						value_color = "rgb(255,242,0)";
+					} else if(value >= 8 && value < 12) {
+						value_color = "rgb(255,127,19)";
+					} else if(value >= 12) {
+						value_color = "rgb(255,0,0)";
+					}
+					return value_color;
+				}
+
+				function addShape(data, feature, layer, map) {
+					//!!!注意此处添加了shape文件后，由于是读取的geojson，文件，通过L.geoJSON后，需要将返回值赋值给geojson
+					geojson=L.geoJSON(data, {
+						style: function(feature) {
+							//获取到当前的对象的code
+							var code = feature.properties.Code
+							var temp_color = null;
+							if(forecast_dict[code]) {
+								temp_color = getColorbar(forecast_dict[code]);
+							}
+
+							return {
+								//							注意此处的填充颜色及宽度的api可参见
+								//http://leafletjs.com/reference-1.2.0.html#path
+								//color: feature.properties.color
+								//							color: 'blue',
+								fillColor: temp_color,
+								//							fillOpacity: 0.5,
+								//							weight: 1,
+								weight: 2,
+								opacity: 1,
+								color: 'white',
+								dashArray: '3',
+								fillOpacity: 0.7
+							};
+						},
+						//注意此处必须要将OnEachFeature放在里面才可以
+						onEachFeature: onEachFeature
+					}).bindPopup(function(layer) {
+						return layer.feature.properties.description;
+					}).addTo(map);
+				}
+
+				function highlightFeature(e) {
+					var layer = e.target;
+
+					layer.setStyle({
+						weight: 5,
+						color: '#666',
+						dashArray: '',
+						fillOpacity: 0.7
+					});
+
+					if(!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+						layer.bringToFront();
+					}
+
+					info.update(layer.feature.properties);
+				}
+
+				function resetHighlight(e) {
+					geojson.resetStyle(e.target);
+					info.update();
+				}
+
+				function zoomToFeature(e) {
+					map.fitBounds(e.target.getBounds());
+				}
+
+				function onEachFeature(feature, layer) {
+					layer.on({
+						mouseover: highlightFeature,
+						mouseout: resetHighlight,
+						click: zoomToFeature
+					});
+				}
+
+				var geojson;
+
+				function readShape(file, func) {
+					shp("file").then(function(geojson) {
+						//do something with your geojson
+						func(geojson)
+					});
+				}
+
+				function mystyle(feature) {
+					return {
+						weight: 2,
+						opacity: 1,
+						color: 'white',
+						dashArray: '3',
+						fillOpacity: 0.7,
+						fillColor: getColor(feature.properties.density)
+					};
+				}
+
+				var info = L.control();
+
+				info.onAdd = function(map) {
+					this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+					this.update();
+					return this._div;
+				};
+
+				// method that we will use to update the control based on feature properties passed
+				info.update = function(props) {
+					this._div.innerHTML = '<h4>网格概述</h4>' + (props ?
+						'<b>网格编号：</b><br />' + props.Code :
+						'Hover over a state');
+				};
+
+				info.addTo(mymap);
+
+				$(function() {
+					random_forecast(51, 18);
+					//var my_geojson;
+					//貌似这个then是一个ajax请求，顺序执行时此处不会立即被执行
+					shp("files/south.zip").then(function(temp_geojson) {
+//						geojson = temp_geojson;
+						//do something with your geojson
+						addShape(temp_geojson, null, null, mymap);
+
+						geojson = L.geoJson(temp_geojson, {
+							style: mystyle,
+							onEachFeature: onEachFeature
+						}).addTo(mymap);
+					});
+
+				})
+			</script>
+
+	</body>
+
+</html>
