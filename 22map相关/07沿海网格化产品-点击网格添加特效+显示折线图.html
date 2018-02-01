@@ -82,11 +82,13 @@
 				margin: 0 0 5px;
 				color: #777;
 			}
+			
 			.legend {
 				text-align: left;
 				line-height: 18px;
 				color: #555;
 			}
+			
 			.legend i {
 				width: 18px;
 				height: 18px;
@@ -107,7 +109,7 @@
 			</div>
 		</nav>
 		<div id="main" style="">
-			<div id="content" class="col-md-10 mycol_disPadding">
+			<div id="content" class="col-md-12 mycol_disPadding">
 				<!--中间的导航栏-->
 				<div class="col-md-12 mycol_disPadding">
 					<nav class="navbar navbar-default" style="margin-bottom: 0px;">
@@ -156,8 +158,8 @@
 
 				</div>
 				<!--下部的巨幕-->
-				<div class="col-md-12 mycol_disPadding" style="height: 640px;">
-					<div id="basemap" style="height: 640px; width: 100%;">
+				<div class="col-md-12 mycol_disPadding" style="height: 830px;width: 100%;">
+					<div id="basemap" style="height: 100%; width: 100%;">
 						<div class="leaflet-control-container">
 							<div class="leaflet-top leaflet-left">
 								<div class="leaflet-control-zoom leaflet-bar leaflet-control">
@@ -173,18 +175,14 @@
 							<div class="leaflet-bottom leaflet-left"></div>
 							<div class="leaflet-bottom leaflet-right">
 								<div class="info legend leaflet-control">
-									<i style="background:blue"></i> 
-									0-2
+									<i style="background:blue"></i> 0-2
 									<br>
-									<i style="background:yellow"></i> 
-									2-4
+									<i style="background:yellow"></i> 2-4
 									<br>
-									<i style="background:orange"></i>
-									4-8
+									<i style="background:orange"></i> 4-8
 									<br>
-									<i style="background:red"></i>
-									8-12
-									<br>									
+									<i style="background:red"></i> 8-12
+									<br>
 								</div>
 								<div class="leaflet-control-attribution leaflet-control">
 									<!--<a href="http://leafletjs.com/" title="A JS library for interactive maps">Leaflet</a> | Map data ©
@@ -192,7 +190,7 @@
 									<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery ©-->
 									<a href="http://nmefc.com/">nmefc</a>版权所有 ©
 									<a href="http://nmefc.com/">nmefc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-									
+
 								</div>
 							</div>
 						</div>
@@ -200,7 +198,41 @@
 					</div>
 				</div>
 			</div>
+			<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myProgressLabel">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="mymsgtitle">请稍后</h4>
+						</div>
+						<div class="modal-body">
+							<form class="form-horizontal">
+
+								<!--显示样式-->
+								<div id="styleDesign">
+									<div class="container">
+										<div class="col-sm-12">
+											<div id="wave_data" style="height: 400px;width: 850px;"></div>
+										</div>
+									</div>
+									<!--<div class="form-group">										
+										
+									</div>-->
+
+								</div>
+
+							</form>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
 			<script type="application/javascript" src="js/maptiles.js"></script>
+			<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
 			<script type="application/javascript">
 				var forecast_dict = new Array();
 
@@ -264,7 +296,7 @@
 
 				function addShape(data, feature, layer, map) {
 					//!!!注意此处添加了shape文件后，由于是读取的geojson，文件，通过L.geoJSON后，需要将返回值赋值给geojson
-					geojson=L.geoJSON(data, {
+					geojson = L.geoJSON(data, {
 						style: function(feature) {
 							//获取到当前的对象的code
 							var code = feature.properties.Code
@@ -316,12 +348,13 @@
 					geojson.resetStyle(e.target);
 					info.update();
 				}
-				
+
 				//点击是拉近到当前选中的区域的所在位置，并等比例放大
 				function zoomToFeature(e) {
 					//1 垃圾视角，并等比例放大
 					mymap.fitBounds(e.target.getBounds());
 					//2 弹出modal框，加载
+					loaderrmsg();
 				}
 
 				function onEachFeature(feature, layer) {
@@ -368,6 +401,89 @@
 						'未选中');
 				};
 
+				function loadWaveData() {
+					// 基于准备好的dom，初始化echarts图表
+					var myChart = echarts.init(document.getElementById('wave_data'));
+
+					var option = {
+						tooltip: {
+							show: true
+						},
+						legend: {
+							data: ['波浪', '周期']
+						},
+						xAxis: [{
+							type: 'category',
+							data: ["2018-2-1 15:00", "2018-2-1 16:00", "2018-2-1 17:00", "2018-2-1 18:00", "2018-2-1 19:00", "2018-2-1 20:00", "2018-2-1 21:00", "2018-2-1 22:00", "2018-2-1 23:00", "2018-2-2 00:00", "2018-2-2 01:00", "2018-2-2 02:00"],
+							//使用以下方式实现显示全部x坐标上的点
+							"axisLabel": {
+								interval: 0
+							}
+							//                  interval:0   
+						}],
+						yAxis: [{
+							type: 'value'
+						}],
+						series: [{
+								"name": "波浪", //需要与legend中的data相同
+								"type": "line",
+								smooth: true, //不是折线，是曲线
+								itemStyle: {
+									normal: {
+										areaStyle: {
+											type: 'default'
+										},
+										label: {
+											show: true //显示每个点的值
+										}
+									}
+
+								}, //向下填充区域
+								"data": [0.37, 0.34, 0.32, 0.30, 0.29, 0.28, 0.27, 0.26, 0.25, 0.24, 0.23, 0.22],
+								label: {
+									normal: {
+										show: true
+									}
+								}
+							},
+							{
+								"name": "周期", //需要与legend中的data相同
+								"type": "line",
+								smooth: true, //不是折线，是曲线
+								itemStyle: {
+									normal: {
+										areaStyle: {
+											type: 'default'
+										},
+										//                    		label : {show: true}
+									}
+								}, //向下填充区域
+								"data": [3.14, 3.21, 3.28, 3.35, 3.41, 3.47, 3.47, 3.55, 3.64, 3.73, 3.80, 3.86]
+							},
+						]
+					};
+
+					// 为echarts对象加载数据 
+					myChart.setOption(option);
+				}
+
+				//加载并显示错误的消息框
+				function loaderrmsg() {
+					/*
+					 * 加载错误信息
+					 * 1、根据后台返回的obj获取message放在modal-body中的mymsgcontent中
+					 * 2、设定mymsgcontent的固定高度
+					 * 3、显示滚动条
+					 * 4、显示modal框				 * 
+					 */
+					var msg = "测试测试测";
+					var title = "海浪高度"
+					//				$("mymsgcontent").attr("overflow","auto");
+					document.getElementById("mymsgtitle").innerHTML = title;
+					//				document.getElementById("mymsgcontent").innerHTML = msg;
+					$("#errorModal").modal();
+				}
+
 				info.addTo(mymap);
 
 				$(function() {
@@ -375,7 +491,7 @@
 					//var my_geojson;
 					//貌似这个then是一个ajax请求，顺序执行时此处不会立即被执行
 					shp("files/south.zip").then(function(temp_geojson) {
-//						geojson = temp_geojson;
+						//						geojson = temp_geojson;
 						//do something with your geojson
 						addShape(temp_geojson, null, null, mymap);
 
@@ -384,6 +500,8 @@
 							onEachFeature: onEachFeature
 						}).addTo(mymap);
 					});
+
+					loadWaveData();
 
 				})
 			</script>

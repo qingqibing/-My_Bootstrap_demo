@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<script src="js/jquery-1.11.1.min.js"></script>
+
+	<link href="css/bootstrap.css" rel="stylesheet" />
+	<link href="css/bootstrap-theme.css" rel="stylesheet" />
+
+	<!--然后再引入flatui的样式-->
+	<link href="css/flatui/flat-ui.css" rel="stylesheet">
+	<!--引入ico文件-->
+	<link rel="shortcut icon" href="img/favicon.ico">
+
+	<!--引入bootstrap switch样式-->
+	<!--<link href="css/bootstrap-switch.css" rel="stylesheet">-->
+
+	<script src="js/bootstrap.js"></script>
+	<script src="js/flatui/flat-ui.js"></script>
+
+	<!--引入boostrap-swithc js文件-->
+	<!--<script src="js/bootstrap-switch.js"></script>-->
+
+	<!--<script src="flatui/docs/assets/js/application.js"></script>-->
+
+	<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
+
+	<style type="text/css">
+		.myrow {
+			margin-bottom: 20px;
+			padding-right: 0px;
+		}
+		
+		.select {
+			position: relative;
+			display: inline-block;
+			vertical-align: top;
+			min-width: 50px;
+			width: auto;
+		}
+	</style>
+	<script type="application/javascript">
+		$(function() {
+
+			//为显示样式switch添加事件——showStyleDesign
+			$('#showStyleDesign').on('switchChange.bootstrapSwitch', function(event, state) {
+				//					alert(state);
+				console.log(state);
+				if(state == false) {
+					//收起
+					$("#styleDesign").slideUp("slow");
+					//					$("#panel").slideDown();
+				}
+				if(state == true) {
+					//展开
+					$("#styleDesign").slideDown("slow");
+				}
+
+			});
+			loadWaveData();
+		})
+
+		function loadWaveData() {
+			// 基于准备好的dom，初始化echarts图表
+			var myChart = echarts.init(document.getElementById('wave_data'));
+
+			var option = {
+				tooltip: {
+					show: true
+				},
+				legend: {
+					data: ['波浪']
+				},
+				xAxis: [{
+					type: 'category',
+					data: ["2018-2-1 15:00", "2018-2-1 16:00", "2018-2-1 17:00", "2018-2-1 18:00", "2018-2-1 19:00", "2018-2-1 20:00"]
+				}],
+				yAxis: [{
+					type: 'value'
+				}],
+				series: [{
+					"name": "波浪", //需要与legend中的data相同
+					"type": "line",
+					//smooth: true, //不是折线，是曲线
+					itemStyle: {
+						normal: {
+							areaStyle: {
+								type: 'default'
+							}
+						}
+					}, //向下填充区域
+					"data": [1.6, 2.0, 1.5, 1.8, 2.1, 1.6]
+				}]
+			};
+
+			// 为echarts对象加载数据 
+			myChart.setOption(option);
+		}
+
+		//加载并显示错误的消息框
+		function loaderrmsg() {
+			/*
+			 * 加载错误信息
+			 * 1、根据后台返回的obj获取message放在modal-body中的mymsgcontent中
+			 * 2、设定mymsgcontent的固定高度
+			 * 3、显示滚动条
+			 * 4、显示modal框				 * 
+			 */
+			var msg = "测试测试测";
+			var title = "海浪高度"
+			//				$("mymsgcontent").attr("overflow","auto");
+			document.getElementById("mymsgtitle").innerHTML = title;
+			//				document.getElementById("mymsgcontent").innerHTML = msg;
+			$("#errorModal").modal();
+		}
+	</script>
+</head>
+
+<body>
+	<div class="container">
+		<hr />
+		<button onclick="loaderrmsg()">测试加载波浪折现图</button>
+		<hr />
+		<!--<div class="form-group">
+			<label class="col-sm-2 control-label" for="ds_host">高度</label>
+			<div class="col-sm-12">
+				<div id="wave_data" style="height:400px;width: 800px;"></div>
+			</div>
+		</div>-->
+		<hr/>
+		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myProgressLabel">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="mymsgtitle">请稍后</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal">
+
+							<!--显示样式-->
+							<div id="styleDesign">
+								<div class="container">
+									<div class="col-sm-12">
+										<div id="wave_data" style="height: 400px;width: 850px;"></div>
+									</div>
+								</div>
+								<!--<div class="form-group">										
+										
+									</div>-->
+
+							</div>
+
+						</form>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- /container -->
+</body>
