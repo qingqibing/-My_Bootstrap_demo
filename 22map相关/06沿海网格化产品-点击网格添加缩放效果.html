@@ -103,7 +103,7 @@
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse">
         <span class="sr-only">Toggle navigation</span>
       </button>
-				<a class="navbar-brand" href="#">沿海网格化产品显示系统</a>
+				<a class="navbar-brand" href="#">沿海网格化显示系统</a>
 			</div>
 		</nav>
 		<div id="main" style="">
@@ -351,9 +351,10 @@
 
 				// method that we will use to update the control based on feature properties passed
 				info.update = function(props) {
+					//此处使用了三元表达式
 					this._div.innerHTML = '<h4>网格概述</h4>' + (props ?
 						'<b>网格编号：</b><br />' + props.Code :
-						'Hover over a state');
+						'未选中');
 				};
 
 				info.addTo(mymap);
