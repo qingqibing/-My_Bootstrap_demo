@@ -6,14 +6,22 @@
 </head>
 
 <body>
-	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-	<div id="main" style="height:400px"></div>
+	<div class="container">
+		<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+		<div id="main" style="height:400px"></div>
+		<div class="col-md-6">
+			<div id="mybar" class="" style="height:400px;width: 500px;"></div>
+
+		</div>
+
+	</div>
+
 	<!-- ECharts单文件引入 -->
 	<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
 	<script type="text/javascript">
 		// 基于准备好的dom，初始化echarts图表
 		var myChart = echarts.init(document.getElementById('main'));
-
+		var myBar = echarts.init(document.getElementById('mybar'));
 		var option = {
 			tooltip: {
 				show: true
@@ -55,24 +63,77 @@
 						}
 					}
 				},
-				{
-					"name": "周期", //需要与legend中的data相同
-					"type": "line",
-					smooth: true, //不是折线，是曲线
-					itemStyle: {
-						normal: {
-							areaStyle: {
-								type: 'default'
-							},
-							//                    		label : {show: true}
-						}
-					}, //向下填充区域
-					"data": [3.14, 3.21, 3.28, 3.35, 3.41, 3.47, 3.47, 3.55, 3.64, 3.73, 3.80, 3.86]
-				},
+				//				{
+				//					"name": "周期", //需要与legend中的data相同
+				//					"type": "line",
+				//					smooth: true, //不是折线，是曲线
+				//					itemStyle: {
+				//						normal: {
+				//							areaStyle: {
+				//								type: 'default'
+				//							},
+				//							//                    		label : {show: true}
+				//						}
+				//					}, //向下填充区域
+				//					"data": [3.14, 3.21, 3.28, 3.35, 3.41, 3.47, 3.47, 3.55, 3.64, 3.73, 3.80, 3.86]
+				//				},
 			]
 		};
 
+		option_mybar = {
+			title: {
+				text: '波浪12小时预报值',
+				subtext: '测试数据'
+			},
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'shadow'
+				}
+			},
+			legend: {
+				data: ['波浪']
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true
+			},
+			xAxis: {
+				type: 'value',
+				boundaryGap: [0, 0.01],
+			},
+			yAxis: {
+				type: 'category',
+				data: ["2018-2-1 15:00", "2018-2-1 16:00", "2018-2-1 17:00", "2018-2-1 18:00", "2018-2-1 19:00", "2018-2-1 20:00", "2018-2-1 21:00", "2018-2-1 22:00", "2018-2-1 23:00", "2018-2-2 00:00", "2018-2-2 01:00", "2018-2-2 02:00"]
+			},
+			series: [{
+				name: '波浪',
+				type: 'bar',
+				data: [0.37, 0.34, 0.32, 0.30, 0.29, 0.28, 0.27, 0.26, 0.25, 0.24, 0.23, 0.22],
+				//配置样式
+				itemStyle: {
+					//通常情况下：
+					normal: {　　　　　　　　　　　　 
+						color:'#EEC900'
+						//每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+//						color: function(params) {
+//							var colorList = ['rgb(164,205,238)', 'rgb(42,170,227)', 'rgb(25,46,94)', 'rgb(195,229,235)'];
+//							return colorList[params.dataIndex];
+//						}
+					},
+					//鼠标悬停时：
+					emphasis: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+				},
+			}]
+		};
 		// 为echarts对象加载数据 
 		myChart.setOption(option);
+		myBar.setOption(option_mybar);
 	</script>
 </body>

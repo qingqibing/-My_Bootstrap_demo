@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<head>
+	<meta charset="utf-8">
+	<title>ECharts</title>
+	<style>
+		#map {
+			position: relative;
+			height: 800px;
+			width: 1600px;
+			border: 1px dashed #0044CC;
+			background: lightskyblue;
+		}
+		
+		#mybar {
+			position: absolute;
+			/*top:-500px;*/
+			top: 100px;
+			right: 150px;
+			width: 400px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div id="map">
+			<!--
+        	作者：evaseemefly@126.com
+        	时间：2018-02-02
+        	描述：
+        -->
+			<div id="mybar" style="height:400px"></div>
+		</div>
+
+	</div>
+
+	<!-- ECharts单文件引入 -->
+	<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
+	<script type="text/javascript">
+		// 基于准备好的dom，初始化echarts图表
+
+		var myBar = echarts.init(document.getElementById('mybar'));
+
+		option_mybar = {
+			title: {
+				text: '波浪12小时预报值',
+				subtext: '测试数据'
+			},
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'shadow'
+				}
+			},
+			legend: {
+				data: ['波浪']
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true
+			},
+			xAxis: {
+				type: 'value',
+				boundaryGap: [0, 0.01],
+				axisLabel: {
+					interval: 0,
+					textStyle: {
+						color: '#ddd'
+					}
+				},
+				splitLine: {
+					show: false //不显示网格线
+				}
+				//				axisLine: {
+				//					show: false,
+				//					lineStyle: {
+				//						color: '#ddd'
+				//					}
+				//				},
+			},
+			yAxis: {
+				type: 'category',
+				splitLine: {
+					show: false
+				},
+				data: ["2018-2-1 15:00", "2018-2-1 16:00", "2018-2-1 17:00", "2018-2-1 18:00", "2018-2-1 19:00", "2018-2-1 20:00", "2018-2-1 21:00", "2018-2-1 22:00", "2018-2-1 23:00", "2018-2-2 00:00", "2018-2-2 01:00", "2018-2-2 02:00"]
+			},
+			series: [{
+				name: '波浪',
+				type: 'bar',
+				data: [0.37, 0.34, 0.32, 0.30, 0.29, 0.28, 0.27, 0.26, 0.25, 0.24, 0.23, 0.22],
+				itemStyle: {
+					//通常情况下：
+					normal: {　　　　　　　　　　　　
+						color: '#EEC900'
+						//每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+						//						color: function(params) {
+						//							var colorList = ['rgb(164,205,238)', 'rgb(42,170,227)', 'rgb(25,46,94)', 'rgb(195,229,235)'];
+						//							return colorList[params.dataIndex];
+						//						}
+					},
+					//鼠标悬停时：
+					emphasis: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+				},
+			}]
+		};
+		// 为echarts对象加载数据 
+
+		myBar.setOption(option_mybar);
+	</script>
+</body>
