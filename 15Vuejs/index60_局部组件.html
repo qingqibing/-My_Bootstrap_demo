@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="msapplication-tap-highlight" content="no">
+		<title>全局注册</title>
+		<!-- <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,200,500,600,700' rel='stylesheet' type='text/css'>   -->
+		<link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+		<link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/default.css">
+		<link rel="stylesheet" href="dist/material-cards.css">
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<my-component></my-component>
+
+		</div>
+		<script src="js/jquery-2.1.1.min.js"></script>
+		<script src="js/jquery.material-cards.min.js"></script>
+		<script src="js/vue.js"></script>
+		<script>
+			var Child = Vue.extend({
+				template: '<p>这是一个子组件</p>'
+			});
+
+			var Parent = Vue.extend({
+				template: '<div> \
+				<p>Parent</p> \
+				<my-child></my-child> \
+				</div>',
+				components: {
+					'my-child': Child
+				}
+
+			})
+
+			Vue.component('my-component', Parent);
+			var vm = new Vue({
+				el: '#app'
+			})
+			$(function() {
+
+			})
+		</script>
+	</body>
+
+</html>
