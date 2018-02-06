@@ -256,6 +256,7 @@
 			<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
 			<script type="application/javascript">
 				var forecast_dict = new Array();
+				var forecast_dict_test = {};
 
 				function random_forecast(count, max) {
 					for(var i = 0; i < count; i++) {
@@ -265,7 +266,8 @@
 						} else {
 							dict_key += i
 						}
-						forecast_dict[dict_key] = parseInt(Math.random() * max, 10) + 1;
+						//forecast_dict[dict_key] = parseInt(Math.random() * max, 10) + 1;
+						forecast_dict_test[dict_key] = parseInt(Math.random() * max, 10) + 1;
 
 					}
 				}
@@ -322,9 +324,13 @@
 							//获取到当前的对象的code
 							var code = feature.properties.Code
 							var temp_color = null;
-							if(forecast_dict[code]) {
-								temp_color = getColorbar(forecast_dict[code]);
+							forecast_dict_test
+							if(forecast_dict_test[code]) {
+								temp_color = getColorbar(forecast_dict_test[code]);
 							}
+							//							if(forecast_dict[code]) {
+							//								temp_color = getColorbar(forecast_dict[code]);
+							//							}
 
 							return {
 								//							注意此处的填充颜色及宽度的api可参见
@@ -518,25 +524,37 @@
 					return myBar;
 				}
 
-				function bubbleSort(arr) {
-					var len = arr.length;
-					for(var i = 0; i < len; i++) {
-						for(var j = 0; j < len - 1 - i; j++) {
-							if(arr[j] > arr[j + 1]) { //相邻元素两两对比
-								var temp = arr[j + 1]; //元素交换
-								arr[j + 1] = arr[j];
-								arr[j] = temp;
-							}
-						}
+				//将字典转为arr
+				function dic2arr(dict) {
+					var arr = [];
+					for(temp in dict) {
+						arr.push({
+							code: temp,
+							value: dict[temp]
+						})
 					}
 					return arr;
+
+				}
+
+				//比较算法
+				function compare_forecast(prop) {
+					return function(a, b) {
+						var value_a = a[prop];
+						var value_b = b[prop];
+						return value_b - value_a;
+					}
 				}
 
 				function loadbar(bar, keys_arr, values_arr) {
 					option_mybar = {
 						title: {
 							text: '波浪12小时预报值',
-							subtext: '测试数据'
+							subtext: '测试数据',
+							textStyle: {
+								fontWeight: 'bolder',
+								color: '#FFFFFF'
+							}
 						},
 						tooltip: {
 							trigger: 'axis',
@@ -593,12 +611,15 @@
 							itemStyle: {
 								//通常情况下：
 								normal: {
-									color: '#EEC900'
+									//									color: '#EEC900'
 									//每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-									//						color: function(params) {
-									//							var colorList = ['rgb(164,205,238)', 'rgb(42,170,227)', 'rgb(25,46,94)', 'rgb(195,229,235)'];
-									//							return colorList[params.dataIndex];
-									//						}
+									color: function(params) {
+										var mycolor = getColorbar(params.data)
+										//																var colorList = ['rgb(164,205,238)', 'rgb(42,170,227)', 'rgb(25,46,94)', 'rgb(195,229,235)'];
+										//																var test=colorList[params.dataIndex];
+										return mycolor;
+
+									}
 								},
 								//鼠标悬停时：
 								emphasis: {
@@ -627,14 +648,27 @@
 							onEachFeature: onEachFeature
 						}).addTo(mymap);
 					});
-					var test_dic = forecast_dict;
+					//					var test_dic = forecast_dict;
+					var test_dic = forecast_dict_test;
 					loadWaveData();
 
 					//对forecast_dict进行排序
-					bubbleSort(forecast_dict)
-					for(var key in forecast_dict) {
-						arr_keys_forecastextreme.push(key);
-						arr_values_forecastextreme.push(forecast_dict[key]);
+					var forecast_arr = dic2arr(forecast_dict_test);
+					forecast_arr = forecast_arr.sort(compare_forecast('value'));
+					//从数组中取出前10个值
+					var forecast_top10 = forecast_arr.slice(0, 20);
+					//					bubbleSort(test_dic)
+					//					for(var key in forecast_dict) {
+					//						arr_keys_forecastextreme.push(key);
+					//						arr_values_forecastextreme.push(forecast_dict[key]);
+					//					}
+					//					for(var key in test_dic) {
+					//						arr_keys_forecastextreme.push(key);
+					//						arr_values_forecastextreme.push(forecast_dict[key]);
+					//					}
+					for(var i = 0; i < forecast_top10.length; i++) {
+						arr_keys_forecastextreme.push(forecast_top10[i].code);
+						arr_values_forecastextreme.push(forecast_top10[i].value);
 					}
 
 					// $.each(test_dic, function (key, value) {
@@ -643,17 +677,17 @@
 
 					// });
 
-					$.each(forecast_dict, function(key, value) {
-						arr_keys_forecastextreme.push(key);
-						arr_values_forecastextreme.push(value);
-					});
+					//					$.each(forecast_dict, function(key, value) {
+					//						arr_keys_forecastextreme.push(key);
+					//						arr_values_forecastextreme.push(value);
+					//					});
 
-					forecast_dict.forEach(function(key, value) {
-						// arr_keys_forecastextreme.push(key);
-						// arr_values_forecastextreme.push(value);
-						print(key);
-						print(value);
-					})
+					//					forecast_dict.forEach(function(key, value) {
+					//						// arr_keys_forecastextreme.push(key);
+					//						// arr_values_forecastextreme.push(value);
+					//						print(key);
+					//						print(value);
+					//					})
 
 					var bar = initbar();
 					loadbar(bar, arr_keys_forecastextreme, arr_values_forecastextreme);
