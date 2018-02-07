@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title></title>
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
-	    <script type="application/javascript" src="js/bootstrap.min.js"></script>
-	      <style type="text/css">
-	    	div{
-	    		border:1px dashed red ;
-	    	}	    	
-	    </style> 
-	    <script type="application/javascript">
+		<script type="application/javascript" src="js/bootstrap.min.js"></script>
+		<style type="text/css">
+			div {
+				border: 1px dashed red;
+			}
+		</style>
+		<script type="application/javascript">
 			var forecast_dict = new Array();
-			
-	    	function random_forecast(count, max) {
-				for (var i = 0; i < count; i++) {
+
+			function random_forecast(count, max) {
+				for(var i = 0; i < count; i++) {
 					var dict_key = "S"
-					if (i < 10) {
+					if(i < 10) {
 						dict_key += "0" + i;
 					} else {
 						dict_key += i
@@ -28,34 +29,68 @@
 				}
 			}
 
-	    	
-	    	$(function(){
+			$(function() {
 				// var dict_test={"key1":"value1","key2":"value2"};
 				// var dict_test={"S00": "8", "S01": "18", "S02": "1", "S03": "1", "S04": "10"};
-				var dict_test=new Array();
-				dict_test["s00"]="8";
-				dict_test["s01"]="18";
-				for(var key in dict_test){
-					console.log(key+":"+dict_test[key]);
+				//方式1：
+				// 注意使用此种方式创建的不是一个字典，而是一个数组[]
+				// 但这个数组及其特殊，可以像字典一样的通过dic[key]的方式去取值，但他的lenth却是0
+				var dict_test = new Array();
+				dict_test["s00"] = "8";
+				dict_test["s01"] = "18";
+				print(typeof(dict_test));
+				for(var key in dict_test) {
+					console.log(key + ":" + dict_test[key]);
 				}
+				//使用each
+				$.each(dict_test, function(i, v) {
+					console.log(i);
+					console.log(v);
+				});
 
+				//方式2
+				var dict_test_2 = {
+					"S00": "8",
+					"S01": "18",
+					"S02": "1",
+					"S03": "1",
+					"S04": "10"
+				};
+				print(typeof(dict_test_2));
+				console.log("---------");
+				$.each(dict_test_2, function(i, v) {
+					console.log(i);
+					console.log(v);
+				});
 
+				//3 方式3：
+				console.log("---------");
+				var dict_test_3={};
+				dict_test_3["key1"]="value1";
+				dict_test_3["key2"]="value2";
+				$.each(dict_test_3, function(i, v) {
+					console.log(i);
+					console.log(v);
+				});
+				
 				random_forecast(51, 18);
-	    		var keys_arr=[];
-	    		var valus_arr=[];
-	    		$.each(dict_test, function(key,value) {
-//	    			print(i);
-//	    			print(v);
-	    			keys_arr.push(key);
-	    			valus_arr.push(value);
-	    		});
-	    		
-	    	})
-	    </script>
-	</head>
-	<body>		
-    <div class="container">
+				var keys_arr = [];
+				var valus_arr = [];
+				$.each(dict_test, function(key, value) {
+					//	    			print(i);
+					//	    			print(v);
+					keys_arr.push(key);
+					valus_arr.push(value);
+				});
 
-	</div>  
+			})
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+
+		</div>
 	</body>
+
 </html>
