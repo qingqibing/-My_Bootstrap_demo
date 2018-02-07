@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="application/javascript" src="js/bootstrap.min.js"></script>
+		<style type="text/css">
+			div {
+				border: 1px dashed red;
+			}
+		</style>
+		<script type="application/javascript">
+			var forecast_dict = {
+				S00: 9,
+				S01: 10,
+				S02: 9,
+				S03: 7,
+				S04: 15
+			};
+
+			//将字典转为arr
+			function dic2arr(dict) {
+				var arr = [];
+				for(temp in dict) {
+					arr.push({
+						code: temp,
+						value: dict[temp]
+					})
+				}
+				return arr;
+
+			}
+
+			//比较算法
+			function compare_forecast(prop) {
+				return function(a, b) {
+					var value_a = a[prop];
+					var value_b = b[prop];
+					return value_b - value_a;
+				}
+			}
+			$(function() {
+				var forecast_arr = dic2arr(forecast_dict);
+				forecast_arr = forecast_arr.sort(compare_forecast('value'));
+				//遍历方法1：
+				for(var i=0;i<forecast_arr.length;i++){
+					console.log(forecast_arr[i].code);
+					console.log(forecast_arr[i].value);
+				}
+				//遍历方法2：
+				
+			})
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+
+		</div>
+	</body>
+
+</html>
