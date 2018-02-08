@@ -214,7 +214,7 @@
 								</div>
 							</div>
 						</div>
-						<div id="mybar" style="height:600px"></div>
+						<div id="mybar" style="height:400px"></div>
 					</div>
 				</div>
 			</div>
@@ -253,7 +253,7 @@
 					</div>
 				</div>
 			</div>
-			<script type="application/javascript" src="js/maptiles.js"></script>
+			<script type="application/javascript" src="js/map/maptiles.js"></script>
 			<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
 			<script type="application/javascript">
 				var forecast_dict = new Array();
@@ -267,42 +267,16 @@
 						} else {
 							dict_key += i
 						}
-						//forecast_dict[dict_key] = parseInt(Math.random() * max, 10) + 1;
+						
 						forecast_dict_test[dict_key] = parseInt(Math.random() * max, 10) + 1;
 
 					}
 				}
-
-				function addShapeFile() {
-					//使用第二种方式，此种方式不再使用
-					//				map.setView([34.74161249883172, 18.6328125], 2);
-					var geo = L.geoJson({
-						features: []
-					}, {
-						onEachFeature: function popUp(f, l) {
-							//console.info(f);
-							var out = [];
-							if(f.properties) {
-								for(var key in f.properties) {
-									out.push(key + ": " + f.properties[key]);
-
-								}
-								l.bindPopup(out.join("<br />"));
-							}
-						}
-					}) //.addTo(map);
-
-					//保存到 图层数组
-					map_layers.push(geo);
-					//此处指向shapefile的zip文件即可
-					var base = 'files/south.zip';
-					shp(base).then(function(data) {
-						console.info(data);
-						geo.addData(data);
-					});
-
-				}
-
+				
+				
+				/*
+				 * 根据设定好的色带根据传入的值返回对应的rgb颜色的值
+				 */
 				function getColorbar(value) {
 					//根据传入的数值（int类型），判断其所属的区件并获取区件的颜色
 					var value_color;
@@ -317,7 +291,10 @@
 					}
 					return value_color;
 				}
-
+				
+				/*
+				 * 叠加shp文件，以geoJson的方式读取
+				 */
 				function addShape(data, feature, layer, map) {
 					//!!!注意此处添加了shape文件后，由于是读取的geojson，文件，通过L.geoJSON后，需要将返回值赋值给geojson
 					geojson = L.geoJSON(data, {
@@ -329,18 +306,11 @@
 							if(forecast_dict_test[code]) {
 								temp_color = getColorbar(forecast_dict_test[code]);
 							}
-							//							if(forecast_dict[code]) {
-							//								temp_color = getColorbar(forecast_dict[code]);
-							//							}
-
+							
 							return {
 								//							注意此处的填充颜色及宽度的api可参见
-								//http://leafletjs.com/reference-1.2.0.html#path
-								//color: feature.properties.color
-								//							color: 'blue',
+								
 								fillColor: temp_color,
-								//							fillOpacity: 0.5,
-								//							weight: 1,
 								weight: 2,
 								opacity: 1,
 								color: 'white',
@@ -428,7 +398,10 @@
 						'<b>网格编号：</b><br />' + props.Code :
 						'未选中');
 				};
-
+				
+				/*
+				 * 初始化echarts图标
+				 */
 				function loadWaveData() {
 					// 基于准备好的dom，初始化echarts图表
 					var myChart = echarts.init(document.getElementById('wave_data'));
@@ -546,7 +519,8 @@
 						return value_b - value_a;
 					}
 				}
-
+				
+				//加载右侧的柱状图top15
 				function loadbar(bar, keys_arr, values_arr) {
 					option_mybar = {
 						title: {
@@ -616,8 +590,7 @@
 									//每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
 									color: function(params) {
 										var mycolor = getColorbar(params.data)
-										//																var colorList = ['rgb(164,205,238)', 'rgb(42,170,227)', 'rgb(25,46,94)', 'rgb(195,229,235)'];
-										//																var test=colorList[params.dataIndex];
+										
 										return mycolor;
 
 									}
@@ -657,39 +630,14 @@
 					var forecast_arr = dic2arr(forecast_dict_test);
 					forecast_arr = forecast_arr.sort(compare_forecast('value'));
 					//从数组中取出前10个值
-					var forecast_top10 = forecast_arr.slice(0, 20);
-					//					bubbleSort(test_dic)
-					//					for(var key in forecast_dict) {
-					//						arr_keys_forecastextreme.push(key);
-					//						arr_values_forecastextreme.push(forecast_dict[key]);
-					//					}
-					//					for(var key in test_dic) {
-					//						arr_keys_forecastextreme.push(key);
-					//						arr_values_forecastextreme.push(forecast_dict[key]);
-					//					}
+					var forecast_top10 = forecast_arr.slice(0, 15);
+					
 					for(var i = 0; i < forecast_top10.length; i++) {
 						arr_keys_forecastextreme.push(forecast_top10[i].code);
 						arr_values_forecastextreme.push(forecast_top10[i].value);
 					}
 
-					// $.each(test_dic, function (key, value) {
-					// 	arr_keys_forecastextreme.push(key);
-					// 	arr_values_forecastextreme.push(value);
-
-					// });
-
-					//					$.each(forecast_dict, function(key, value) {
-					//						arr_keys_forecastextreme.push(key);
-					//						arr_values_forecastextreme.push(value);
-					//					});
-
-					//					forecast_dict.forEach(function(key, value) {
-					//						// arr_keys_forecastextreme.push(key);
-					//						// arr_values_forecastextreme.push(value);
-					//						print(key);
-					//						print(value);
-					//					})
-
+					
 					var bar = initbar();
 					loadbar(bar, arr_keys_forecastextreme, arr_values_forecastextreme);
 				})
