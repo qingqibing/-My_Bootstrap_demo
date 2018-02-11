@@ -257,18 +257,20 @@
 				var forecast_dict = new Array();
 				var forecast_dict_test = {};
 
-				function random_forecast(count, max) {
+				function random_forecast(key,count, max) {
+					var forecast_dict = {}; 
 					for(var i = 0; i < count; i++) {
-						var dict_key = "S"
+						var dict_key = key
 						if(i < 10) {
 							dict_key += "0" + i;
 						} else {
 							dict_key += i
 						}
 
-						forecast_dict_test[dict_key] = parseInt(Math.random() * max, 10) + 1;
-
+//						forecast_dict_test[dict_key] = parseInt(Math.random() * max, 10) + 1;
+						forecast_dict[dict_key] = parseInt(Math.random() * max, 10) + 1;
 					}
+					return forecast_dict;
 				}
 
 				/*
@@ -292,16 +294,16 @@
 				/*
 				 * 叠加shp文件，以geoJson的方式读取
 				 */
-				function addShape(data, feature, layer, map) {
+				function addShape(dict,data, feature, layer, map) {
 					//!!!注意此处添加了shape文件后，由于是读取的geojson，文件，通过L.geoJSON后，需要将返回值赋值给geojson
 					geojson = L.geoJSON(data, {
 						style: function(feature) {
 							//获取到当前的对象的code
 							var code = feature.properties.Code
 							var temp_color = null;
-							forecast_dict_test
-							if(forecast_dict_test[code]) {
-								temp_color = getColorbar(forecast_dict_test[code]);
+//							forecast_dict_test
+							if(dict[code]) {
+								temp_color = getColorbar(dict[code]);
 							}
 
 							return {
@@ -457,7 +459,7 @@
 									}
 
 								}, //向下填充区域
-								"data": [0.37, 0.34, 0.32, 0.30, 0.29, 0.28, 0.27, 0.26, 0.25, 0.24, 0.23, 0.22],
+								"data": [0.37, 0.52, 0.32, 0.12, 0.32, 0.49, 0.61, 0.46, 0.35, 0.24, 0.12, 0.35],
 								label: {
 									normal: {
 										show: true
@@ -495,7 +497,7 @@
 					 * 4、显示modal框				 * 
 					 */
 					var msg = "测试测试测";
-					var title = "海浪高度"
+					var title = "海浪有效波高"
 					//				$("mymsgcontent").attr("overflow","auto");
 					document.getElementById("mymsgtitle").innerHTML = title;
 					//				document.getElementById("mymsgcontent").innerHTML = msg;
@@ -626,14 +628,36 @@
 				}
 
 				$(function() {
-					random_forecast(51, 18);
+					dict_south= random_forecast("S",51, 9);
+					dict_east=random_forecast("E",85,9);
+					dict_north=random_forecast("N",77,9);
 					//var my_geojson;
 					//貌似这个then是一个ajax请求，顺序执行时此处不会立即被执行
+					shp("files/north.zip").then(function(temp_geojson) {
+						//						geojson = temp_geojson;
+						//do something with your geojson
+						addShape(dict_north,temp_geojson, null, null, mymap);
+				
+						geojson = L.geoJson(temp_geojson, {
+							style: mystyle,
+							onEachFeature: onEachFeature
+						}).addTo(mymap);
+					});
+					shp("files/east.zip").then(function(temp_geojson) {
+						//						geojson = temp_geojson;
+						//do something with your geojson
+						addShape(dict_east,temp_geojson, null, null, mymap);
+				
+						geojson = L.geoJson(temp_geojson, {
+							style: mystyle,
+							onEachFeature: onEachFeature
+						}).addTo(mymap);
+					});
 					shp("files/south.zip").then(function(temp_geojson) {
 						//						geojson = temp_geojson;
 						//do something with your geojson
-						addShape(temp_geojson, null, null, mymap);
-
+						addShape(dict_south,temp_geojson, null, null, mymap);
+				
 						geojson = L.geoJson(temp_geojson, {
 							style: mystyle,
 							onEachFeature: onEachFeature
@@ -644,7 +668,8 @@
 					loadWaveData();
 
 					//对forecast_dict进行排序
-					var forecast_arr = dic2arr(forecast_dict_test);
+//					var forecast_arr = dic2arr(forecast_dict_test);
+					var forecast_arr = dic2arr(dict_south);
 					forecast_arr = forecast_arr.sort(compare_forecast('value'));
 					//从数组中取出前10个值
 					var forecast_top10 = forecast_arr.slice(0, 15);
