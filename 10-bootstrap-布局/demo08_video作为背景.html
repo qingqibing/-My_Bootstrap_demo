@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/jquery-3.2.1.js"></script>
+
+		<link href="css/bootstrap.css" rel="stylesheet" />
+		<link href="css/bootstrap-theme.css" rel="stylesheet" />
+
+		<style type="text/css">
+			#center_Body {
+				overflow: auto;
+				width: 100%;
+				top: 0px;
+				bottom: 0px;
+				position: absolute;
+			}
+			
+			#mycontent {
+				height: 100%;
+			/*	background-color: #B92C28;*/
+			}
+			h1{
+				z-index: 9999;
+			}
+			video {
+				position: fixed;
+				right: 0px;
+				bottom: 0px;
+				min-width: 100%;
+				min-height: 100%;
+				height: auto;
+				width: auto;
+				z-index: -9999;
+			}
+			source {
+				min-width: 100%;
+				min-height: 100%;
+				height: auto;
+				width: auto;
+				z-index: -9999;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="center_Body">
+			<video autoplay="autoplay" loop="loop">
+					<source src="video/BlueOcean.mp4" type="video/mp4">;
+			</video>
+			<div id="mycontent" class="container">
+				<h1 >测试</h1>
+				<h1 >测试</h1>
+				<h1 >测试</h1>
+			</div>
+		</div>
+	</body>
+
+</html>
