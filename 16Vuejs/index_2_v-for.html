@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="msapplication-tap-highlight" content="no">
+	<title>Material Design风格的人物信息介绍卡片设计|DEMO2_jQuery之家-自由分享jQuery、html5、css3的插件库</title>
+	  <!-- <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,200,500,600,700' rel='stylesheet' type='text/css'>   -->
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+     <link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"> 
+    <link rel="stylesheet" type="text/css" href="css/default.css">
+    <link rel="stylesheet" href="dist/material-cards.css">
+	<style type="text/css">
+
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            background-color: #ECEFF1;
+            color: #37474F;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 300;
+            font-size: 16px;
+        }
+
+        h1, h2, h3 {
+            font-weight: 200;
+        }
+
+    </style>
+	<!--[if IE]>
+		<script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<div class="htmleaf-container">
+		<header class="htmleaf-header">
+			<h1>国家海洋环境预报中心 <span>九楼值班平台</span></h1>
+		</header>
+		<section class="container">
+		    <div class="page-header">
+		        <h1>暂时不添加<br>
+		            <small>测试测试</small></h1>
+		    </div>
+			<div id="app">
+				<!--以下通过测试可行-->
+				<!--<ul>
+					<li v-for="item in items">
+						<h3>{{item.title}}</h3>
+						<p>{{item.desc}}</p>
+					</li>					
+				</ul>-->				
+				<div v-for='item in items'>
+					<div>{{item.name}}</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	
+	<script src="js/jquery-2.1.1.min.js"></script>
+	<script src="js/jquery.material-cards.min.js"></script>
+	<script src="js/vue.js"></script>
+	<script>
+	    $(function() {
+//	        var vm=new Vue({
+//	        	el:'#app',
+//	        	data:{
+//	        		items:[
+//	        		{title:'题目1',desc:'描述1'},
+//	        		{title:'题目2',desc:'描述2'},
+//	        		]
+//	        	}
+//	        })
+			var vm
+			var url="data.json"
+			var test_objs=[{name: "预报员1", department: "预警室", group: "风暴潮", job: "主班"},
+								{name: "预报员2", department: "预警室", group: "风暴潮", job: "主班"}]
+			var test_ajax_objs
+            //页面加载时ajax到获取人员list的方法
+            $.ajax({
+                type: "GET",
+					url: "data.json",
+					dataType: "json",
+					success: function(data) {
+						test_ajax_objs=data;
+                    //成功后解析
+                        vm=new Vue({
+							el:'#app',
+	        			data:{
+	        					items:data
+//								items:[{name: "预报员1", department: "预警室", group: "风暴潮", job: "主班"},
+//								{name: "预报员2", department: "预警室", group: "风暴潮", job: "主班"}]
+	        				}
+                        })
+                    }
+
+            })
+            var ss
+	    });
+	</script>
+</body>
+</html>

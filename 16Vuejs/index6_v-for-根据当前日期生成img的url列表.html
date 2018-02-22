@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="msapplication-tap-highlight" content="no">
+		<title>Material Design风格的人物信息介绍卡片设计|DEMO2_jQuery之家-自由分享jQuery、html5、css3的插件库</title>
+		<!-- <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,200,500,600,700' rel='stylesheet' type='text/css'>   -->
+		<link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+		<link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/default.css">
+		<link rel="stylesheet" href="dist/material-cards.css">
+		<style type="text/css">
+			html {
+				position: relative;
+				min-height: 100%;
+			}
+			
+			body {
+				background-color: #ECEFF1;
+				color: #37474F;
+				font-family: 'Raleway', sans-serif;
+				font-weight: 300;
+				font-size: 16px;
+			}
+			
+			h1,
+			h2,
+			h3 {
+				font-weight: 200;
+			}
+		</style>
+		<!--[if IE]>
+		<script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+	<![endif]-->
+	</head>
+
+	<body>
+		<div class="htmleaf-container">
+			<header class="htmleaf-header">
+				<h1>国家海洋环境预报中心 <span>九楼值班平台</span></h1>
+			</header>
+			<section class="container">
+				<div class="page-header">
+					<h1>暂时不添加<br>
+		            <small>测试测试</small></h1>
+				</div>
+				<div id="app">
+					<div v-for="temp_date in date_list_str">
+						<!--<a href="{{temp_date}}">-->
+						<a v-bind:href="temp_date">
+							<!--<img src="{{temp_date}}" alt="Image" class="img-fluid tm-img">-->
+							<img v-bind:src="temp_date" alt="Image" class="img-fluid tm-img">
+						</a>
+					</div>
+
+				</div>
+		</div>
+
+		</section>
+		</div>
+
+		<script src="js/jquery-2.1.1.min.js"></script>
+		<script src="js/jquery.material-cards.min.js"></script>
+		<script src="js/vue.js"></script>
+		<script>
+			$(function() {
+				var now_date = new Date();
+				//				var temp_date_str="/PICS/Wave/{0}/{1}/{2}/ZuJJ_{3}{4}{5}_{6}{7}_Wave.txt.png".format(value.getFullYear(),value.getMonth(),value.getDate(),value.getFullYear(),value.getMonth(),value.getDate(),value.getHours(),value.getMinutes());
+				//
+				var temp_date_str = "/PICS/Wave/";
+				temp_date_str += now_date.getFullYear() + "/";
+				temp_date_str += now_date.getMonth() + 1 + "/";
+				temp_date_str += now_date.getDate() + "/";
+				temp_date_str += "ZuJJ_";
+				temp_date_str += now_date.getFullYear();
+				temp_date_str += now_date.getMonth() + 1;
+				temp_date_str += now_date.getDate();
+				temp_date_str += "_";
+				temp_date_str += now_date.getHours();
+				temp_date_str += now_date.getMinutes();
+
+				var vm = new Vue({
+					el: '#app',
+					data: {
+						targetDate: now_date
+					},
+					//注意computed是写在data外侧
+					computed: {
+						date_list: function() {
+							var list = [];
+							var temp_targetdate = this.targetDate;
+							list.push(temp_targetdate);
+							for(var i = 0; i < 6; i++) {
+
+								//								console.log(temp_targetdate.getMinutes()+i*10);
+								//注意此处若接收setMinutes的返回值会得到一个长整型
+								//var temp_date= temp_targetdate.setMinutes(temp_targetdate.getMinutes()*i);
+								var temmp_date_str = temp_targetdate.setMinutes(temp_targetdate.getMinutes() + 10);
+
+								var temp_date = new Date(temmp_date_str);
+								//								temp_date=new Date(temp_targetdate.getYear(),temp_targetdate.get)
+								console.log(temp_date);
+								list.push(temp_date);
+							}
+							return list;
+						},
+						date_list_str: function() {
+							var list = [];
+							this.date_list.forEach(function(value, index) {
+								//								var temp_date_str="/PICS/Wave/2018/01/21/ZuJJ_180121_0010_Wave.txt.png";
+								var temp_date_str = "/PICS/Wave/";
+								temp_date_str += value.getFullYear() + "/";
+								temp_date_str += value.getMonth() + 1 + "/";
+								temp_date_str += value.getDate() + "/";
+								temp_date_str += "ZuJJ_";
+								temp_date_str += value.getFullYear();
+								temp_date_str += value.getMonth() + 1;
+								temp_date_str += value.getDate();
+								temp_date_str += "_";
+								temp_date_str += value.getHours();
+								temp_date_str += value.getMinutes();
+								list.push(temp_date_str);
+							})
+							//							for(var temp_date in this.date_list){
+							//
+							//							}
+							return list;
+						}
+					}
+				})
+			})
+		</script>
+	</body>
+
+</html>
