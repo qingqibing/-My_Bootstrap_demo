@@ -128,8 +128,13 @@
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul id="top_nav_ul" class="nav navbar-nav">
-					<li v-for="item in items">
-						<a href="#" v-on:click="fillarea(item.code)">{{item.message}} <span class="sr-only">(current)</span></a>
+					<li v-for="item in items":class="{'active':item===selected}">
+						<!--:class="{ 'active':cell===selected}"-->						
+						
+						<!--@click="fillarea(item.code,cell)">-->
+						<!--{{item.message}}-->
+						<!--<a href="#" >{{item.message}} <span class="sr-only">(current)</span></a>-->
+						<a href="#" v-on:click="fillarea(item.code,item)">{{item.message}} <span class="sr-only">(current)</span></a>
 					</li>					
 				</ul>
 				<form class="navbar-form navbar-left">
@@ -150,11 +155,14 @@
 					{message:'北海',code:'n'},
 					{message:'东海',code:'e'},
 					{message:'南海',code:'s'},
-					{message:'全国',code:'a'}]
+					{message:'全国',code:'a'}],
+					selected:null,
 				},
 				methods:{
-					fillarea:function(value){
-						alert(value);
+					fillarea:function(value,item){
+						this.selected=item;
+//						alert(value+":"+item);
+						
 					}
 				}
 			})
