@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<head>
+	<meta charset="utf-8">
+	<title>ECharts</title>
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<!--然后再引入flatui的样式-->
+	<!--<link href="flatui/dist/css/flat-ui.css" rel="stylesheet">-->
+	<link href="css/flatui/flat-ui.css" rel="stylesheet">
+	<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+</head>
+
+<body>
+	<div class="container">
+		<form class="bg-primary">
+			<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+			<div id="main" style="height:400px"></div>
+		</form>
+	</div>
+
+	<!-- ECharts单文件引入 -->
+	<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
+	<script type="text/javascript">
+		//		var myBar = echarts.init(document.getElementById('mybar'));
+		/*
+		 * 根据设定好的色带根据传入的值返回对应的rgb颜色的值
+		 */
+		function getColorbar(value) {
+			//根据传入的数值（int类型），判断其所属的区件并获取区件的颜色
+			var value_color = "rgb(248,248,255)";
+			if(value >= 2.5 && value < 3.5) {
+				value_color = "rgb(0,0,255)";
+			} else if(value >= 3.5 && value < 4.5) {
+				value_color = "rgb(255,242,0)";
+			} else if(value >= 4.5 && value < 6) {
+				value_color = "rgb(255,127,19)";
+			} else if(value >= 6) {
+				value_color = "rgb(255,0,0)";
+			}
+			return value_color;
+		}
+		$(function() {
+			$.ajax({
+				url: "data.json", //json文件位置
+				type: "GET", //请求方式为get
+				dataType: "json", //返回数据格式为json
+				success: function(data) { //请求成功完成后要执行的方法 
+					//					console.log(data);
+					var hs_values = [];
+					var hs_date = [];
+					$.each(data, function(index, value) {
+						//						console.log(index+value);
+						hs_values.push(value.hs);
+						console.log(value.hs);
+						hs_date.push(value.tdate);
+						console.log(value.tdate);
+					});
+					var option = {
+						tooltip: {
+							show: true
+						},
+						legend: {
+							data: ['波浪']
+						},
+						xAxis: [{
+							type: 'category',
+							data: hs_date,
+							//使用以下方式实现显示全部x坐标上的点
+							"axisLabel": {
+								//interval: 0,
+								textStyle: {
+									color: '#FFFFFF'
+								}
+							},
+
+							//                  interval:0   
+						}],
+						yAxis: [{
+							type: 'value',
+							"axisLabel": {
+								//					interval: 0,
+								textStyle: {
+									color: '#FFFFFF'
+								}
+							},
+						}],
+						series: [{
+							"name": "波浪", //需要与legend中的data相同
+							"type": "bar",
+							smooth: true, //不是折线，是曲线
+							itemStyle: {
+								normal: {
+									//设置折点的颜色
+									color: function(params) {
+										var color_arr = [];
+										//获取当前的hs的值
+										//var hs_value = params.series.data[params.seriesIndex];
+										var hs_value = params.data;
+										var hs_color = getColorbar(hs_value);
+										console.log(hs_value);
+										return hs_color;
+									},
+									//									color: '#FFFF00',
+									//注意lineStyle需要卸载normal里面
+									//自定义折线颜色
+									lineStyle: {
+										color: '#00FF00'
+									},
+									//自定义折线下区域的颜色
+									//									areaStyle: {
+									//										color: '#FFFF00'
+									//									},
+
+									label: {
+										//										show: true, //显示每个点的值
+										//										position:'insideTop'
+									}
+								}
+
+							}, //向下填充区域
+							"data": hs_values,
+							markPoint: {
+								symbolSize: 4,
+								//使用markPoint显示最大值及最小值
+								data: [{
+										type: 'max',
+										name: '最大值'
+									},
+									{
+										type: 'min',
+										name: '最小值'
+									}
+								],
+								//注意设置itemStyle：不需要再加[]，相当于itemStyle中的noraml对象中的lable。。。
+								itemStyle: {
+									normal: {
+										label: {
+											show: true,
+											textStyle: {
+												color: '#000080'
+											}
+										}
+									}
+
+								}
+								//								effect:show,
+							},
+							markLine: {
+								data: [{
+										type: 'max',
+										name: '最大值'
+									}, // 最大值水平线或垂直线
+//									{
+//										type: 'min',
+//										name: '最小值'
+//									}, // 最小值水平线或垂直线
+									{
+										type: 'average',
+										name: '平均值'
+									}
+								]
+							},
+						}, ]
+					};
+					// 基于准备好的dom，初始化echarts图表
+					var myChart = echarts.init(document.getElementById('main'));
+					// 为echarts对象加载数据 
+					myChart.setOption(option);
+
+				}
+			});
+		});
+	</script>
+</body>
