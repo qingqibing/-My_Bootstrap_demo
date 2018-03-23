@@ -132,6 +132,14 @@
 			</button>
 				<a class="navbar-brand" href="#">沿海网格化显示系统</a>
 			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<form class="navbar-form navbar-left">
+					<div class="form-group">
+						<input id="search_code" type="text" class="form-control" placeholder="网格编号">
+					</div>
+					<button onclick="my_onclick()" class="btn btn-default">搜索</button>
+				</form>
+			</div>
 		</nav>
 		<div id="main" style="">
 			<div id="content" class="col-md-12 mycol_disPadding">
@@ -293,10 +301,18 @@
 					return value_color;
 				}
 
+				var features_arr = [];
+
 				/*
 				 * 叠加shp文件，以geoJson的方式读取
+				 * data是读取的geoJson数据
 				 */
 				function addShape(dict, data, feature, layer, map) {
+					$.each(data.features, function(index, obj) {
+						features_arr.push(obj);
+
+					});
+					data.features
 					//!!!注意此处添加了shape文件后，由于是读取的geojson，文件，通过L.geoJSON后，需要将返回值赋值给geojson
 					geojson = L.geoJSON(data, {
 						style: function(feature) {
@@ -325,6 +341,39 @@
 					}).addTo(map);
 				}
 
+				/*
+				 * 根据code从features_arr中找到指定的Feature，并聚焦到指定区域
+				 * 
+				 * 
+				 */
+				function search(code) {
+					var target_feature = null;
+					$.map(features_arr, function(obj, index) {
+						if(obj.properties.Code == code) {
+							target_feature = obj;
+						}
+					});
+					//将feature转成LatLngBounds
+
+					var corner1 = L.latLng(40.712, -74.227),
+						corner2 = L.latLng(40.774, -74.125),
+						bounds = L.latLngBounds(corner1, corner2);
+
+					mymap.fitBounds(bounds);
+				}
+
+				function my_onclick() {
+					//alert("测试");
+					//					alert($("#search_code").val());
+					//					search($("#search_code").val());
+					
+//					mymap.fitBounds([
+//						[20.5, 110],
+//						[20.05, 109]
+//					]);
+//					alert("测试");
+				}
+
 				function highlightFeature(e) {
 					var layer = e.target;
 
@@ -350,10 +399,11 @@
 				//点击是拉近到当前选中的区域的所在位置，并等比例放大
 				function zoomToFeature(e) {
 					//1 垃圾视角，并等比例放大
+					//getBounds() return一个 LatLngBounds
 					mymap.fitBounds(e.target.getBounds());
 					var code = e.target.feature.properties.Code;
 					//2 弹出modal框，加载
-					loaderrmsg();
+					//					loaderrmsg();
 				}
 
 				function onEachFeature(feature, layer) {
@@ -644,8 +694,11 @@
 						//						var temp=L.geoJSON(temp_geojson);
 
 						addShape(dict_north, temp_geojson, null, null, mymap);
-						$.map(temp_geojson.features, function(val,index) {
-							features_arr.append({"code":val.properties.Code,"latlon":val.geometry.bbox});
+						$.map(temp_geojson.features, function(val, index) {
+							features_arr.append({
+								"code": val.properties.Code,
+								"latlon": val.geometry.bbox
+							});
 						});
 						console.log(features_arr.count());
 						//						geojson = L.geoJson(temp_geojson, {
@@ -695,6 +748,11 @@
 
 					var bar = initbar();
 					loadbar(bar, arr_keys_forecastextreme, arr_values_forecastextreme);
+					
+					mymap.fitBounds([
+						[20.5, 110],
+						[20.05, 109]
+					]);
 				})
 			</script>
 			<style>
