@@ -133,12 +133,12 @@
 				<a class="navbar-brand" href="#">沿海网格化显示系统</a>
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<form class="navbar-form navbar-left">
+				<div class="navbar-form navbar-left">
 					<div class="form-group">
 						<input id="search_code" type="text" class="form-control" placeholder="网格编号">
 					</div>
 					<button onclick="my_onclick()" class="btn btn-default">搜索</button>
-				</form>
+				</div>
 			</div>
 		</nav>
 		<div id="main" style="">
@@ -363,15 +363,17 @@
 				}
 
 				function my_onclick() {
+					var temp_code = $("#search_code").val();
+					showAndPointTargetArea(temp_code);
 					//alert("测试");
 					//					alert($("#search_code").val());
 					//					search($("#search_code").val());
-					
-//					mymap.fitBounds([
-//						[20.5, 110],
-//						[20.05, 109]
-//					]);
-//					alert("测试");
+
+					//					mymap.fitBounds([
+					//						[20.5, 110],
+					//						[20.05, 109]
+					//					]);
+					//					alert("测试");
 				}
 
 				function highlightFeature(e) {
@@ -679,13 +681,76 @@
 					bar.setOption(option_mybar);
 				}
 
+				/*
+				 * 根据指定的code的key找到对应的code，并打点
+				 * 
+				 */
+				function showAndPointTargetArea(code) {
+					//每次打点之前，需要先判断point_marker是否为空，为空需要先去掉
+					if(point_marker!=null){
+						mymap.removeLayer(point_marker);
+					}					
+					
+					var target_area = null;
+					$.each(features_arr, function(index, val) {
+						if(val.properties.Code == code) {
+							
+							target_area = val;
+						}
+						//						index;
+					})
+					if(target_area != null) {
+						var latlon_arr=target_area.geometry.bbox;
+						/*
+						 * 119.12344000000051
+							25.263725000000193
+							119.5140380859375
+							25.621950149536133
+						 * lon：经度
+						 * lat：维度
+						 */
+						//计算中位点
+						var point_lat=(latlon_arr[1]+latlon_arr[3])/2;
+						var point_lon=(latlon_arr[0]+latlon_arr[2])/2;
+//						point_marker=L.marker([point_lon, point_lat]).addTo(mymap).bindPopup("I am a green leaf.");
+						point_marker = L.marker([point_lat, point_lon]).addTo(mymap).bindPopup("I am a green leaf.");
+						mymap.setView([point_lat, point_lon], 8);
+					}
+					
+				}
+				
+				var point_marker=null;
+				
 				$(function() {
 					dict_south = random_forecast("S", 51, 9);
 					dict_east = random_forecast("E", 85, 9);
 					dict_north = random_forecast("N", 77, 9);
 					var features_arr = [];
 					//var my_geojson;
+
+					//					var geojsonFeature = {
+					//						"type": "Feature",
+					//						"properties": {
+					//							"name": "Coors Field",
+					//							"amenity": "Baseball Stadium",
+					//							"popupContent": "This is where the Rockies play!"
+					//						},
+					//						"geometry": {
+					//							"type": "Point",
+					//							"coordinates": [20.5, 110]
+					//						}
+					//					};
+
+					//					L.geoJSON(geojsonFeature).addTo(mymap);
+
+//					var marker = L.marker([20.552936624325866, 111.65587504038206]).addTo(mymap).bindPopup("I am a green leaf.");
+					
+					
+
 					//貌似这个then是一个ajax请求，顺序执行时此处不会立即被执行
+					//					shp("files/north_marker.zip").then(function(temp_geojson) {
+					//
+					//					});
 					shp("files/north.zip").then(function(temp_geojson) {
 						//						geojson = temp_geojson;
 						//do something with your geojson
@@ -748,7 +813,7 @@
 
 					var bar = initbar();
 					loadbar(bar, arr_keys_forecastextreme, arr_values_forecastextreme);
-					
+
 					mymap.fitBounds([
 						[20.5, 110],
 						[20.05, 109]
