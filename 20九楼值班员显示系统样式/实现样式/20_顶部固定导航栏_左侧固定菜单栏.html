@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="application/javascript" src="js/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.css" />
+		<style type="text/css">
+			html,
+			body {
+				height: 100%;
+				margin: 0px;
+				padding: 0px;
+				/*background-color: #BBBBBB;*/
+				padding-top: 25px;
+			}
+			
+			#main {
+				height: 100%;
+			}
+			
+			#nav {
+				height: 100%;
+				
+				/*background: #00B83F;*/
+			}
+			
+			#content {
+				background-color: #F5E79E;
+				height: 100%;
+			}
+			
+			#ul_nav {
+				position: absolute;
+				height: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" style="margin-bottom: 0px;">
+			<div class="navbar-header" id="my_navbar">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse">
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+				<a class="navbar-brand" href="#">预报中心九楼值班系统</a>
+			</div>
+		</nav>
+		<div id="main" style="">
+			<div id="nav" class="col-md-2" style="padding-left: 0px;">
+				<ul id="ul_nav" class="nav nav-pills nav-stacked col-md-12">
+					<li class="col-md-12">
+						<!--data-toggle，用于告诉 js需要对按钮做什么-->
+						<!--collapse即是折叠-->
+						<!--<a href="#sub1" data-toggle="collapse">系统功能</a>-->
+						<!--data-target指示要切换到哪一个元素-->
+						<a href="#" data-toggle="collapse" data-target="#sub1">当前部门&nbsp;<span class="glyphicon glyphicon-cog"></span></a>
+						<ul id="sub1" class="nav collapse">
+							<li>
+								<a href="#"><span class="glyphicon glyphicon-user"></span>&nbsp;XX1组</a>
+							</li>
+							<li>
+								<a href="#"><span class="glyphicon glyphicon-user"></span>&nbsp;XX2组</a>
+							</li>
+							
+						</ul>
+					</li>					
+				</ul>
+			</div>
+
+			<div id="content" class="col-md-9">content</div>
+		</div>
+
+	</body>
+
+</html>
