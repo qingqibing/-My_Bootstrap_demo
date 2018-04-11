@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<script src="js/jquery-3.2.1.js"></script>
+	<script src="js/common/moment.js"></script>
+
+	<link href="css/bootstrap.css" rel="stylesheet" />
+	<!-- <link href="css/bootstrap-theme.css" rel="stylesheet" /> -->
+	<link href="js/bootstrap-table.css" rel="stylesheet" />
+	<script src="js/bootstrap.js"></script>
+
+	<!--加入bootstrap的js文件-->
+	<script src="js/bootstrap-table.js"></script>
+
+	<link href="js/editable/css/bootstrap-editable.css" rel="stylesheet" />
+	<script src="js/editable/js/bootstrap-editable.js"></script>
+	<script src="js/common/dateFormart.js"></script>
+	<!-- <script src="js/editable/js/bootstrap-table-editable.js"></script> -->
+	<style>
+		html,body{
+			/* background: linear-gradient(45deg,
+			#fb3 25%, #58a 0,#58a 50%,
+			#fb3 0, #58a 75%,#58a 0);
+			background-size:30px 30px; */
+			
+
+
+			/* background: linear-gradient(45deg, 
+			#fb3 25%, #58a 0, #58a 50%, 
+			#fb3 0, #fb3 75%, #58a 0);  */
+			/* background: linear-gradient(blue,red);  */
+			/* background: linear-gradient(to top right,blue,red);  */
+			/* background:linear-gradient(90deg,yellow 0%,blue 50%,yellow 75%) */
+
+			/* 从位置0处开始，填充黄色，一直渐变到位置75%处，填充蓝色
+				角度为90度，相当于水平
+			 */
+			/* background:linear-gradient(90deg,yellow 0%,blue 75%) */
+
+			background:linear-gradient(80deg,red 30%,orange 10%,yellow 60%,blue 40%);
+			/* background-size: 300px 300px; */
+		}
+	</style>
+	<script type="application/javascript">
+		$(function () {
+			
+		});
+	</script>
+</head>
+
+<body>
+	<div class="container">
+		
+		<div class="panel-body" style="padding-bottom:0px;">
+			<div class="panel panel-primary">
+				<div class="panel-heading">查询条件</div>
+				<div class="panel-body">
+					<form id="formSearch" class="form-horizontal">
+						<div class="form-group" style="margin-top:15px">
+							<label class="control-label col-sm-1" for="txt_search_departmentname">姓名</label>
+							<div class="col-sm-2">
+								<input type="text" class="form-control" id="txt_search_departmentname">
+							</div>
+							<label class="control-label col-sm-1" for="txt_search_departmentname">组名</label>
+							<div class="col-sm-2">
+								<input type="text" class="form-control" id="txt_search_departmentname">
+							</div>
+							<label class="control-label col-sm-1" for="txt_search_statu">日期</label>
+							<div class="col-sm-2">
+								<input type="text" class="form-control" id="txt_search_statu">
+							</div>
+							<div class="col-sm-4 col-md-2" style="text-align:left;">
+								<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+
+		</div>
+		
+</body>
+
+</html>
