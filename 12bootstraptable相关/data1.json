@@ -1,0 +1,26 @@
+[
+    {
+        
+        "UserName": "值班员A",
+        "Age": "18",
+        "DutyDate": "2018/4/10",
+        "DeptId":"1",
+        "Hobby":"游泳"
+    },
+    {
+        
+        "UserName": "值班员B",
+        "Age": "18",
+        "DutyDate": "2018/4/11",
+        "DeptId":"研发部",
+        "Hobby":"游泳"
+    },
+    {
+        
+        "UserName": "值班员C",
+        "Age": "18",
+        "DutyDate": "2018/4/11",
+        "DeptId":"研发部",
+        "Hobby":"游泳"
+    }
+]

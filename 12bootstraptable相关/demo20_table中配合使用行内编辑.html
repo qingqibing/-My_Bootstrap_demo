@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<script src="js/jquery-3.2.1.js"></script>
+	<script src="js/common/moment.js"></script>
+
+	<link href="css/bootstrap.css" rel="stylesheet" />
+	<!-- <link href="css/bootstrap-theme.css" rel="stylesheet" /> -->
+	<link href="js/bootstrap-table.css" rel="stylesheet" />
+	<script src="js/bootstrap.js"></script>
+
+	<!--加入bootstrap的js文件-->
+	<script src="js/bootstrap-table.js"></script>
+
+	<link href="js/editable/css/bootstrap-editable.css" rel="stylesheet" />
+	<script src="js/editable/js/bootstrap-editable.js"></script>
+	<script src="js/common/dateFormart.js"></script>
+	<!-- <script src="js/editable/js/bootstrap-table-editable.js"></script> -->
+
+	<script type="application/javascript">
+		$(function () {
+			// $.fn.editable.defaults.mode = 'inline';
+			var curRow = {};
+
+			$(function () {
+				//加载table
+				$("#tb_user").bootstrapTable({
+					toolbar: "#toolbar",
+					idField: "Id",
+					pagination: true,
+					showRefresh: true,
+					search: true,
+					clickToSelect: true,
+					queryParams: function (param) {
+						return {};
+					},
+					url: "data1.json",
+					columns: [{
+						checkbox: true
+					}, {
+						field: "UserName",
+						title: "用户名",
+						formatter: function (value, row, index) {
+							var result = "<a href=\"#\" class=\"my_text\" name=\"UserName\" data-type=\"text\" data-pk=\"" + row.Id + "\"mode=\"inline\" data-title=\"用户名\">" + value + "</a>";
+							return result;
+						}
+
+
+					},
+					{
+						field: "DeptId",
+						title: "部门",
+						// editable: {
+						// 	type: 'select',
+						// 	title: '部门',
+						// 	source: [{ value: "1", text: "研发部" }, { value: "2", text: "销售部" }, { value: "3", text: "行政部" }]
+						// },
+						formatter: function (value, row, index) {
+							var reuslt = "<a href=\"#\" class=\"my_select\">" + value + "</a>";
+							// console.log(reuslt);
+							// var obj=value;
+							return reuslt;
+						}
+					}, {
+						field: "DutyDate",
+						title: "值班日期",
+						formatter: function (value, row, index) {
+							
+							//使用monment.js完成时间的格式化
+							var date=moment(value,"YYYY/MM/DD");
+							var date_str=date.format("YYYY-MM-DD");
+							
+							var result="<a href=\"#\" class=\"my_dutydate\" id=\"dob\" data-type=\"combodate\" data-value=\""+date_str+"\" data-format=\"YYYY-MM-DD\" data-viewformat=\"YYYY-MM-DD\" data-template=\"YYYY /MMM / D \" data-pk=\"1\"  data-title=\"请选择值班日期\">"+date_str+"</a>";
+							// var result="<a href=\"#\"  >"+value+"</a>";
+							// result="123123";
+							
+							console.log(result);
+							return result;
+							// return date.format("yyyy-MM-dd");
+						},
+						// editable: {
+						// 	type: 'date',
+						// 	title: '日期'
+						// }
+					}],
+					onClickRow: function (row, $element) {
+						curRow = row;
+					},
+					//加载成功后执行
+					onLoadSuccess: function (aa, bb, cc) {
+						$(".my_text").editable({
+							url: function (params) {
+								var sName = $(this).attr("name");
+								curRow[sName] = params.value;
+								$.ajax({
+									type: 'POST',
+									url: "/Editable/Edit",
+									data: curRow,
+									dataType: 'JSON',
+									success: function (data, textStatus, jqXHR) {
+										alert('保存成功！');
+									},
+									error: function () { alert("error"); }
+								});
+							},
+							type: 'text',
+							mode: "inline", 
+						});
+
+						$('.my_select').editable({
+							type: "select",              //编辑框的类型。支持text|textarea|select|date|checklist等
+							source: [{ value: 1, text: "主班" }, { value: 2, text: "副班" }, { value: 3, text: "行政班" }],
+							title: "选择部门",           //编辑框的标题
+							disabled: false,           //是否禁用编辑
+							emptytext: "空文本",       //空值的默认文本
+							mode: "inline",            //编辑框的模式：支持popup和inline两种模式，默认是popup            
+						});
+						$('.my_dutydate').editable({
+							type: "date",              //编辑框的类型。支持text|textarea|select|date|checklist等
+							
+							disabled: false,           //是否禁用编辑
+							emptytext: "空文本",       //空值的默认文本
+							mode: "inline",            //编辑框的模式：支持popup和inline两种模式，默认是popup            
+						});
+					},
+				});
+
+
+
+
+			});
+
+
+		});
+	</script>
+</head>
+
+<body>
+	<div class="container">
+		<table id="tb_user"></table>
+		<a href="http://www.cnblogs.com/landeanfen/p/5821192.html">网上实例</a>
+
+	</div>
+
+	<!-- <div class="container">
+			
+	
+	</div> -->
+	<!-- /container -->
+</body>
+
+</html>
