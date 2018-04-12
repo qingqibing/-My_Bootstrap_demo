@@ -5,41 +5,52 @@
 <head>
 	<meta charset="utf-8" />
 	<title></title>
-	<script src="js/jquery-3.2.1.js"></script>
-	<script src="js/common/moment.js"></script>
 
-	<link href="css/bootstrap.css" rel="stylesheet" />
+
+	<!-- <link href="css/bootstrap.css" rel="stylesheet" /> -->
+	<link href="css/bootstrap.css" rel="stylesheet" media="screen">
 	<!-- <link href="css/bootstrap-theme.css" rel="stylesheet" /> -->
 	<link href="js/bootstrap-table.css" rel="stylesheet" />
-	<script src="js/bootstrap.js"></script>
+	<link href="js/editable/css/bootstrap-editable.css" rel="stylesheet" />
+	<!-- 注意这个样式（非min.css的文件）样式会有问题？？？？ -->
+	<!-- <link src="js/datetime/bootstrap-datetimepicker.css" rel="stylesheet"/> -->
+	<link href="js/datetime/bootstrap-datetimepicker.min.css" rel="stylesheet">
+	<!-- <link href="js/datetime/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"> -->
 
+	<script src="js/jquery-3.2.1.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/common/moment.js"></script>
 	<!--加入bootstrap的js文件-->
 	<script src="js/bootstrap-table.js"></script>
-
-	<link href="js/editable/css/bootstrap-editable.css" rel="stylesheet" />
 	<script src="js/editable/js/bootstrap-editable.js"></script>
 	<script src="js/common/dateFormart.js"></script>
+	<script src="js/datetime/bootstrap-datetimepicker.js"></script>
 	<!-- <script src="js/editable/js/bootstrap-table-editable.js"></script> -->
 	<style>
-		html body {
+		html,
+		body {
+			/* background: linear-gradient(45deg,
+			#fb3 25%, #58a 0,#58a 50%,
+			#fb3 0, #58a 75%,#58a 0);
+			background-size:30px 30px; */
+			/* background: linear-gradient(45deg, 
+			#fb3 25%, #58a 0, #58a 50%, 
+			#fb3 0, #fb3 75%, #58a 0);  */
+			/* background: linear-gradient(blue,red);  */
+			/* background: linear-gradient(to top right,blue,red);  */
+			/* background:linear-gradient(90deg,yellow 0%,blue 50%,yellow 75%) */
+			/* 从位置0处开始，填充黄色，一直渐变到位置75%处，填充蓝色
+				角度为90度，相当于水平
+			 */
+			/* background:linear-gradient(90deg,yellow 0%,blue 75%) */
+			/* background:linear-gradient(80deg,red 30%,orange 10%,yellow 60%,blue 40%); */
 			background: linear-gradient(45deg, rgb(74, 74, 156) 50%, rgb(46, 37, 158) 50%);
 			height: 100%;
-		}
-
-		#tb_user {
-			/* background: rgb(82, 82, 177); */
-		}
-
-		#table_parent {
-			/* background: rgb(201, 201, 212); */
+			/* background-size:100% 500px; */
+			/* background-size: 300px 300px; */
 		}
 	</style>
 	<script type="application/javascript">
-		// $(function () {
-		// 	// $.fn.editable.defaults.mode = 'inline';
-		// 	var curRow = {};
-		// });
-
 		$(function () {
 			//加载table
 			$("#tb_user").bootstrapTable({
@@ -54,33 +65,12 @@
 					return {};
 				},
 				url: "data1.json",
-				columns: [{
+				columns: [
+					
+					[{
 					checkbox: true
-				}, {
-					field: "UserName",
-					title: "用户名",
-					formatter: function (value, row, index) {
-						var result = "<a href=\"#\" class=\"my_text\" name=\"UserName\" data-type=\"text\" data-pk=\"" + row.Id + "\"mode=\"inline\" data-title=\"用户名\">" + value + "</a>";
-						return result;
-					}
-
-
 				},
 				{
-					field: "DeptId",
-					title: "部门",
-					// editable: {
-					// 	type: 'select',
-					// 	title: '部门',
-					// 	source: [{ value: "1", text: "研发部" }, { value: "2", text: "销售部" }, { value: "3", text: "行政部" }]
-					// },
-					formatter: function (value, row, index) {
-						var reuslt = "<a href=\"#\" class=\"my_select\">" + value + "</a>";
-						// console.log(reuslt);
-						// var obj=value;
-						return reuslt;
-					}
-				}, {
 					field: "DutyDate",
 					title: "值班日期",
 					formatter: function (value, row, index) {
@@ -96,12 +86,27 @@
 						console.log(result);
 						return result;
 						// return date.format("yyyy-MM-dd");
-					},
+					}
+				},
+				
+				{
+					field: "UserName",
+					title: "用户名",
+					formatter: function (value, row, index) {
+						var reuslt = "<a href=\"#\" class=\"my_select\">" + value + "</a>";
+						// console.log(reuslt);
+						// var obj=value;
+						return reuslt;
+					}
+
+
+				},
+
 					// editable: {
 					// 	type: 'date',
 					// 	title: '日期'
 					// }
-				}],
+				],
 				onClickRow: function (row, $element) {
 					curRow = row;
 				},
@@ -128,8 +133,8 @@
 
 					$('.my_select').editable({
 						type: "select",              //编辑框的类型。支持text|textarea|select|date|checklist等
-						source: [{ value: 1, text: "主班" }, { value: 2, text: "副班" }, { value: 3, text: "行政班" }],
-						title: "选择部门",           //编辑框的标题
+						source: [{ value: 1, text: "值班员A" }, { value: 2, text: "值班员B" }, { value: 3, text: "值班员C" }],
+						title: "选择人员",           //编辑框的标题
 						disabled: false,           //是否禁用编辑
 						emptytext: "空文本",       //空值的默认文本
 						mode: "inline",            //编辑框的模式：支持popup和inline两种模式，默认是popup            
@@ -143,16 +148,29 @@
 					});
 				},
 			});
-
+		init_datetime();
 
 
 
 		});
+		function init_datetime() {
+			$('.form_date').datetimepicker({
+				language: 'fr',
+				weekStart: 1,
+				todayBtn: 1,
+				autoclose: 1,
+				todayHighlight: 1,
+				startView: 2,
+				minView: 2,
+				forceParse: 0
+			});
+		}
 	</script>
 </head>
 
 <body>
 	<div class="container">
+
 		<div class="panel-body" style="padding-bottom:0px;">
 			<div class="panel panel-primary">
 				<div class="panel-heading">查询条件</div>
@@ -161,15 +179,39 @@
 						<div class="form-group" style="margin-top:15px">
 							<label class="control-label col-sm-1" for="txt_search_departmentname">姓名</label>
 							<div class="col-sm-2">
-								<input type="text" class="form-control" id="txt_search_departmentname">
+								<select class="form-control">
+									<option>值班员A</option>
+									<option>值班员B</option>
+								</select>
 							</div>
 							<label class="control-label col-sm-1" for="txt_search_departmentname">组名</label>
 							<div class="col-sm-2">
-								<input type="text" class="form-control" id="txt_search_departmentname">
+								<select class="form-control">
+									<option>风暴潮</option>
+									<option>海浪</option>
+								</select>
 							</div>
 							<label class="control-label col-sm-1" for="txt_search_statu">日期</label>
 							<div class="col-sm-2">
-								<input type="text" class="form-control" id="txt_search_statu">
+								<!-- <input type="text" class="form-control" id="txt_search_statu"> -->
+								<!-- <div class="input-group date form_datetime col-md-12" data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p"
+								 data-link-field="dtp_input1">
+									<input class="form-control" size="16" type="text" value="" readonly>
+									<span class="input-group-addon">
+										<span class="glyphicon glyphicon-th"></span>
+									</span>
+								</div> -->
+								<div class="form-group">
+									<div class="input-group date form_date col-md-12" data-date="" data-date-format="yyyy MM dd  " data-link-field="dtp_input2"
+									 data-link-format="yyyy-mm-dd">
+										<input class="form-control" size="16" type="text" value="" readonly>
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+									<input type="hidden" id="dtp_input2" value="" />
+									<br/>
+								</div>
 							</div>
 							<div class="col-sm-4 col-md-2" style="text-align:left;">
 								<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
@@ -203,12 +245,6 @@
 			</div>
 		</div>
 
-
-		<!-- <div class="container">
-			
-	
-	</div> -->
-		<!-- /container -->
 </body>
 
 </html>

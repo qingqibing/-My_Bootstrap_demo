@@ -21,25 +21,34 @@
 	<script src="js/common/dateFormart.js"></script>
 	<!-- <script src="js/editable/js/bootstrap-table-editable.js"></script> -->
 	<style>
-		html body {
-			background: linear-gradient(45deg, rgb(74, 74, 156) 50%, rgb(46, 37, 158) 50%);
+		html,body{
+			/* background: linear-gradient(45deg,
+			#fb3 25%, #58a 0,#58a 50%,
+			#fb3 0, #58a 75%,#58a 0);
+			background-size:30px 30px; */
+			
+
+
+			/* background: linear-gradient(45deg, 
+			#fb3 25%, #58a 0, #58a 50%, 
+			#fb3 0, #fb3 75%, #58a 0);  */
+			/* background: linear-gradient(blue,red);  */
+			/* background: linear-gradient(to top right,blue,red);  */
+			/* background:linear-gradient(90deg,yellow 0%,blue 50%,yellow 75%) */
+
+			/* 从位置0处开始，填充黄色，一直渐变到位置75%处，填充蓝色
+				角度为90度，相当于水平
+			 */
+			/* background:linear-gradient(90deg,yellow 0%,blue 75%) */
+
+			/* background:linear-gradient(80deg,red 30%,orange 10%,yellow 60%,blue 40%); */
+			background:linear-gradient(45deg,rgb(74, 74, 156) 50%,rgb(46, 37, 158) 50%); 
 			height: 100%;
-		}
-
-		#tb_user {
-			/* background: rgb(82, 82, 177); */
-		}
-
-		#table_parent {
-			/* background: rgb(201, 201, 212); */
+			/* background-size:100% 500px; */
+			/* background-size: 300px 300px; */
 		}
 	</style>
 	<script type="application/javascript">
-		// $(function () {
-		// 	// $.fn.editable.defaults.mode = 'inline';
-		// 	var curRow = {};
-		// });
-
 		$(function () {
 			//加载table
 			$("#tb_user").bootstrapTable({
@@ -148,11 +157,13 @@
 
 
 		});
+	
 	</script>
 </head>
 
 <body>
 	<div class="container">
+		
 		<div class="panel-body" style="padding-bottom:0px;">
 			<div class="panel panel-primary">
 				<div class="panel-heading">查询条件</div>
@@ -202,13 +213,7 @@
 				</div>
 			</div>
 		</div>
-
-
-		<!-- <div class="container">
-			
-	
-	</div> -->
-		<!-- /container -->
+		
 </body>
 
 </html>

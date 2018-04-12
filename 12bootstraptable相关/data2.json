@@ -1,0 +1,21 @@
+[
+    {
+        
+        "UserName": "值班员A",
+        "DutyDate": "2018/4/1",
+        "DeptId":"1"
+    },
+    {
+        
+        "UserName": "值班员B",
+        "DutyDate": "2018/4/2",
+        "DeptId":"1"
+    },
+    {
+        
+        "UserName": "值班员C",
+        "DutyDate": "2018/4/3",
+        "DeptId":"1"
+    }
+    
+]
