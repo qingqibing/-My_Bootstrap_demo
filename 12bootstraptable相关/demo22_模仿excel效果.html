@@ -61,51 +61,68 @@
 				search: true,
 				// striped: true,
 				clickToSelect: true,
+				striped: true,     //使表格带有条纹  
 				queryParams: function (param) {
 					return {};
 				},
-				url: "data1.json",
+				url: "data2.json",
 				columns: [
-					
-					[{
-					checkbox: true
-				},
-				{
-					field: "DutyDate",
-					title: "值班日期",
-					formatter: function (value, row, index) {
 
-						//使用monment.js完成时间的格式化
-						var date = moment(value, "YYYY/MM/DD");
-						var date_str = date.format("YYYY-MM-DD");
+					[
+						// {
+						// 	checkbox: true
+						// },
+						{
+							field: "DutyDate",
+							title: "值班日期",
+							rowspan: 2,
+							formatter: function (value, row, index) {
 
-						var result = "<a href=\"#\" class=\"my_dutydate\" id=\"dob\" data-type=\"combodate\" data-value=\"" + date_str + "\" data-format=\"YYYY-MM-DD\" data-viewformat=\"YYYY-MM-DD\" data-template=\"YYYY /MMM / D \" data-pk=\"1\"  data-title=\"请选择值班日期\">" + date_str + "</a>";
-						// var result="<a href=\"#\"  >"+value+"</a>";
-						// result="123123";
+								//使用monment.js完成时间的格式化
+								var date = moment(value, "YYYY/MM/DD");
+								var date_str = date.format("YYYY-MM-DD");
 
-						console.log(result);
-						return result;
-						// return date.format("yyyy-MM-dd");
-					}
-				},
-				
-				{
-					field: "UserName",
-					title: "用户名",
-					formatter: function (value, row, index) {
-						var reuslt = "<a href=\"#\" class=\"my_select\">" + value + "</a>";
-						// console.log(reuslt);
-						// var obj=value;
-						return reuslt;
-					}
+								var result = "<a href=\"#\" class=\"my_dutydate\" id=\"dob\" data-type=\"combodate\" data-value=\"" + date_str + "\" data-format=\"YYYY-MM-DD\" data-viewformat=\"YYYY-MM-DD\" data-template=\"YYYY /MMM / D \" data-pk=\"1\"  data-title=\"请选择值班日期\">" + date_str + "</a>";
+								// var result="<a href=\"#\"  >"+value+"</a>";
+								// result="123123";
+
+								// console.log(result);
+								return result;
+								// return date.format("yyyy-MM-dd");
+							}
+						},
+						{
+							title: "组A",
+							rowspan: 1,
+							colspan:2
+						}
+					],
+					[
+						{
+							field: "MainUser",
+							title: "主班",
+							formatter: function (value, row, index) {
+								var reuslt = "<a href=\"#\" class=\"my_select\">" + value + "</a>";
+								// console.log(reuslt);
+								// var obj=value;
+								return reuslt;
+							}
 
 
-				},
+						},
+						{
+							field: "ViceUser",
+							title: "副班",
+							formatter: function (value, row, index) {
+								var reuslt = "<a href=\"#\" class=\"my_select\">" + value + "</a>";
+								// console.log(reuslt);
+								// var obj=value;
+								return reuslt;
+							}
 
-					// editable: {
-					// 	type: 'date',
-					// 	title: '日期'
-					// }
+
+						},
+					]
 				],
 				onClickRow: function (row, $element) {
 					curRow = row;
@@ -148,7 +165,7 @@
 					});
 				},
 			});
-		init_datetime();
+			init_datetime();
 
 
 
