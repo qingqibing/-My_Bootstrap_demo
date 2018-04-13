@@ -55,25 +55,29 @@
 			/* background: rgb(20, 20, 128) !important; */
 			/* font:rgb(195, 195, 206); */
 			color: rgb(77, 235, 247);
+			/* border: none; */
+			/* border:0; */
+			border-style: none;
 			/* border-color: rgb(46, 41, 41); */
 			/* 边框合并 */
 			/* 为何没有效果 */
 			/* border-collapse: collapse; */
 			/* cellspacing:0; */
 		}
-
+		
 		#tb_user tbody tr,
 		#tb_user tbody tr td {
 			background: rgb(20, 20, 128);
 		}
-
+		/* 设置边框颜色 */
 		#tb_user tr th,
 		#tb_user tr td {
-			border-color: rgb(129, 95, 156);
+			border-color: rgb(129, 95, 156，0.9);
 		}
+		
 
 		#tb_user thead {
-			background: rgb(46, 35, 206);
+			background: rgb(19, 8, 184);
 			color: rgb(255, 255, 255);
 		}
 
@@ -93,6 +97,24 @@
 		#tb_user tbody tr td:hover {
 			background: rgb(119, 113, 206);
 		}
+		
+
+		/* 设置panel-body的背景色 */
+		.table-parent-panel{
+			/* background: rgb(111, 134, 170); */
+			/* background-color: rgba(red, green, blue, alpha) */
+			background:  rgb(119, 113, 206,0.2);
+		}
+		/* .panel-body,
+		.pandel-body > panel{
+			background:  rgb(119, 113, 206,0.2);
+		} */
+		.panel-body > .panel{
+			background:  rgb(19, 8, 184,0.4);
+		}
+		.panel-body{
+			/* background:  rgb(119, 113, 206,0.2); */
+		}
 	</style>
 	<script type="application/javascript">
 		$(function () {
@@ -101,6 +123,8 @@
 				toolbar: "#toolbar",
 				idField: "Id",
 				pagination: true,
+				pageNumber:1,
+				pageSize:10,
 				showRefresh: true,
 				search: true,
 				// striped: true,
@@ -288,8 +312,8 @@
 		<div class="panel-body">
 			<div class="panel panel-primary">
 				<div class="panel-heading">排班详情</div>
-				<div class="panel-body">
-					<div class="btn-toolbar" role="toolbar">
+				<div class="panel-body table-parent-panel">
+					<div id="toolbar" class="btn-toolbar" role="toolbar">
 						<div class="btn-group" role="group">
 							<button id="btn_add" type="button" class="btn btn-success">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
@@ -304,7 +328,7 @@
 							</button>
 						</div>
 					</div>					
-					<div id="table_parent">
+					<div id="table_parent" >
 						<table id="tb_user"></table>
 					</div>
 				</div>
