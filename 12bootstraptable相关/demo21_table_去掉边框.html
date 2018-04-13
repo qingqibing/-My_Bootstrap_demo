@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<script src="js/jquery-3.2.1.js"></script>
+	<script src="js/common/moment.js"></script>
+
+	<link href="css/bootstrap.css" rel="stylesheet" />
+	<!-- <link href="css/bootstrap-theme.css" rel="stylesheet" /> -->
+	<link href="js/bootstrap-table.css" rel="stylesheet" />
+	<script src="js/bootstrap.js"></script>
+
+	<!--加入bootstrap的js文件-->
+	<script src="js/bootstrap-table.js"></script>
+
+	<link href="js/editable/css/bootstrap-editable.css" rel="stylesheet" />
+	<script src="js/editable/js/bootstrap-editable.js"></script>
+	<script src="js/common/dateFormart.js"></script>
+	<!-- <script src="js/editable/js/bootstrap-table-editable.js"></script> -->
+	<style>
+		#tb_user {
+			background: rgb(20, 20, 128);
+			/* font:rgb(195, 195, 206); */
+			color: rgb(77, 235, 247);
+			/* border-color: rgb(46, 41, 41); */
+			border: 1px solid #151515;
+			/* 边框合并 */
+			/* 为何没有效果 */
+			border-collapse: collapse;
+			/* cellspacing:0; */
+		}
+
+		#tb_user tr th,
+		#tb_user tr td {
+			border-color: rgb(129, 95, 156);
+		}
+
+		#tb_user thead {
+			background: rgb(46, 35, 206);
+			color: rgb(255, 255, 255);
+		}
+
+		#tb_user tbody a {
+			color: rgb(238, 238, 188);
+		}
+
+		#tb_user tbody>.selected {
+			/* background: rgb(119, 113, 206)  !important; */
+			/* background: rgb(119, 113, 206); */
+		}
+
+		#tb_user tbody>.selected>td {
+			/* background: rgb(119, 113, 206)  !important; */
+			background: rgb(119, 113, 206);
+		}
+
+		#tb_user tbody tr:hover {
+			background: rgb(119, 113, 206);
+
+		}	
+
+		#tb_test{
+			border: 0px solid #151515;
+		}
+	</style>
+	<script type="application/javascript">
+		$(function () {
+			// $.fn.editable.defaults.mode = 'inline';
+			var curRow = {};
+
+			$(function () {
+				//加载table
+				$("#tb_user").bootstrapTable({
+					toolbar: "#toolbar",
+					idField: "Id",
+					pagination: true,
+					showRefresh: true,
+					search: true,
+					// striped: true,
+					clickToSelect: true,
+					queryParams: function (param) {
+						return {};
+					},
+					url: "data1.json",
+					columns: [
+						{
+							checkbox: true
+						}
+						,
+						{
+							field: "UserName",
+							title: "用户名",
+							formatter: function (value, row, index) {
+								var result = "<a href=\"#\" class=\"my_text\" name=\"UserName\" data-type=\"text\" data-pk=\"" + row.Id + "\"mode=\"inline\" data-title=\"用户名\">" + value + "</a>";
+								return result;
+							}
+
+
+						},
+						{
+							field: "DeptId",
+							title: "部门",
+							formatter: function (value, row, index) {
+								var reuslt = "<a href=\"#\" class=\"my_select\">" + value + "</a>";
+								// console.log(reuslt);
+								// var obj=value;
+								return reuslt;
+							}
+						}, {
+							field: "DutyDate",
+							title: "值班日期",
+							formatter: function (value, row, index) {
+
+								//使用monment.js完成时间的格式化
+								var date = moment(value, "YYYY/MM/DD");
+								var date_str = date.format("YYYY-MM-DD");
+
+								var result = "<a href=\"#\" class=\"my_dutydate\" id=\"dob\" data-type=\"combodate\" data-value=\"" + date_str + "\" data-format=\"YYYY-MM-DD\" data-viewformat=\"YYYY-MM-DD\" data-template=\"YYYY /MMM / D \" data-pk=\"1\"  data-title=\"请选择值班日期\">" + date_str + "</a>";
+								// var result="<a href=\"#\"  >"+value+"</a>";
+								// result="123123";
+
+								console.log(result);
+								return result;
+								// return date.format("yyyy-MM-dd");
+							},
+							// editable: {
+							// 	type: 'date',
+							// 	title: '日期'
+							// }
+						}],
+					onClickRow: function (row, $element) {
+						curRow = row;
+					},
+					//加载成功后执行
+					onLoadSuccess: function (aa, bb, cc) {
+						$(".my_text").editable({
+							url: function (params) {
+								var sName = $(this).attr("name");
+								curRow[sName] = params.value;
+								$.ajax({
+									type: 'POST',
+									url: "/Editable/Edit",
+									data: curRow,
+									dataType: 'JSON',
+									success: function (data, textStatus, jqXHR) {
+										alert('保存成功！');
+									},
+									error: function () { alert("error"); }
+								});
+							},
+							type: 'text',
+							mode: "inline",
+						});
+
+						$('.my_select').editable({
+							type: "select",              //编辑框的类型。支持text|textarea|select|date|checklist等
+							source: [{ value: 1, text: "主班" }, { value: 2, text: "副班" }, { value: 3, text: "行政班" }],
+							title: "选择部门",           //编辑框的标题
+							disabled: false,           //是否禁用编辑
+							emptytext: "空文本",       //空值的默认文本
+							mode: "inline",            //编辑框的模式：支持popup和inline两种模式，默认是popup            
+						});
+						$('.my_dutydate').editable({
+							type: "date",              //编辑框的类型。支持text|textarea|select|date|checklist等
+
+							disabled: false,           //是否禁用编辑
+							emptytext: "空文本",       //空值的默认文本
+							mode: "inline",            //编辑框的模式：支持popup和inline两种模式，默认是popup            
+						});
+					},
+				});
+
+
+
+
+			});
+
+
+		});
+	</script>
+
+</head>
+
+<body>
+	<div class="container">
+		<div id="toolbar" class="btn-group">
+			<button id="btn_add" type="button" class="btn btn-success">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+			</button>
+			<!-- <button id="btn_edit" type="button" class="btn btn-default">
+				<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+			</button> -->
+			<button id="btn_delete" type="button" class="btn btn-danger">
+				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+			</button>
+		</div>
+		<table id="tb_user"></table>
+		<table id="tb_test">
+			<tr><td>内容</td><td>内容</td><td>内容</td><td>内容</td><td>内容</td></tr>
+			<tr><td>内容</td><td>内容</td><td>内容</td><td>内容</td><td>内容</td></tr>
+			<tr><td>内容</td><td>内容</td><td>内容</td><td>内容</td><td>内容</td></tr>
+			<tr><td>内容</td><td>内容</td><td>内容</td><td>内容</td><td>内容</td></tr>
+		</table>
+	</div>
+</body>
+
+</html>
