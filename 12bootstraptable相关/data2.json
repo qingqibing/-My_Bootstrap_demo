@@ -1,20 +1,20 @@
 [
     {
-        
+        "id":"1001",
         "DutyDate": "2018/4/1",
         "DeptId":"1",
         "MainUser":"值班员A",
         "ViceUser":"值班员B"
     },
     {
-        
+        "id":"1002",
         "DutyDate": "2018/4/2",
         "DeptId":"1",
         "MainUser":"值班员A",
         "ViceUser":"值班员B"
     },
     {
-        
+        "id":"1003",
         "DutyDate": "2018/4/3",
         "DeptId":"1",
         "MainUser":"值班员A",
