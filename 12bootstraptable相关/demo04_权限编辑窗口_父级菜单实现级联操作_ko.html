@@ -2,343 +2,343 @@
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
-	<head>
-		<meta charset="utf-8" />
-		<title></title>
-		<script src="js/jquery-3.2.1.js"></script>
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<script src="js/jquery-3.2.1.js"></script>
 
-		<link href="css/bootstrap.css" rel="stylesheet" />
-		<link href="css/bootstrap-theme.css" rel="stylesheet" />
-		<!--当列头出现两个的时候说明没有引用猎头的css文件，此处需要注意-->
-		<link href="js/bootstrap-table.css" rel="stylesheet" />
+	<link href="css/bootstrap.css" rel="stylesheet" />
+	<link href="css/bootstrap-theme.css" rel="stylesheet" />
+	<!--当列头出现两个的时候说明没有引用猎头的css文件，此处需要注意-->
+	<link href="js/bootstrap-table.css" rel="stylesheet" />
 
-		<!--然后再引入flatui的样式-->
-		<link href="css/flat-ui.css" rel="stylesheet">
-		<!--引入ico文件-->
-		<link rel="shortcut icon" href="img/favicon.ico">
+	<!--然后再引入flatui的样式-->
+	<link href="css/flat-ui.css" rel="stylesheet">
+	<!--引入ico文件-->
+	<link rel="shortcut icon" href="img/favicon.ico">
 
-		<!--引入bootstrap switch样式-->
-		<!--<link href="css/bootstrap-switch.css" rel="stylesheet">-->
+	<!--引入bootstrap switch样式-->
+	<!--<link href="css/bootstrap-switch.css" rel="stylesheet">-->
 
-		<script src="js/bootstrap.js"></script>
-		<script src="js/flat-ui.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/flat-ui.js"></script>
 
-		<!--引入boostrap-swithc js文件-->
-		<!--<script src="js/bootstrap-switch.js"></script>-->
+	<!--引入boostrap-swithc js文件-->
+	<!--<script src="js/bootstrap-switch.js"></script>-->
 
-		<script src="flatui/docs/assets/js/application.js"></script>
-		<!--<link href="css/square/red.css" rel="stylesheet">-->
-		<script src="js/icheck.js"></script>
-		<!--加入bootstrap的js文件-->
-		<script src="js/bootstrap-table.js"></script>
-		<script src="js/knockout-3.4.2.debug.js"></script>
-		<style type="text/css">
-			.myrow {
-				margin-bottom: 20px;
-				padding-right: 0px;
-			}
-			
-			.select {
-				position: relative;
-				display: inline-block;
-				vertical-align: top;
-				min-width: 50px;
-				width: auto;
-			}
-		</style>
-		<script type="application/javascript">
-			//菜单对象
-			var Menu = function(id, name, pid) {
-				this.id = id;
-				this.name = name;
-				this.pid = pid;
-			}
-			
-			var Menu_Model=function(list_father,list_son){
-				this.list_father=list_father;
-				this.list_son=list_son;
-			}
-			
-			var myViewModel = function(list_father,list_son) {
-				self = this;
-				self.Menu = ko.observable();
-//				self.FatherMenuList = ko.observableArray([
-//					new Menu(1, "父权限", 0)
-//
-//				])
-//				self.SonMenuList = ko.observableArray([
-//					new Menu(2, "子权限", 1)
-//				])
-				
-				self.FatherMenuList = ko.observableArray(list_father);
-				self.SonMenuList = ko.observableArray(list_son);
+	<script src="flatui/docs/assets/js/application.js"></script>
+	<!--<link href="css/square/red.css" rel="stylesheet">-->
+	<script src="js/icheck.js"></script>
+	<!--加入bootstrap的js文件-->
+	<script src="js/bootstrap-table.js"></script>
+	<script src="js/knockout-3.4.2.debug.js"></script>
+	<style type="text/css">
+		.myrow {
+			margin-bottom: 20px;
+			padding-right: 0px;
+		}
 
-				self.CurrentFatherList = ko.computed(function() {
-					return ko.utils.arrayFilter(self.SonMenuList(), function(son) {
-//						若当前选中的父节点存在子节点,则显示子节点下拉框,若不存在则不显示
-						if(son.pid == self.Menu())
-						{
-							$("#sonMenuSelect").slideDown("slow");
-							return true;
-						}
-//						当前选中的父节点不存在子节点,隐藏子节点的下拉框
-						$("#sonMenuSelect").slideUp("slow");
-						return false;
-					})
+		.select {
+			position: relative;
+			display: inline-block;
+			vertical-align: top;
+			min-width: 50px;
+			width: auto;
+		}
+	</style>
+	<script type="application/javascript">
+		//菜单对象
+		var Menu = function (id, name, pid) {
+			this.id = id;
+			this.name = name;
+			this.pid = pid;
+		}
+
+		var Menu_Model = function (list_father, list_son) {
+			this.list_father = list_father;
+			this.list_son = list_son;
+		}
+
+		var myViewModel = function (list_father, list_son) {
+			self = this;
+			self.Menu = ko.observable();
+			//				self.FatherMenuList = ko.observableArray([
+			//					new Menu(1, "父权限", 0)
+			//
+			//				])
+			//				self.SonMenuList = ko.observableArray([
+			//					new Menu(2, "子权限", 1)
+			//				])
+
+			self.FatherMenuList = ko.observableArray(list_father);
+			self.SonMenuList = ko.observableArray(list_son);
+
+			self.CurrentFatherList = ko.computed(function () {
+				return ko.utils.arrayFilter(self.SonMenuList(), function (son) {
+					//						若当前选中的父节点存在子节点,则显示子节点下拉框,若不存在则不显示
+					if (son.pid == self.Menu()) {
+						$("#sonMenuSelect").slideDown("slow");
+						return true;
+					}
+					//						当前选中的父节点不存在子节点,隐藏子节点的下拉框
+					$("#sonMenuSelect").slideUp("slow");
+					return false;
 				})
-			};
-			
-			var loadSelectData=function(url){
-				//请求指定url根据返回的json菜单集合，并返回Menu_Model
-				$.ajax({
-					type: "GET",
-					url: url,
-					dataType: "json",
-					success: function(data) {
-						//所有的父级菜单的数组
-						list_menu_father=new Array();
-//						list_menu_temp=[];
-						//所有的子级菜单的数组
-						list_menu_son=new Array();
-						$.each(data, function(index, temp) {
-//						$.each(JSON.parse(data), function(index, temp) {
-							menu_temp=new Menu(temp.id,temp.name,temp.pid);
-							if(menu_temp.pid==0){
-								list_menu_father.push(menu_temp);
-							}
-							else{
-								list_menu_son.push(menu_temp);
-							}
-						});
-						ko.applyBindings(new myViewModel(list_menu_father,list_menu_son));
-//						return new Menu_Model(list_menu_father,list_menu_son);
-					}
-				});
-			}
-			
-			$(function() {
-				//switch初始化
-				$('#mySwitch input').bootstrapSwitch();
-				//默认显示的开关是关闭的
-//				$('#mySwitch').bootstrapSwitch('setState', false);
-    			$('#mySwitch input').bootstrapSwitch('state',false);  
-				//注意使用flatui的switch标签,是依赖于bootstrap-switch的,要对flatui的switch进行操作,可参考bootstrap-switch的api
-				$('#mySwitch input').on('switchChange.bootstrapSwitch', function(event, state) {
-					//打开时state是true(on)
-					//关闭时state是false(false)
-					alert(state);
-				});
-				$('#custom-switch-03').on('switchChange.bootstrapSwitch', function(event, state) {
-					alert(state);
-				});
-				
-//				$('#showStyleDesign').bootstrapSwitch('setState', false);
-//				$('#showStyleDesign input').bootstrapSwitch('state',false); 
-				
-				//为显示样式switch添加事件——showStyleDesign
-				$('#showStyleDesign').on('switchChange.bootstrapSwitch', function(event, state) {
-					//					alert(state);
-					console.log(state);
-					if(state == false) {
-						//收起
-						$("#styleDesign").slideUp("slow");
-						//					$("#panel").slideDown();
-					}
-					if(state == true) {
-						//展开
-						$("#styleDesign").slideDown("slow");
-					}
-
-				});
-				
-				$('#showStyleDesign input').bootstrapSwitch('state',false); 
-				$("#sonMenuSelect").slideUp("slow");
-				
-
-				$('#mycheck').on('switch-change', function(e, data) {
-					alert("is show");
-					var $el = $(data.el),
-						value = data.value;
-					console.log(e, $el, value);
-				});
-//				var temp= loadSelectData('data/select_data.json');
-				loadSelectData('data/select_data.json');
-//				ko.applyBindings(new myViewModel(temp.list_father,temp.list_son));
 			})
+		};
 
-			//加载并显示错误的消息框
-			function loaderrmsg() {
-				var msg = "测试测试测";
-				var title = "权限"
-				//				$("mymsgcontent").attr("overflow","auto");
-				document.getElementById("mymsgtitle").innerHTML = title;
-				//				document.getElementById("mymsgcontent").innerHTML = msg;
-				$("#errorModal").modal();
-			}
+		var loadSelectData = function (url) {
+			//请求指定url根据返回的json菜单集合，并返回Menu_Model
+			$.ajax({
+				type: "GET",
+				url: url,
+				dataType: "json",
+				success: function (data) {
+					//所有的父级菜单的数组
+					list_menu_father = new Array();
+					//						list_menu_temp=[];
+					//所有的子级菜单的数组
+					list_menu_son = new Array();
+					$.each(data, function (index, temp) {
+						//						$.each(JSON.parse(data), function(index, temp) {
+						menu_temp = new Menu(temp.id, temp.name, temp.pid);
+						if (menu_temp.pid == 0) {
+							list_menu_father.push(menu_temp);
+						}
+						else {
+							list_menu_son.push(menu_temp);
+						}
+					});
+					ko.applyBindings(new myViewModel(list_menu_father, list_menu_son));
+					//						return new Menu_Model(list_menu_father,list_menu_son);
+				}
+			});
+		}
 
-			function test() {
-				alert("点击了");
-			}
-		</script>
-	</head>
+		$(function () {
+			//switch初始化
+			$('#mySwitch input').bootstrapSwitch();
+			//默认显示的开关是关闭的
+			//				$('#mySwitch').bootstrapSwitch('setState', false);
+			$('#mySwitch input').bootstrapSwitch('state', false);
+			//注意使用flatui的switch标签,是依赖于bootstrap-switch的,要对flatui的switch进行操作,可参考bootstrap-switch的api
+			$('#mySwitch input').on('switchChange.bootstrapSwitch', function (event, state) {
+				//打开时state是true(on)
+				//关闭时state是false(false)
+				alert(state);
+			});
+			$('#custom-switch-03').on('switchChange.bootstrapSwitch', function (event, state) {
+				alert(state);
+			});
 
-	<body>
-		<div class="container">
-			<hr />
-			<button onclick="loaderrmsg()">加载错误modal</button>
-			<hr />
-			<div class="switch" id="mySwitch">
-				<input type="checkbox" checked data-on-text="YES" data-off-text="NO" />
-			</div>
-			<div class="bootstrap-switch-square">
-				<input type="checkbox" checked data-toggle="switch" id="custom-switch-03" data-on-text="<span class='fui-check'></span>" data-off-text="<span class='fui-cross'></span>" />
-			</div>
-			<hr/>
-			<hr />
-			<!--<input type="checkbox" id="ischeck" checked data-toggle="switch" name="square-switch" />-->
-			<hr />
-			<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myProgressLabel">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title" id="mymsgtitle">请稍后</h4>
-						</div>
-						<div class="modal-body bg-primary">
-							<form class="form-horizontal">
-								<!--输入权限名称以及是否选中信息-->
-								<!--权限基本信息-->
-								<fieldset>
-									<!--域的标题-->
-									<legend>权限基本信息</legend>
-									<!--单独的表单控件会被自动赋予一些全局样式。										
+			//				$('#showStyleDesign').bootstrapSwitch('setState', false);
+			//				$('#showStyleDesign input').bootstrapSwitch('state',false); 
+
+			//为显示样式switch添加事件——showStyleDesign
+			$('#showStyleDesign').on('switchChange.bootstrapSwitch', function (event, state) {
+				//					alert(state);
+				console.log(state);
+				if (state == false) {
+					//收起
+					$("#styleDesign").slideUp("slow");
+					//					$("#panel").slideDown();
+				}
+				if (state == true) {
+					//展开
+					$("#styleDesign").slideDown("slow");
+				}
+
+			});
+
+			$('#showStyleDesign input').bootstrapSwitch('state', false);
+			$("#sonMenuSelect").slideUp("slow");
+
+
+			$('#mycheck').on('switch-change', function (e, data) {
+				alert("is show");
+				var $el = $(data.el),
+					value = data.value;
+				console.log(e, $el, value);
+			});
+			//				var temp= loadSelectData('data/select_data.json');
+			loadSelectData('data/select_data.json');
+			//				ko.applyBindings(new myViewModel(temp.list_father,temp.list_son));
+		})
+
+		//加载并显示错误的消息框
+		function loaderrmsg() {
+			var msg = "测试测试测";
+			var title = "权限"
+			//				$("mymsgcontent").attr("overflow","auto");
+			document.getElementById("mymsgtitle").innerHTML = title;
+			//				document.getElementById("mymsgcontent").innerHTML = msg;
+			$("#userModel").modal();
+		}
+
+		function test() {
+			alert("点击了");
+		}
+	</script>
+</head>
+
+<body>
+	<div class="container">
+		<hr />
+		<button onclick="loaderrmsg()">加载错误modal</button>
+		<hr />
+		<div class="switch" id="mySwitch">
+			<input type="checkbox" checked data-on-text="YES" data-off-text="NO" />
+		</div>
+		<div class="bootstrap-switch-square">
+			<input type="checkbox" checked data-toggle="switch" id="custom-switch-03" data-on-text="<span class='fui-check'></span>"
+			 data-off-text="<span class='fui-cross'></span>" />
+		</div>
+		<hr/>
+		<hr />
+		<!--<input type="checkbox" id="ischeck" checked data-toggle="switch" name="square-switch" />-->
+		<hr />
+		<div class="modal fade" id="userModel" tabindex="-1" role="dialog" aria-labelledby="myProgressLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="mymsgtitle">请稍后</h4>
+					</div>
+					<div class="modal-body bg-primary">
+						<form class="form-horizontal">
+							<!--输入权限名称以及是否选中信息-->
+							<!--权限基本信息-->
+							<fieldset>
+								<!--域的标题-->
+								<legend>权限基本信息</legend>
+								<!--单独的表单控件会被自动赋予一些全局样式。										
 									所有设置了 .form-control 类的 <input>、<textarea> 和 <select> 元素都将被默认设置宽度属性为 width: 100%;。 
 										将 label 元素和前面提到的控件包裹在 .form-group 中可以获得最好的排列。-->
-									<div class="form-group">
-										<label class="col-sm-2 control-label" for="ds_host">权限名称</label>
-										<div class="col-sm-4">
-											<input class="form-control" id="ds_host" type="text" placeholder="权限" />
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="ds_host">权限名称</label>
+									<div class="col-sm-4">
+										<input class="form-control" id="ds_host" type="text" placeholder="权限" />
+									</div>
+									<label class="col-sm-2 control-label" for="ds_host">是否显示</label>
+									<div class="col-md-4">
+										<!--<div class="bootstrap-switch-square">-->
+										<div class="switch" id="showStyleDesign">
+											<input type="checkbox" id="isshow" checked data-toggle="switch" name="square-switch" />
 										</div>
-										<label class="col-sm-2 control-label" for="ds_host">是否显示</label>
-										<div class="col-md-4">
-											<!--<div class="bootstrap-switch-square">-->
-											<div class="switch" id="showStyleDesign">
-												<input type="checkbox" id="isshow" checked data-toggle="switch" name="square-switch" />
-											</div>
-										</div>
+									</div>
 
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="ds_username">appname</label>
+									<div class="col-sm-4">
+										<input class="form-control" id="ds_username" type="text" placeholder="Forecast" />
 									</div>
-									<div class="form-group">
-										<label class="col-sm-2 control-label" for="ds_username">appname</label>
-										<div class="col-sm-4">
-											<input class="form-control" id="ds_username" type="text" placeholder="Forecast" />
-										</div>
-										<label class="col-sm-2 control-label" for="ds_username">方法名称</label>
-										<div class="col-sm-4">
-											<input class="form-control" id="ds_username" type="text" placeholder="Index" />
-										</div>
+									<label class="col-sm-2 control-label" for="ds_username">方法名称</label>
+									<div class="col-sm-4">
+										<input class="form-control" id="ds_username" type="text" placeholder="Index" />
 									</div>
-									<div class="form-group">
-										<label class="col-sm-2 control-label" for="ds_host">权限全名称</label>
-										<div class="col-sm-4">
-											<input class="form-control" id="ds_host" type="text" placeholder="" />
-										</div>
-										<label class="col-sm-2 control-label" for="ds_host">顺序</label>
-										<div class="col-sm-4">
-											<div id="slider"></div>
-										</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="ds_host">权限全名称</label>
+									<div class="col-sm-4">
+										<input class="form-control" id="ds_host" type="text" placeholder="" />
 									</div>
-									<!--<div class="form-group">
+									<label class="col-sm-2 control-label" for="ds_host">顺序</label>
+									<div class="col-sm-4">
+										<div id="slider"></div>
+									</div>
+								</div>
+								<!--<div class="form-group">
 										
 									</div>-->
-								</fieldset>
-								<!--归属信息-->
-								<fieldset>
-									<!--域的标题-->
-									<legend>归属信息</legend>
+							</fieldset>
+							<!--归属信息-->
+							<fieldset>
+								<!--域的标题-->
+								<legend>归属信息</legend>
 
-									<div class="form-group">
-										<label class="col-sm-2 control-label" for="ds_username">父级菜单</label>
-										<div class="col-sm-4">
-											<!--注意此处使用ko进行绑定时，需要加上data-toggle="select"否则样式有问题-->
-											<select name="fantherMenu" data-toggle="select" class="form-control select  mrs mbm" data-bind="options:FatherMenuList,
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="ds_username">父级菜单</label>
+									<div class="col-sm-4">
+										<!--注意此处使用ko进行绑定时，需要加上data-toggle="select"否则样式有问题-->
+										<select name="fantherMenu" data-toggle="select" class="form-control select  mrs mbm" data-bind="options:FatherMenuList,
 					optionsText:'name',
 					optionsValue:'id',
 					value:Menu,		
 					optionsCaption:'父级菜单'">
 												<!--<option value="1">一</option>-->
 											</select>
-										</div>
-										<label class="col-sm-2 control-label" for="ds_username">type</label>
-										<div class="col-sm-4">
-											<!--<select id="disabledSelect" class="form-control">
+									</div>
+									<label class="col-sm-2 control-label" for="ds_username">type</label>
+									<div class="col-sm-4">
+										<!--<select id="disabledSelect" class="form-control">
 												<option>禁止选择</option>
 												<option>禁止选择</option>
 											</select>-->
-											<select data-toggle="select" class="form-control select mrs mbm">
+										<select data-toggle="select" class="form-control select mrs mbm">
 												<option value="0">导航栏菜单</option>
 												<option value="1">请求权限</option>
 											</select>
-										</div>
 									</div>
-									<div id="sonMenuSelect" class="form-group">
-										<label class="col-sm-2 control-label" for="ds_username">子级菜单</label>
-										<div class="col-sm-4">
-											<select name="sonMenu" data-toggle="select" class="form-control select  mrs mbm" data-bind="options:CurrentFatherList,
+								</div>
+								<div id="sonMenuSelect" class="form-group">
+									<label class="col-sm-2 control-label" for="ds_username">子级菜单</label>
+									<div class="col-sm-4">
+										<select name="sonMenu" data-toggle="select" class="form-control select  mrs mbm" data-bind="options:CurrentFatherList,
 					optionsText:'name',
 					optionsValue:'id',
 							
 					optionsCaption:'子级菜单'">
 											</select>
-										</div>
 									</div>
-								</fieldset>
-								<!--显示样式-->
-								<div id="styleDesign">
-									<fieldset>
-										<!--域的标题-->
-										<legend>显示样式</legend>
-										<!--单独的表单控件会被自动赋予一些全局样式。										
+								</div>
+							</fieldset>
+							<!--显示样式-->
+							<div id="styleDesign">
+								<fieldset>
+									<!--域的标题-->
+									<legend>显示样式</legend>
+									<!--单独的表单控件会被自动赋予一些全局样式。										
 									所有设置了 .form-control 类的 <input>、<textarea> 和 <select> 元素都将被默认设置宽度属性为 width: 100%;。 
 										将 label 元素和前面提到的控件包裹在 .form-group 中可以获得最好的排列。-->
-										<div class="form-group">
-											<label class="col-sm-2 control-label" for="ds_host">高度</label>
-											<div class="col-sm-4">
-												<input class="form-control" id="ds_host" type="text" placeholder="100px" />
-											</div>
-											<label class="col-sm-2 control-label" for="ds_username">宽度</label>
-											<div class="col-sm-4">
-												<input class="form-control" id="ds_username" type="text" placeholder="50px" />
-											</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="ds_host">高度</label>
+										<div class="col-sm-4">
+											<input class="form-control" id="ds_host" type="text" placeholder="100px" />
 										</div>
-										<div class="form-group">
-											<label class="col-sm-2 control-label" for="ds_username">类</label>
-											<div class="col-sm-4">
-												<input class="form-control" id="ds_username" type="text" placeholder="Cls" />
-											</div>
-											<label class="col-sm-2 control-label" for="ds_host">类名</label>
-											<div class="col-sm-4">
-												<input class="form-control" id="ds_host" type="text" placeholder="ClsName" />
-											</div>
+										<label class="col-sm-2 control-label" for="ds_username">宽度</label>
+										<div class="col-sm-4">
+											<input class="form-control" id="ds_username" type="text" placeholder="50px" />
 										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="ds_username">类</label>
+										<div class="col-sm-4">
+											<input class="form-control" id="ds_username" type="text" placeholder="Cls" />
+										</div>
+										<label class="col-sm-2 control-label" for="ds_host">类名</label>
+										<div class="col-sm-4">
+											<input class="form-control" id="ds_host" type="text" placeholder="ClsName" />
+										</div>
+									</div>
 
-									</fieldset>
+								</fieldset>
 
-								</div>
+							</div>
 
-							</form>
+						</form>
 
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
 
-						</div>
 					</div>
 				</div>
 			</div>
-
 		</div>
-		<!-- /container -->
-	</body>
+
+	</div>
+	<!-- /container -->
+</body>
 
 </html>
