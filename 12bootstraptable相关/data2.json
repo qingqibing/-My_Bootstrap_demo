@@ -3,22 +3,22 @@
         "id":"1001",
         "DutyDate": "2018/4/1",
         "DeptId":"1",
-        "MainUser":"值班员A",
-        "ViceUser":"值班员B"
+        "MainUser":"1",
+        "ViceUser":"2"
     },
     {
         "id":"1002",
         "DutyDate": "2018/4/2",
         "DeptId":"1",
-        "MainUser":"值班员A",
-        "ViceUser":"值班员B"
+        "MainUser":"2",
+        "ViceUser":"3"
     },
     {
         "id":"1003",
         "DutyDate": "2018/4/3",
         "DeptId":"1",
-        "MainUser":"值班员A",
-        "ViceUser":"值班员B"
+        "MainUser":"3",
+        "ViceUser":"1"
     }
     
 ]

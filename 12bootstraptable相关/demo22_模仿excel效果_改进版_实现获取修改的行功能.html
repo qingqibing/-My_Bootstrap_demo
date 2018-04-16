@@ -124,6 +124,11 @@
 			/* background-color: rgba(red, green, blue, alpha) */
 			background: rgba(29, 22, 124, 0.6);
 		}
+		
+		/* 查询条件框中的panel body */
+		#formSearch label{
+			color: rgb(255, 255, 255);
+		}
 
 		/* .panel-body,
 		.pandel-body > panel{
@@ -139,7 +144,27 @@
 		}
 	</style>
 	<script type="application/javascript">
+		var select_dict = {
+			"1": "值班员A",
+			"2": "值班员B",
+			"3": "值班员C"
+		}
 
+		// var $add_btn = $("#btn_add");
+
+
+		function newData() {
+			var id = "-999";
+			// var rows = {};
+			var row = {
+				id: id,
+				"DutyDate": "2018/4/1",
+				"DeptId": "1",
+				"MainUser": "1",
+				"ViceUser": "1"
+			};
+			return row;
+		}
 
 		$(function () {
 			var vm = new Vue({
@@ -147,7 +172,44 @@
 				data: {
 					rowsData: []
 				}
-			})
+			});
+
+			/*
+				点击添加按钮，向table最后添加一行数据
+				!!!注意，一定要将获取table以及button放在页面加载之后执行
+			*/
+			var $add_btn = $("#btn_add");
+			var $my_table = $("#tb_user");
+			$add_btn.click(function () {
+				// alert("点击查询");
+				//append 	data 	添加数据到表格在现有数据之后。
+				$my_table.bootstrapTable('append', newData());
+				//scrollTo 	value 	滚动到指定位置，单位为 px，设置 'bottom' 表示跳到最后。
+				$my_table.bootstrapTable('scrollTo', 'bottom');
+
+				init_control();
+			});
+			// $add_btn.onClick=function () {
+			// 	alert("新增操作");
+			// 	//append 	data 	添加数据到表格在现有数据之后。
+			// 	// $my_table.bootstrapTable('append', newData());
+			// 	//scrollTo 	value 	滚动到指定位置，单位为 px，设置 'bottom' 表示跳到最后。
+			// 	// $my_table.bootstrapTable('scrollTo','bottom');
+			// };
+
+			var $query_btn = $("#btn_query");
+			// $("#btn_query").click(function(){
+			// 	alert("点击查询");
+			// });
+
+			$query_btn.click(function () {
+				alert("点击查询");
+			});
+
+			// $("#btn_query").click=function(){
+			// 	alert("点击查询");
+			// }
+
 			//加载table
 			$("#tb_user").bootstrapTable({
 				toolbar: "#toolbar",
@@ -156,7 +218,7 @@
 				pageNumber: 1,
 				pageSize: 10,
 				showRefresh: true,
-				clickToSelect:true,//设置 true 将在点击行时，自动选择 rediobox 和 checkbox。
+				clickToSelect: true,//设置 true 将在点击行时，自动选择 rediobox 和 checkbox。
 				search: true,
 				// striped: true,
 				// clickToSelect: true,
@@ -176,7 +238,7 @@
 						{
 							//由于是复合表头，注意隐藏的元素若复合表头占了两行，需要填满该列
 							field: "id",
-							title:"id",
+							title: "id",
 							// visible: false,
 							rowspan: 2
 						},
@@ -212,51 +274,7 @@
 				},
 				//加载成功后执行
 				onLoadSuccess: function (aa, bb, cc) {
-					$(".my_text").editable({
-						url: function (params) {
-							var sName = $(this).attr("name");
-							curRow[sName] = params.value;
-							$.ajax({
-								type: 'POST',
-								url: "/Editable/Edit",
-								data: curRow,
-								dataType: 'JSON',
-								success: function (data, textStatus, jqXHR) {
-									alert('保存成功！');
-								},
-								error: function () { alert("error"); }
-							});
-						},
-						type: 'text',
-						mode: "inline",
-					});
-
-					$('.my_select').editable({
-						type: "select",              //编辑框的类型。支持text|textarea|select|date|checklist等
-						source: [{ value: 1, text: "值班员A" }, { value: 2, text: "值班员B" }, { value: 3, text: "值班员C" }],
-						title: "选择人员",           //编辑框的标题
-						disabled: false,           //是否禁用编辑
-						emptytext: "空文本",       //空值的默认文本
-						
-						success: function (response, value) {
-							// $('#table').bootstrapTable('method', parameter);
-							// $("#tb_user").bootstrapTable('check');
-							var selects=$("#tb_user").bootstrapTable('getSelections');
-							console.log(response + value);
-						},
-						url: function (params) {
-							//点击确定时触发
-							console.log(params);
-						},
-						mode: "inline",            //编辑框的模式：支持popup和inline两种模式，默认是popup            
-					});
-					$('.my_dutydate').editable({
-						type: "date",              //编辑框的类型。支持text|textarea|select|date|checklist等
-
-						disabled: false,           //是否禁用编辑
-						emptytext: "空文本",       //空值的默认文本
-						mode: "inline",            //编辑框的模式：支持popup和inline两种模式，默认是popup            
-					});
+					init_control();
 					// $('#tb_user').bootstrapTable('hideColumn', 'id');
 				},
 			});
@@ -267,12 +285,69 @@
 		function tablerowDutyedit(value, row, index) {
 			//点击班级岗位时显示下拉框，并记录相应动作
 			//1 显示下拉框
-			var reuslt = "<a href=\"#\" class=\"my_select\">" + value + "</a>";
+			/*
+				由于后台返回的是人员对应的id
+				即value为id，所以需要将id作为key从字典中取出对应的value
+			*/
+			var select_value = select_dict[value];
+			var reuslt = "<a href=\"#\" class=\"my_select\">" + select_value + "</a>";
 			// console.log(reuslt);
 			// var obj=value;
 			//2 记录动作
 
 			return reuslt;
+		}
+
+
+		function init_control() {
+			// $(".my_text").editable({
+			// 	url: function (params) {
+			// 		var sName = $(this).attr("name");
+			// 		curRow[sName] = params.value;
+			// 		$.ajax({
+			// 			type: 'POST',
+			// 			url: "/Editable/Edit",
+			// 			data: curRow,
+			// 			dataType: 'JSON',
+			// 			success: function (data, textStatus, jqXHR) {
+			// 				alert('保存成功！');
+			// 			},
+			// 			error: function () { alert("error"); }
+			// 		});
+			// 	},
+			// 	type: 'text',
+			// 	mode: "inline",
+			// });
+			$('.my_select').editable({
+				type: "select",              //编辑框的类型。支持text|textarea|select|date|checklist等
+				source: [{ value: "1", text: "值班员A" }, { value: "2", text: "值班员B" }, { value: "3", text: "值班员C" }],
+				title: "选择人员",           //编辑框的标题
+				disabled: false,           //是否禁用编辑
+				emptytext: "空文本",       //空值的默认文本
+
+				success: function (response, value) {
+					// $('#table').bootstrapTable('method', parameter);
+					// $("#tb_user").bootstrapTable('check');
+					var selects = $("#tb_user").bootstrapTable('getSelections');
+					console.log(response + value);
+				},
+				url: function (params) {
+					//点击确定时触发
+					/*
+					 流程：
+
+					*/
+					console.log(params);
+				},
+				mode: "inline",            //编辑框的模式：支持popup和inline两种模式，默认是popup            
+			});
+			$('.my_dutydate').editable({
+				type: "date",              //编辑框的类型。支持text|textarea|select|date|checklist等
+
+				disabled: false,           //是否禁用编辑
+				emptytext: "空文本",       //空值的默认文本
+				mode: "inline",            //编辑框的模式：支持popup和inline两种模式，默认是popup            
+			});
 		}
 
 		function tablerowDate(value, row, index) {
@@ -321,7 +396,7 @@
 		<div class="panel-body" style="padding-bottom:0px;">
 			<div class="panel panel-primary">
 				<div class="panel-heading">查询条件</div>
-				<div class="panel-body">
+				<div class="panel-body table-parent-panel">
 					<form id="formSearch" class="form-horizontal">
 						<div class="form-group" style="margin-top:15px">
 							<label class="control-label col-sm-1" for="txt_search_departmentname">姓名</label>
@@ -383,14 +458,14 @@
 								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
 							</button>
 						</div>
-						<div class="btn-group" role="group">
+						<!-- <div class="btn-group" role="group">
 							<button type="button" class="btn btn-success ">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>保存
 							</button>
 							<button type="button" class="btn btn-danger " onclick="getSelectData(this)">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选中数据
 							</button>
-						</div>
+						</div> -->
 					</div>
 					<div id="table_parent">
 						<table id="tb_user"></table>
