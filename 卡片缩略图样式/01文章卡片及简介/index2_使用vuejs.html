@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>测试-卡片布局</title>
+
+	<link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<!-- <link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"> -->
+
+	<!-- <link rel="stylesheet" type="text/css" href="css/normalize.css" /> -->
+	<link rel="stylesheet" type="text/css" href="css/default.css">
+	<!-- <link href="http://cdn.bootcss.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"> -->
+	<link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+	<!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+
+<body>
+	<article class="htmleaf-container">
+		<header class="htmleaf-header">
+			<h1>测试测试
+				<span>测试测试</span>
+			</h1>
+		</header>
+		<div class='container' id="card_list">
+			<div class='column col-md-4' v-for="item in items">
+				<div class='demo-title'>{{item.coursename}}</div>
+				<div class='post-module'>
+					<div class='my_frame'>
+						<img src='img/img001.jpg'>
+					</div>
+					<div class='post-content'>
+						<div class="my_bottons">
+							<div class='organization'>显示机构名称</div>
+							<div class='consumetime'>时长</div>
+						</div>
+
+						<h1 class='title'>{{item.coursename}}</h1>
+						<h2 class='sub_title'>{{item.detial}}</h2>
+						<p class='description'>{{item.desc}}</p>
+						<div class='post-meta'>
+							<span class='timestamp'>
+								<!-- <i class='fa fa-clock-o'></i> -->
+								<i class="fa fa-users"></i>
+								{{item.click_nums}}
+							</span>
+							<span class='comments'>
+								<i class="fa fa fa-star"></i>
+								<a href='#'>{{item.students}}</a>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</article>
+
+	<script src="js/jquery-1.10.2.min.js"></script>
+	<script src="js/vue.js"></script>
+	<script type="text/javascript">
+		$(function () {
+			var courses_arr = [];
+			var vm;
+			//1 加载json文件
+			$.ajax({
+				type: "GET",
+				url: "data.json",
+				success: function (data) {
+					$(data).each(function (index, value) {
+						var temp_data = {
+							"cid": value.cid,
+							"coursename": value.coursename,
+							"desc": value.desc,
+							"detial": value.detial,
+							"learn_times": value.learn_times,
+							"students": value.students,
+							"image": value.image,
+							"click_nums": value.click_nums
+						};
+						courses_arr.push(temp_data);
+						console.log(temp_data);
+					});
+
+					vm = new Vue({
+						el: "#card_list",
+						data: {
+							items: courses_arr
+						}
+					});
+
+					//2 加入鼠标移入时的效果
+					$('.post-module').hover(function () {
+						$(this).find('.description').stop().animate({
+							height: 'toggle',
+							opacity: 'toggle'
+						}, 300);
+					});
+				}
+			})
+
+		})
+
+	</script>
+</body>
+
+</html>

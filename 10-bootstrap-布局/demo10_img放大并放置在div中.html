@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<script src="js/jquery-3.2.1.js"></script>
+
+	<link href="css/bootstrap.css" rel="stylesheet" />
+	<link href="css/bootstrap-theme.css" rel="stylesheet" />
+
+	<style type="text/css">
+		.my_pane {
+			position: relative;
+			border: blue 1px dashed;
+			height: 400px;
+			padding: 0px;
+			margin-left: 20px;
+		}
+
+		.my_pane .my_frame {
+			position: relative;
+			/* z-index: 1; */
+			top: 0px;
+			/* bottom: 0px; */
+			width: 100%;
+			height: 190px;
+			border: green 0.5px dashed;
+			overflow: hidden;
+		}
+
+		.my_pane .my_content {
+			position: absolute;
+			/* top:200px; */
+			bottom: 0px;
+			width: 100%;
+			height: 200px;
+			border: darkorange 0.5px dashed;
+			
+		}
+		
+		.my_pane .my_frame img{
+			transition: 1s;
+			height: 120%;			
+		}
+		
+		.my_pane .my_frame img:hover {
+			transform: scale(1.2);
+
+		}
+
+		.my_pane .my_frame .div_img{
+			height: 100%;
+			/* width: 110%; */
+			transition: 1s;
+			background: url('img/img001.jpg');
+			background-size: 400px 200px;
+			background-repeat: no-repeat;
+		}
+
+		.my_pane .my_frame .div_img:hover {
+			transform: scale(1.2);
+
+		}
+	</style>
+</head>
+
+<body>
+	<div id="center_Body">
+		<div class="container">
+			<div class="col-md-3 my_pane">
+				<div class="my_frame">
+					<img src='img/img001.jpg'>
+					<!-- <div class="div_img"></div> -->
+				</div>
+				<div class="my_content"></div>
+			</div>
+			<div class="col-md-3 my_pane">
+				<div class="my_frame"></div>
+				<div class="my_content"></div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
