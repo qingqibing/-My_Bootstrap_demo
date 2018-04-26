@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+
+		<!-- <link href="css/bootstrap.css" rel="stylesheet" /> -->
+		<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+		<!-- <link href="css/bootstrap-theme.css" rel="stylesheet" /> -->
+		<link href="js/bootstrap-table.css" rel="stylesheet" />
+		<link href="js/editable/css/bootstrap-editable.css" rel="stylesheet" />
+		<!-- 注意这个样式（非min.css的文件）样式会有问题？？？？ -->
+		<!-- <link src="js/datetime/bootstrap-datetimepicker.css" rel="stylesheet"/> -->
+		<link href="js/datetime/bootstrap-datetimepicker.min.css" rel="stylesheet">
+		<!-- <link href="js/datetime/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"> -->
+
+		<script src="js/jquery-3.2.1.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/common/moment.js"></script>
+		<!--加入bootstrap的js文件-->
+		<script src="js/bootstrap-table.js"></script>
+		<script src="js/editable/js/bootstrap-editable.js"></script>
+		<script src="js/common/dateFormart.js"></script>
+		<script src="js/datetime/bootstrap-datetimepicker.js"></script>
+		<script src="js/vue.js"></script>
+		<!-- <script src="js/editable/js/bootstrap-table-editable.js"></script> -->
+		<style>
+			html,
+			body {
+				/* background: linear-gradient(45deg,
+			#fb3 25%, #58a 0,#58a 50%,
+			#fb3 0, #58a 75%,#58a 0);
+			background-size:30px 30px; */
+				/* background: linear-gradient(45deg, 
+			#fb3 25%, #58a 0, #58a 50%, 
+			#fb3 0, #fb3 75%, #58a 0);  */
+				/* background: linear-gradient(blue,red);  */
+				/* background: linear-gradient(to top right,blue,red);  */
+				/* background:linear-gradient(90deg,yellow 0%,blue 50%,yellow 75%) */
+				/* 从位置0处开始，填充黄色，一直渐变到位置75%处，填充蓝色
+				角度为90度，相当于水平
+			 */
+				/* background:linear-gradient(90deg,yellow 0%,blue 75%) */
+				/* background:linear-gradient(80deg,red 30%,orange 10%,yellow 60%,blue 40%); */
+				background: linear-gradient(45deg, rgb(74, 74, 156) 50%, rgb(46, 37, 158) 50%);
+				height: 100%;
+				/* background-size:100% 500px; */
+				/* background-size: 300px 300px; */
+			}
+			
+			#tb_user {
+				/* background: rgb(20, 20, 128) !important; */
+				/* font:rgb(195, 195, 206); */
+				color: rgb(77, 235, 247);
+				/* border: none; */
+				/* border:0;
+			border-style: none; */
+				/* border-color: rgb(46, 41, 41); */
+				/* 边框合并 */
+				/* 注意边框合并是将||合并成| */
+				/* 为何没有效果 */
+				/* border-collapse: collapse; */
+				/* cellspacing:0; */
+			}
+			/* 去掉边框 */
+			
+			#tb_user {
+				border: none;
+			}
+			
+			#table_parent .bootstrap-table .fixed-table-container {
+				border: none;
+			}
+			/* 去掉tr和th的边框 */
+			
+			#tb_user tr th,
+			#tb_user tr td {
+				border: 0;
+				/* border-color: rgb(129, 95, 156，0.9); */
+			}
+			/* 表格中的单元格背景色 */
+			
+			#tb_user tbody tr,
+			#tb_user tbody tr td {
+				background: rgba(28, 19, 160, 0.075);
+			}
+			/* 表头样式 */
+			
+			#tb_user thead {
+				background: rgb(12, 5, 114);
+				color: rgb(255, 255, 255);
+			}
+			
+			#tb_user tbody a {
+				color: rgb(238, 238, 188);
+			}
+			
+			#tb_user tbody>.selected>td {
+				background: rgb(119, 113, 206);
+			}
+			
+			#tb_user tbody tr:hover {
+				background: rgb(119, 113, 206);
+			}
+			
+			#tb_user tbody tr:hover,
+			#tb_user tbody tr td:hover {
+				background: rgb(119, 113, 206);
+			}
+			/* 设置panel-body的背景色 */
+			
+			.table-parent-panel {
+				/* background: rgb(111, 134, 170); */
+				/* background-color: rgba(red, green, blue, alpha) */
+				background: rgba(29, 22, 124, 0.6);
+			}
+			/* 查询条件框中的panel body */
+			
+			#formSearch label {
+				color: rgb(255, 255, 255);
+			}
+			/* .panel-body,
+		.pandel-body > panel{
+			background:  rgb(119, 113, 206,0.2);
+		} */
+			
+			.panel-body>.panel {
+				background: rgb(19, 8, 184, 0.4);
+			}
+			
+			.panel-body {
+				/* background:  rgb(119, 113, 206,0.2); */
+			}
+		</style>
+		<script type="application/javascript">
+			var select_dict = {
+				"1": "值班员A",
+				"2": "值班员B",
+				"3": "值班员C"
+			}
+			
+			var select_duty_dict={
+				1: "主班",
+				2: "副班"
+			}
+			// var $add_btn = $("#btn_add");
+
+			function newData() {
+				var id = "-999";
+				// var rows = {};
+				var row = {
+					id: id,
+					"DutyDate": "2018/4/1",
+					"DeptId": "1",
+					"MainUser": "1",
+					"ViceUser": "1"
+				};
+				return row;
+			}
+
+			$(function() {
+				var vm = new Vue({
+					el: "#table_parent",
+					data: {
+						rowsData: []
+					}
+				});
+
+				/*
+					点击添加按钮，向table最后添加一行数据
+					!!!注意，一定要将获取table以及button放在页面加载之后执行
+				*/
+				var $add_btn = $("#btn_add");
+				var $my_table = $("#tb_user");
+				$add_btn.click(function() {
+					// alert("点击查询");
+					//append 	data 	添加数据到表格在现有数据之后。
+					$my_table.bootstrapTable('append', newData());
+					//scrollTo 	value 	滚动到指定位置，单位为 px，设置 'bottom' 表示跳到最后。
+					$my_table.bootstrapTable('scrollTo', 'bottom');
+
+					init_control();
+				});
+				// $add_btn.onClick=function () {
+				// 	alert("新增操作");
+				// 	//append 	data 	添加数据到表格在现有数据之后。
+				// 	// $my_table.bootstrapTable('append', newData());
+				// 	//scrollTo 	value 	滚动到指定位置，单位为 px，设置 'bottom' 表示跳到最后。
+				// 	// $my_table.bootstrapTable('scrollTo','bottom');
+				// };
+
+				var $query_btn = $("#btn_query");
+				// $("#btn_query").click(function(){
+				// 	alert("点击查询");
+				// });
+
+				$query_btn.click(function() {
+					alert("点击查询");
+				});
+
+				// $("#btn_query").click=function(){
+				// 	alert("点击查询");
+				// }
+
+				//加载table
+				$("#tb_user").bootstrapTable({
+					toolbar: "#toolbar",
+					idField: "Id",
+					pagination: true,
+					pageNumber: 1,
+					pageSize: 10,
+					showRefresh: true,
+					clickToSelect: true, //设置 true 将在点击行时，自动选择 rediobox 和 checkbox。
+					search: true,
+					// striped: true,
+					// clickToSelect: true,
+					striped: true, //使表格带有条纹  
+					queryParams: function(param) {
+						return {};
+					},
+					url: "data_schedule.json",
+					columns: [{
+							checkbox: true,
+							rowspan: 1
+						},
+						{
+							//由于是复合表头，注意隐藏的元素若复合表头占了两行，需要填满该列
+							field: "id",
+							title: "id",
+							// visible: false,
+							rowspan: 1
+						},
+						{
+							field: "dutydate",
+							title: "值班日期",
+							// visible: false,
+							rowspan: 1,
+							formatter: tablerowDate
+						},
+						{
+							field:"duty",
+							title:"岗位",
+							rowspan:1,	
+							formatter: tablerowDutyEdit
+						},
+						{
+							field: "MainUser",
+							title: "值班员",
+							// visible: false,
+							rowspan: 1,
+							formatter: tablerowUserEdit
+						}
+
+					],
+					onClickRow: function(row, $element) {
+						//row是当前行的一些元素，$element是当前选中行的jq对象
+						//可以通过xx.get(0)的方式获取该dom元素
+						curRow = row;
+					},
+					//加载成功后执行
+					onLoadSuccess: function(aa, bb, cc) {
+						init_control();
+						// $('#tb_user').bootstrapTable('hideColumn', 'id');
+					},
+				});
+				init_datetime();
+				$('#tb_user').bootstrapTable('hideColumn', 'id');
+			});
+			
+			function tablerowDutyEdit(value, row, index) {
+				
+				//获取用户id
+				var duty_id = row.rDepartmentDuty.duid.duid;
+				var select_value = select_duty_dict[duty_id];
+				var reuslt = "<a href=\"#\" class=\"my_select_duty\">" + select_value + "</a>";
+				
+				return reuslt;
+			}
+			
+			function tablerowUserEdit(value, row, index) {
+				//点击班级岗位时显示下拉框，并记录相应动作
+				//1 显示下拉框
+				/*
+					由于后台返回的是人员对应的id
+					即value为id，所以需要将id作为key从字典中取出对应的value
+				*/
+				//获取用户id
+				var user_id = row.user.uid;
+				var select_value = select_dict[user_id];
+				var reuslt = "<a href=\"#\" class=\"my_select_user\">" + select_value + "</a>";
+				// console.log(reuslt);
+				// var obj=value;
+				//2 记录动作
+
+				return reuslt;
+			}
+
+			function init_control() {
+
+				var select_user_source = [];
+				var select_duty_source=[];
+				// 1 ajax请求后台获取当前组的人员下拉框中成员
+				$.ajax({
+					type: "GET",
+					url: "data_user.json",
+					processData: true,
+					dataType: "json",
+					async: false,
+					success: function(data) {
+						$.each(data, function(index, obj) {
+							console.log(obj);
+							select_user_source.push({
+								value: obj.uid,
+								text: obj.username
+							})
+						});
+
+					}
+				});
+				
+				//2 ajax请求后台获取当前组的岗位
+				$.ajax({
+					type: "GET",
+					url: "data_duty.json",
+					processData: true,
+					dataType: "json",
+					async: false,
+					success: function(data) {
+						$.each(data, function(index, obj) {
+							console.log(obj);
+							select_duty_source.push({
+								value: obj.duid,
+								text: obj.dutyname
+							})
+						});
+
+					}
+				});
+				
+				$('.my_select_user').editable({
+					type: "select", //编辑框的类型。支持text|textarea|select|date|checklist等
+					source: select_user_source,
+					title: "选择人员", //编辑框的标题
+					disabled: false, //是否禁用编辑
+					emptytext: "空文本", //空值的默认文本
+
+					success: function(response, value) {
+						// $('#table').bootstrapTable('method', parameter);
+						// $("#tb_user").bootstrapTable('check');
+						var selects = $("#tb_user").bootstrapTable('getSelections');
+						console.log(response + value);
+					},
+					url: function(params) {
+						//点击确定时触发
+						/*
+						 流程：
+
+						*/
+						console.log(params);
+					},
+					mode: "inline", //编辑框的模式：支持popup和inline两种模式，默认是popup            
+				});
+				
+				$('.my_select_duty').editable({
+					type: "select", //编辑框的类型。支持text|textarea|select|date|checklist等
+					source: select_duty_source,
+					title: "选择岗位", //编辑框的标题
+					disabled: false, //是否禁用编辑
+					emptytext: "空文本", //空值的默认文本
+
+					success: function(response, value) {
+						// $('#table').bootstrapTable('method', parameter);
+						// $("#tb_user").bootstrapTable('check');
+						var selects = $("#tb_user").bootstrapTable('getSelections');
+						console.log(response + value);
+					},
+					url: function(params) {
+						//点击确定时触发
+						/*
+						 流程：
+
+						*/
+						console.log(params);
+					},
+					mode: "inline", //编辑框的模式：支持popup和inline两种模式，默认是popup            
+				});
+				
+				$('.my_dutydate').editable({
+					type: "date", //编辑框的类型。支持text|textarea|select|date|checklist等
+
+					disabled: false, //是否禁用编辑
+					emptytext: "空文本", //空值的默认文本
+					mode: "inline", //编辑框的模式：支持popup和inline两种模式，默认是popup            
+				});
+			}
+
+			function tablerowDate(value, row, index) {
+				//使用monment.js完成时间的格式化
+				var date = moment(value, "YYYY/MM/DD");
+				var date_str = date.format("YYYY-MM-DD");
+
+				var result = "<a href=\"#\" class=\"my_dutydate\" id=\"dob\" data-type=\"combodate\" data-value=\"" + date_str + "\" data-format=\"YYYY-MM-DD\" data-viewformat=\"YYYY-MM-DD\" data-template=\"YYYY /MMM / D \" data-pk=\"1\"  data-title=\"请选择值班日期\">" + date_str + "</a>";
+				// var result="<a href=\"#\"  >"+value+"</a>";
+				// result="123123";
+
+				// console.log(result);
+				return result;
+				// return date.format("yyyy-MM-dd");
+			}
+
+			function getSelectData(index, val) {
+				// 思路
+				/*
+					思路：
+					获取所有选中行
+
+
+				*/
+				alert(index + val);
+			}
+
+			function init_datetime() {
+				$('.form_date').datetimepicker({
+					language: 'fr',
+					weekStart: 1,
+					todayBtn: 1,
+					autoclose: 1,
+					todayHighlight: 1,
+					startView: 2,
+					minView: 2,
+					forceParse: 0
+				});
+			}
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+
+			<div class="panel-body" style="padding-bottom:0px;">
+				<div class="panel panel-primary">
+					<div class="panel-heading">查询条件</div>
+					<div class="panel-body table-parent-panel">
+						<form id="formSearch" class="form-horizontal">
+							<div class="form-group" style="margin-top:15px">
+								<label class="control-label col-sm-1" for="txt_search_departmentname">姓名</label>
+								<div class="col-sm-2">
+									<select class="form-control">
+										<option>值班员A</option>
+										<option>值班员B</option>
+									</select>
+								</div>
+								<label class="control-label col-sm-1" for="txt_search_departmentname">组名</label>
+								<div class="col-sm-2">
+									<select class="form-control">
+										<option>风暴潮</option>
+										<option>海浪</option>
+									</select>
+								</div>
+								<label class="control-label col-sm-1" for="txt_search_statu">日期</label>
+								<div class="col-sm-2">
+									<!-- <input type="text" class="form-control" id="txt_search_statu"> -->
+									<!-- <div class="input-group date form_datetime col-md-12" data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p"
+								 data-link-field="dtp_input1">
+									<input class="form-control" size="16" type="text" value="" readonly>
+									<span class="input-group-addon">
+										<span class="glyphicon glyphicon-th"></span>
+									</span>
+								</div> -->
+									<div class="form-group">
+										<div class="input-group date form_date col-md-12" data-date="" data-date-format="yyyy MM dd  " data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+											<input class="form-control" size="16" type="text" value="" readonly>
+											<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar"></span>
+											</span>
+										</div>
+										<input type="hidden" id="dtp_input2" value="" />
+										<br/>
+									</div>
+								</div>
+								<div class="col-sm-4 col-md-2" style="text-align:left;">
+									<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+
+			</div>
+			<div class="panel-body">
+				<div class="panel panel-primary">
+					<div class="panel-heading">排班详情</div>
+					<div class="panel-body table-parent-panel">
+						<div id="toolbar" class="btn-toolbar" role="toolbar">
+							<div class="btn-group" role="group">
+								<button id="btn_add" type="button" class="btn btn-primary">
+								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+							</button>
+								<button id="btn_delete" type="button" class="btn btn-danger">
+								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+							</button>
+							</div>
+							<!-- <div class="btn-group" role="group">
+							<button type="button" class="btn btn-success ">
+								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>保存
+							</button>
+							<button type="button" class="btn btn-danger " onclick="getSelectData(this)">
+								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选中数据
+							</button>
+						</div> -->
+						</div>
+						<div id="table_parent">
+							<table id="tb_user"></table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+	</body>
+
+</html>

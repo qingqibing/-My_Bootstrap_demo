@@ -1,0 +1,27 @@
+[
+	{
+		"uid": 1,
+		"username": "值班员A",
+		"isdel": false,
+		"createdate": "2018-04-20",
+		"modeificateddate": "2018-04-20"
+	}, {
+		"uid": 2,
+		"username": "值班员B",
+		"isdel": false,
+		"createdate": "2018-04-20",
+		"modeificateddate": "2018-04-20"
+	}, {
+		"uid": 3,
+		"username": "值班员C",
+		"isdel": false,
+		"createdate": "2018-04-20",
+		"modeificateddate": "2018-04-20"
+	}, {
+		"uid": 4,
+		"username": "值班员D",
+		"isdel": false,
+		"createdate": "2018-04-20",
+		"modeificateddate": "2018-04-20"
+	}
+]

@@ -1,0 +1,15 @@
+[
+	{
+		"duid": 1,
+		"dutyname": "主班",
+		"isdel": false,
+		"createdate": "2018-04-19",
+		"modeificateddate": "2018-04-19"
+	}, {
+		"duid": 2,
+		"dutyname": "副班",
+		"isdel": false,
+		"createdate": "2018-04-19",
+		"modeificateddate": "2018-04-19"
+	}
+]

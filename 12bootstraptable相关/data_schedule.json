@@ -1,0 +1,53 @@
+[
+	{
+		"id": 1,
+		"dutydate": "2018-04-25",
+		"user": {
+			"uid": 1,
+			"username": "值班员A",
+			"isdel": false,
+			"createdate": "2018-04-20",
+			"modeificateddate": "2018-04-20"
+		},
+		"rDepartmentDuty": {
+			"id": 1,
+			"did": {
+				"did": 1,
+				"pid": 3,
+				"derpartmentname": "应急组"
+			},
+			"duid": {
+				"duid": 1,
+				"dutyname": "主班",
+				"isdel": false,
+				"createdate": "2018-04-19",
+				"modeificateddate": "2018-04-19"
+			}
+		}
+	}, {
+		"id": 2,
+		"dutydate": "2018-04-25",
+		"user": {
+			"uid": 2,
+			"username": "值班员B",
+			"isdel": false,
+			"createdate": "2018-04-20",
+			"modeificateddate": "2018-04-20"
+		},
+		"rDepartmentDuty": {
+			"id": 2,
+			"did": {
+				"did": 1,
+				"pid": 3,
+				"derpartmentname": "应急组"
+			},
+			"duid": {
+				"duid": 2,
+				"dutyname": "副班",
+				"isdel": false,
+				"createdate": "2018-04-19",
+				"modeificateddate": "2018-04-19"
+			}
+		}
+	}
+]
