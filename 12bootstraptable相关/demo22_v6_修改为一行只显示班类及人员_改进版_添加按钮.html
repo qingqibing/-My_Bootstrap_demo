@@ -24,7 +24,8 @@
 		<script src="js/editable/js/bootstrap-editable.js"></script>
 		<!-- 该插件的说明详见：https://github.com/wenzhixin/bootstrap-table/tree/master/src/extensions/editable -->
 		<!-- <script src="js/editable/js/bootstrap-table-editable.js"></script> -->
-		<script src="js/editable/bootstrap-table-editable_new.js"></script>
+		<!-- <script src="js/editable/bootstrap-table-editable_new.js"></script> -->
+
 		<script src="js/common/dateFormart.js"></script>
 		<script src="js/datetime/bootstrap-datetimepicker.js"></script>
 		<script src="js/vue.js"></script>
@@ -166,6 +167,7 @@
 			var $my_table;
 				var $my_addbtn;
 				var $my_delbtn;
+				var curRow ={};
 			$(function() {
 				var vm = new Vue({
 					el: "#table_parent",
