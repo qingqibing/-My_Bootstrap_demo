@@ -146,15 +146,15 @@
 		}
 	</style>
 	<script type="application/javascript">
-		var select_dict = {
-			"1": "值班员A",
-			"2": "值班员B",
-			"3": "值班员C"
+		var select_user_dict = {
+//			"1": "值班员A",
+//			"2": "值班员B",
+//			"3": "值班员C"
 		}
 
 		var select_duty_dict = {
-			1: "主班",
-			2: "副班"
+//			1: "主班",
+//			2: "副班"
 		}
 		// var $add_btn = $("#btn_add");
 
@@ -223,7 +223,9 @@
 			$query_btn.click(function () {
 				alert("点击查询");
 			});
-
+			
+			init_control();
+			
 			// $("#btn_query").click=function(){
 			// 	alert("点击查询");
 			// }
@@ -379,7 +381,7 @@
 				reuslt = "<a href=\"#\" class=\"my_select_user\">" + "-" + "</a>";
 			} else {
 				user_id = row.user.uid;
-				select_value = select_dict[user_id];
+				select_value = select_user_dict[user_id];
 				reuslt = "<a href=\"#\" class=\"my_select_user\">" + select_value + "</a>";
 			}
 			//2 记录动作
@@ -437,10 +439,13 @@
 				success: function (data) {
 					$.each(data, function (index, obj) {
 						console.log(obj);
+						//修改下拉框
 						select_user_source.push({
 							value: obj.uid,
 							text: obj.username
 						})
+						//刷新人员字典
+						select_user_dict[obj.uid]=obj.username;
 					});
 
 				}
@@ -464,6 +469,8 @@
 							value: obj.duid,
 							text: obj.dutyname
 						})
+						//刷新岗位字典
+						select_duty_dict[obj.duid]=obj.dutyname;
 					});
 
 				}
