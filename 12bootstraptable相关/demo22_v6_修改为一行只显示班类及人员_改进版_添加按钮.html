@@ -169,6 +169,11 @@
 			};
 			return row;
 		}
+		
+		function loadTable(){
+
+			
+		}
 
 		// var $add_btn = $("#btn_add");
 		var $my_table;
@@ -256,7 +261,16 @@
 				// clickToSelect: true,
 				striped: true, //使表格带有条纹  
 				queryParams: function (param) {
-					return {};
+					var query_data={
+						pageSize:param.pageSize,
+						pageNumber:param.pageNumber,
+						username:'',
+						groupname:'',
+						groupid:'',
+						dutyid:'',
+						nowdate:''
+					};
+					return temp;
 				},
 				method:'GET',
 				//url: "data_schedule.json",
@@ -432,6 +446,7 @@
 				//url: "data_user.json",
 				url:'http://127.0.0.1:8000/duty/userlist/' , 
 				processData: true,
+
 				data:user_data,
 				dataType: "json",
 				async: false,
@@ -451,8 +466,7 @@
 				}
 			});
 
-			//2 ajax请求后台获取当前组的岗位
-			
+			//2 ajax请求后台获取当前组的岗位			
 			$.ajax({
 				type: "GET",
 				//url: "data_duty.json",
