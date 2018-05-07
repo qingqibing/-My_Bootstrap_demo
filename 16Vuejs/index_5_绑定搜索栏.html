@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>全局注册</title>
+    <!-- <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,200,500,600,700' rel='stylesheet' type='text/css'>   -->
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/default.css">
+    <link rel="stylesheet" href="dist/material-cards.css">
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/vue.js"></script>
+    <style type="text/css">
+    </style>
+    <script type="application/javascript">
+        // var search_vm = new Vue({
+        //     el: 'panel_search',
+        //     data: {
+        //         username: '',
+        //         pageSize: 0,
+        //         pageNumber: 0,
+        //         username: '',
+        //         groupname: '',
+        //         groupid: '',
+        //         dutyid: '',
+        //         nowdate: ''
+        //     }
+        // })
+
+
+        $(function () {
+            //vue可以通过定义多个Vue对象的方式为不同的div绑定事件或者监听对象
+            var select_options = {
+                selected: 1,
+                options: [
+                    { text: 'A', value: 1 },
+                    { text: 'B', value: 2 },
+                    { text: 'C', value: 3 }
+                ],
+                selected_group: 2,
+                options_group: []
+            };
+            // var text_val = {
+            //     text_val: ''
+            // };
+
+            // var select_vm = new Vue({
+            //     el: '#formSearch',
+            //     data: {
+            //         select_options: {
+            //             selected: 2,
+            //             options: [
+            //                 { text: 'A', value: 1 },
+            //                 { text: 'B', value: 2 },
+            //                 { text: 'C', value: 3 }
+            //             ]
+            //         }
+            //         // text_val: ''
+            //     }
+            // });
+
+            var select_vm = new Vue({
+                el: '#formSearch',
+                data: select_options
+                // {
+                //     selected: 2,
+                //     options: [
+                //         { text: 'A', value: 1 },
+                //         { text: 'B', value: 2 },
+                //         { text: 'C', value: 3 }
+                //     ]
+
+                //     // text_val: ''
+                // }
+            });            
+            select_options.options_group = [
+                { text: '风暴潮', value: 1 },
+                { text: '海浪', value: 2 },
+                { text: '生态组', value: 3 }
+            ];
+
+            select_options.selected = 3;
+            select_options.selected_group=2;
+            // select_vm.data.selected=3;
+            // Vue.set(select_vm.data.selected,)
+            // 如下方式修改不起效果
+            // select_vm.data.selected = 3;
+            // select_options.selected = 3;
+
+        })
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="panel-body" style="padding-bottom:0px;">
+            <div id="panel_search" class="panel panel-primary">
+                <div class="panel-heading">查询条件</div>
+                <div class="panel-body table-parent-panel">
+                    <form id="formSearch" class="form-horizontal">
+                        <div class="form-group" style="margin-top:15px">
+                            <label class="control-label col-sm-1" for="txt_search_departmentname">姓名</label>
+                            <div class="col-md-2">
+                                <select class="form-control" v-model="selected">
+                                    <option v-for='option in options' v-bind:value="option.value">
+                                        {{option.text}}
+                                    </option>
+                                </select>
+                            </div>
+                            <!-- <label class="control-label col-sm-1" for="txt_search_departmentname">文本</label>
+                            <div class="col-md-2">
+                                <input v-model="text_val">
+                            </div> -->
+                            <label class="control-label col-sm-1" for="txt_search_departmentname">组名</label>
+                            <div class="col-md-2">
+                                <select class="form-control" v-model="selected_group">
+                                    <option v-for='option in options_group' v-bind:value="option.value">
+                                        {{option.text}}
+                                    </option>
+                                </select>
+                            </div>
+                            <label class="control-label col-sm-1" for="txt_search_statu">日期</label>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="input-group date form_date col-md-12" data-date="" data-date-format="yyyy MM dd  " data-link-field="dtp_input2"
+                                        data-link-format="yyyy-mm-dd">
+                                        <input class="form-control" size="16" type="text" value="" readonly>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                    <input type="hidden" id="dtp_input2" value="" />
+                                    <br/>
+                                </div>
+                            </div>
+                            <div class="col-md-2" style="text-align:left;">
+                                <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+</body>
+
+</html>
