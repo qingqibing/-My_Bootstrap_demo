@@ -18,66 +18,22 @@
     <style type="text/css">
     </style>
     <script type="application/javascript">
-        // var search_vm = new Vue({
-        //     el: 'panel_search',
-        //     data: {
-        //         username: '',
-        //         pageSize: 0,
-        //         pageNumber: 0,
-        //         username: '',
-        //         groupname: '',
-        //         groupid: '',
-        //         dutyid: '',
-        //         nowdate: ''
-        //     }
-        // })
-
 
         $(function () {
             //vue可以通过定义多个Vue对象的方式为不同的div绑定事件或者监听对象
             var select_options = {
-                selected: 1,
-                options: [
-                    { text: 'A', value: 1 },
-                    { text: 'B', value: 2 },
-                    { text: 'C', value: 3 }
-                ],
+                selected_user: 1,
+                options_user: [],
                 selected_group: 2,
                 options_group: []
             };
-            // var text_val = {
-            //     text_val: ''
-            // };
 
-            // var select_vm = new Vue({
-            //     el: '#formSearch',
-            //     data: {
-            //         select_options: {
-            //             selected: 2,
-            //             options: [
-            //                 { text: 'A', value: 1 },
-            //                 { text: 'B', value: 2 },
-            //                 { text: 'C', value: 3 }
-            //             ]
-            //         }
-            //         // text_val: ''
-            //     }
-            // });
+            select_options.options_user = [
+                { text: 'A', value: 1 },
+                { text: 'B', value: 2 },
+                { text: 'C', value: 3 }
+            ]
 
-            var select_vm = new Vue({
-                el: '#formSearch',
-                data: select_options
-                // {
-                //     selected: 2,
-                //     options: [
-                //         { text: 'A', value: 1 },
-                //         { text: 'B', value: 2 },
-                //         { text: 'C', value: 3 }
-                //     ]
-
-                //     // text_val: ''
-                // }
-            });            
             select_options.options_group = [
                 { text: '风暴潮', value: 1 },
                 { text: '海浪', value: 2 },
@@ -85,13 +41,29 @@
             ];
 
             select_options.selected = 3;
-            select_options.selected_group=2;
-            // select_vm.data.selected=3;
-            // Vue.set(select_vm.data.selected,)
-            // 如下方式修改不起效果
-            // select_vm.data.selected = 3;
-            // select_options.selected = 3;
+            select_options.selected_group = 2;
+            var search_url = 'http://127.0.0.1:8000/duty/schedulelist/';
+            var select_vm = new Vue({
+                el: '#formSearch',
+                data: select_options,
+                methods: {
+                    summit: function () {
+                        //注意若想让vue中的方法访问data，需要使用this，最好通过self=this的方式
+                        var self = this;
+                        $.get(search_url, { user_id: self.selected_user, group_id: self.selected_group, },
+                            function (data) {
+                                alert(data);
+                            });
+                        // $.get("test.cgi", { name: "John", time: "2pm" },
+                        //     function (data) {
+                        //         alert("Data Loaded: " + data);
+                        //     });
+                        // alert("成功");
+                    }
+                }
+            });
 
+            $btnsearch = $('#btn_search');
         })
     </script>
 </head>
@@ -106,16 +78,12 @@
                         <div class="form-group" style="margin-top:15px">
                             <label class="control-label col-sm-1" for="txt_search_departmentname">姓名</label>
                             <div class="col-md-2">
-                                <select class="form-control" v-model="selected">
-                                    <option v-for='option in options' v-bind:value="option.value">
+                                <select class="form-control" v-model="selected_user">
+                                    <option v-for='option in options_user' v-bind:value="option.value">
                                         {{option.text}}
                                     </option>
                                 </select>
                             </div>
-                            <!-- <label class="control-label col-sm-1" for="txt_search_departmentname">文本</label>
-                            <div class="col-md-2">
-                                <input v-model="text_val">
-                            </div> -->
                             <label class="control-label col-sm-1" for="txt_search_departmentname">组名</label>
                             <div class="col-md-2">
                                 <select class="form-control" v-model="selected_group">
@@ -139,7 +107,8 @@
                                 </div>
                             </div>
                             <div class="col-md-2" style="text-align:left;">
-                                <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
+                                <!-- <button type="submit" id="btn_search" type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button> -->
+                                <button type="submit" id="btn_search" style="margin-left:50px" v-on:click="summit()" id="btn_query" class="btn btn-primary">查询</button>
                             </div>
                         </div>
                     </form>
