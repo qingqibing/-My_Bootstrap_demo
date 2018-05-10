@@ -50,12 +50,23 @@
                     summit: function () {
                         //注意若想让vue中的方法访问data，需要使用this，最好通过self=this的方式
                         var self = this;
-                        $.get(search_url, { user_id: self.selected_user, group_id: self.selected_group, },
-                            function (data) {
-                                //从后台返回的data重新存入data中
-                                //根据从后台范围的data，执行加载值班信息表的操作
-                                alert(data);
-                            });
+                        // $.get(search_url, { user_id: self.selected_user, group_id: self.selected_group },
+                        // $.get(search_url, {  },
+                        //     function (data) {
+                        //         //从后台返回的data重新存入data中
+                        //         //根据从后台范围的data，执行加载值班信息表的操作
+                        //         alert(data);
+                        //     });
+
+                        $.ajax({
+                            url:search_url,
+                            type:'GET',
+                            data:{user_id: self.selected_user, group_id: self.selected_group},
+                            async:false,                            
+                            success:function(res){
+                                alert(res);
+                            }
+                        })
                         // $.get("test.cgi", { name: "John", time: "2pm" },
                         //     function (data) {
                         //         alert("Data Loaded: " + data);

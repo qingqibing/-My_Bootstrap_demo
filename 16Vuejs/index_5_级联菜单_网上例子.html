@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>全局注册</title>
+    <!-- <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,200,500,600,700' rel='stylesheet' type='text/css'>   -->
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/default.css">
+    <link rel="stylesheet" href="dist/material-cards.css">
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/vue.js"></script>
+    <style type="text/css">
+    </style>
+
+</head>
+
+<body>
+    <div id="divContent">
+        <select v-model="OneData">
+            <template v-for="item in selOneVal">
+                <option v-bind:value="item.value">{{item.text}}</option>
+            </template>
+        </select>
+        <select v-model="TwoData">
+            <template v-for="item in selTwoVal">
+                <option v-bind:value="item.value">{{item.text}}</option>
+            </template>
+        </select>
+        <select v-model="ThreeData">
+            <template v-for="item in selThreeVal">
+                <option v-bind:value="item.value">{{item.text}}</option>
+            </template>
+        </select>
+    </div>
+    <script type="application/javascript">
+        $(function () {
+            vm.OneChange();
+        })
+        var vm = new Vue({
+            el: '#divContent',
+            data: {
+                selOneVal: [],
+                selTwoVal: [],
+                selThreeVal: [],
+                OneData: '国家',
+                TwoData: '省级',
+                ThreeData: '市区'
+
+            }, methods: {
+                //相当于初始化方法
+                OneChange: function () {
+                    vm.selOneVal = [];
+                    // this.selOneVal = [{ value: '-1', text: '国家' }];
+                    this.selOneVal.push(
+                        { value: '国家', text: '国家' },
+                        { value: '1', text: '中国' },
+                        { value: '2', text: '法国' },
+                        { value: '3', text: '德国' }
+                    )
+                    this.selTwoVal.push({ value: '省级', text: '省级' })
+                    this.selThreeVal.push({ value: '市区', text: '市区' })
+                }
+            }
+            , watch: {
+                /*
+                    监听onedata变量，当onedata发生变化时触发
+                */
+                OneData: function () {
+                    //只要onedata发生变化，就将选中的seltwoval与selthreeval清空
+                    vm.selTwoVal = [];
+                    vm.selThreeVal = [];
+                    //对select two与three初始化
+                    this.selTwoVal.push({ value: '省级', text: '省级' })
+                    this.selThreeVal.push({ value: '市区', text: '市区' })
+
+                    var s1 = vm.OneData;
+                    if (s1 == 1) {
+                        this.selTwoVal.push(
+                            { value: '1', text: '湖南' },
+                            { value: '2', text: '湖北' },
+                            { value: '3', text: '上海' })
+
+                    } else if (s1 == 2) {
+                        this.selTwoVal.push(
+                            { value: '4', text: 'Paris' },
+                            { value: '5', text: 'Nanc' },
+                            { value: '6', text: 'Rouen' })
+                    } else if (s1 == 3) {
+                        this.selTwoVal.push(
+                            { value: '7', text: 'Berlin' },
+                            { value: '8', text: 'Hamburg' },
+                            { value: '9', text: 'Munich' })
+                    }
+                    vm.TwoData = '省级';
+                    vm.ThreeData = '市区';
+                },
+                TwoData: function () {
+                    //vm.selThreeVal = [{ value: '-1', text: '市区' }];
+                    var s2 = vm.TwoData;
+                    vm.selThreeVal = [];
+                    this.selThreeVal.push({ value: '市区', text: '市区' })
+                    if (s2 == 1) {
+                        this.selThreeVal.push(
+                            { value: '1', text: '邵阳' },
+                            { value: '2', text: '长沙' },
+                            { value: '3', text: '湘潭' })
+                    } else if (s2 == 2) {
+                        this.selThreeVal.push(
+                            { value: '4', text: '宜昌' },
+                            { value: '5', text: '武汉' },
+                            { value: '6', text: '襄阳' })
+                    } else if (s2 == 3) {
+                        this.selThreeVal.push(
+                            { value: '7', text: '浦东新区' },
+                            { value: '8', text: '徐汇区' },
+                            { value: '9', text: '静安区' })
+                    }
+                    vm.ThreeData = '市区';
+                },
+            }
+        })
+    </script>
+</body>
+
+</html>
