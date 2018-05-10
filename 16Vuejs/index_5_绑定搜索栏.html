@@ -39,13 +39,38 @@
                 { text: '海浪', value: 2 },
                 { text: '生态组', value: 3 }
             ];
+            var post_data={department_id:1};
+            $.ajax({
+                type:'GET',
+                url:'',
+                dataType:'json',
+                data:{post_data},
+                async:false,
+                success:function(){
+                    
+                }
 
+            })
             select_options.selected = 3;
             select_options.selected_group = 2;
             var search_url = 'http://127.0.0.1:8000/duty/schedulelist/';
             var select_vm = new Vue({
                 el: '#formSearch',
                 data: select_options,
+                watch: {
+                    /*
+                        监听：
+                            选中的用户，
+                            选中的群组
+
+                    */
+                    selected_user:function(new_val,old_val){
+
+                    },
+                    selected_group:function(new_val,old_val){
+
+                    }
+                },
                 methods: {
                     summit: function () {
                         //注意若想让vue中的方法访问data，需要使用this，最好通过self=this的方式
