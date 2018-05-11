@@ -29,25 +29,40 @@
             };
 
             select_options.options_user = [
-                { text: 'A', value: 1 },
-                { text: 'B', value: 2 },
-                { text: 'C', value: 3 }
+//              { text: 'A', value: 1 },
+//              { text: 'B', value: 2 },
+//              { text: 'C', value: 3 }
             ]
 
             select_options.options_group = [
-                { text: '风暴潮', value: 1 },
-                { text: '海浪', value: 2 },
-                { text: '生态组', value: 3 }
+//              { text: '风暴潮', value: 1 },
+//              { text: '海浪', value: 2 },
+//              { text: '生态组', value: 3 }
             ];
+            var get_groupAnduser_url='http://127.0.0.1:8000/duty/grouplist/';
             var post_data={department_id:1};
+            var dict_users={};
             $.ajax({
                 type:'GET',
-                url:'',
+                url:get_groupAnduser_url,
                 dataType:'json',
                 data:{post_data},
                 async:false,
-                success:function(){
-                    
+                success:function(data){
+                    /*
+                      1、遍历一级，存入group中
+                      2、
+                      
+
+                    */
+                    dict_users={};
+                    $.map(data,function(obj){
+                            select_options.options_group.push({text:obj.name,value:obj.did});
+                            if(obj.uid.length>1){
+                                dict_users[obj.did]=obj.uid;
+                            }
+                    });
+                    console.log(data);
                 }
 
             })
@@ -68,7 +83,13 @@
 
                     },
                     selected_group:function(new_val,old_val){
-
+                        var self=this;
+                        //self.options_user=dict_users[new_val];
+                        select_options.options_user=[];
+                        $.map(dict_users[new_val],function(obj_user){
+                            select_options.options_user.push({text:obj_user.username,value:obj_user.uid});
+                        });
+                        //select_options.options_user.push({text:obj.name,value:obj.did})
                     }
                 },
                 methods: {
