@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>全局注册</title>
+    <!-- <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,200,500,600,700' rel='stylesheet' type='text/css'>   -->
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/datetimepicker/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" type="text/css" href="css/default.css">
+    <link rel="stylesheet" href="dist/material-cards.css">
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap/bootstrap.js"></script>
+    <script src="js/datetimepicker/bootstrap-datetimepicker.js"></script>
+    <script src="js/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/vue.js"></script>
+    <style type="text/css">
+    </style>
+    <script type="application/javascript">
+
+        $(function () {
+            //vue可以通过定义多个Vue对象的方式为不同的div绑定事件或者监听对象
+            var select_options = {
+                selected_user: 1,
+                options_user: [],
+                selected_group: 2,
+                options_group: []
+            };
+            
+            // 初始化datetimepicker
+            $("#datetimepicker").datetimepicker({
+                format:'yyyy-mm-dd'
+            });
+
+            select_options.options_user = [
+//              { text: 'A', value: 1 },
+//              { text: 'B', value: 2 },
+//              { text: 'C', value: 3 }
+            ]
+
+            select_options.options_group = [
+//              { text: '风暴潮', value: 1 },
+//              { text: '海浪', value: 2 },
+//              { text: '生态组', value: 3 }
+            ];
+            var get_groupAnduser_url='http://127.0.0.1:8000/duty/grouplist/';
+            var post_data={department_id:1};
+            var dict_users={};
+            $.ajax({
+                type:'GET',
+                url:get_groupAnduser_url,
+                dataType:'json',
+                data:{post_data},
+                async:false,
+                success:function(data){
+                    /*
+                      1、遍历一级，存入group中
+                      2、
+                      
+
+                    */
+                    dict_users={};
+                    $.map(data,function(obj){
+                            select_options.options_group.push({text:obj.name,value:obj.did});
+                            if(obj.uid.length>1){
+                                dict_users[obj.did]=obj.uid;
+                            }
+                    });
+                    console.log(data);
+                }
+
+            })
+            select_options.selected = 3;
+            select_options.selected_group = 2;
+            var search_url = 'http://127.0.0.1:8000/duty/schedulelist/';
+            var select_vm = new Vue({
+                el: '#formSearch',
+                data: select_options,
+                watch: {
+                    /*
+                        监听：
+                            选中的用户，
+                            选中的群组
+
+                    */
+                    selected_user:function(new_val,old_val){
+
+                    },
+                    selected_group:function(new_val,old_val){
+                        var self=this;
+                        //self.options_user=dict_users[new_val];
+                        select_options.options_user=[];
+                        $.map(dict_users[new_val],function(obj_user){
+                            select_options.options_user.push({text:obj_user.username,value:obj_user.uid});
+                        });
+                        //select_options.options_user.push({text:obj.name,value:obj.did})
+                    }
+                },
+                methods: {
+                    summit: function () {
+                        //注意若想让vue中的方法访问data，需要使用this，最好通过self=this的方式
+                        var self = this;
+                        // $.get(search_url, { user_id: self.selected_user, group_id: self.selected_group },
+                        // $.get(search_url, {  },
+                        //     function (data) {
+                        //         //从后台返回的data重新存入data中
+                        //         //根据从后台范围的data，执行加载值班信息表的操作
+                        //         alert(data);
+                        //     });
+
+                        $.ajax({
+                            url:search_url,
+                            type:'GET',
+                            data:{user_id: self.selected_user, group_id: self.selected_group},
+                            async:false,                            
+                            success:function(res){
+                                alert(res);
+                            }
+                        })
+                        // $.get("test.cgi", { name: "John", time: "2pm" },
+                        //     function (data) {
+                        //         alert("Data Loaded: " + data);
+                        //     });
+                        // alert("成功");
+                    }
+                }
+            });
+
+            $btnsearch = $('#btn_search');
+        })
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="panel-body" style="padding-bottom:0px;">
+            <div id="panel_search" class="panel panel-primary">
+                <div class="panel-heading">查询条件</div>
+                <div class="panel-body table-parent-panel">
+                    <form id="formSearch" class="form-horizontal">
+                        <div class="form-group" style="margin-top:15px">
+                            <label class="control-label col-sm-1" for="txt_search_departmentname">姓名</label>
+                            <div class="col-md-2">
+                                <select class="form-control" v-model="selected_user">
+                                    <option v-for='option in options_user' v-bind:value="option.value">
+                                        {{option.text}}
+                                    </option>
+                                </select>
+                            </div>
+                            <label class="control-label col-sm-1" for="txt_search_departmentname">组名</label>
+                            <div class="col-md-2">
+                                <select class="form-control" v-model="selected_group">
+                                    <option v-for='option in options_group' v-bind:value="option.value">
+                                        {{option.text}}
+                                    </option>
+                                </select>
+                            </div>
+                            <label class="control-label col-sm-1" for="txt_search_statu">日期</label>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="input-group date form_date col-md-12" data-date="" data-date-format="yyyy MM dd  " data-link-field="dtp_input2"
+                                        data-link-format="yyyy-mm-dd">
+                                        <input id="datetimepicker" class="form-control" size="16" type="text" value="">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                    <input type="hidden" id="dtp_input2" value="" />
+                                    <br/>
+                                </div>
+                            </div>
+                            <div class="col-md-2" style="text-align:left;">
+                                <!-- <button type="submit" id="btn_search" type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button> -->
+                                <button type="submit" id="btn_search" style="margin-left:50px" v-on:click="summit()" id="btn_query" class="btn btn-primary">查询</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+</body>
+
+</html>
