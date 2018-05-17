@@ -189,17 +189,141 @@
 
 		}
 
-		// var $add_btn = $("#btn_add");
-		var $my_table;
-		var $my_addbtn;
-		var $my_delbtn;
-		var curRow = {};
-		var department_id;
-		// 家中
-		// var group_id=4;
-		// 单位
-		var group_id = 1;
-		$(function () {
+		//初始化搜索栏
+		function init_search_bar() {
+			//初始化搜索栏
+			//vue可以通过定义多个Vue对象的方式为不同的div绑定事件或者监听对象
+			var select_options = {
+				selected_user: 1,
+				options_user: [],
+				selected_group: 2,
+				options_group: [],
+				selected_date: null
+			};
+
+			// 初始化datetimepicker
+
+			select_options.options_user = [
+			
+			]
+
+			select_options.options_group = [
+				
+			];
+			var get_groupAnduser_url = 'http://127.0.0.1:8000/duty/grouplist/';
+			var post_data = {
+				department_id: 1
+			};
+			var dict_users = {};
+			$.ajax({
+				type: 'GET',
+				url: get_groupAnduser_url,
+				dataType: 'json',
+				data: {
+					post_data
+				},
+				async: false,
+				success: function (data) {
+					/*
+                          1、遍历一级，存入group中
+                          2、
+                        */
+					dict_users = {};
+					$.map(data, function (obj) {
+						select_options.options_group.push({
+							text: obj.name,
+							value: obj.did
+						});
+						if (obj.uid.length > 1) {
+							dict_users[obj.did] = obj.uid;
+						}
+					});
+					console.log(data);
+				}
+
+			})
+			select_options.selected = 3;
+			select_options.selected_group = 2;
+			var search_url = 'http://127.0.0.1:8000/duty/schedulelist/';
+			var select_vm = new Vue({
+				el: '#formSearch',
+				data: select_options,
+				watch: {
+					/*
+                            监听：
+                                选中的用户，
+                                选中的群组
+    
+                        */
+					selected_user: function (new_val, old_val) {
+
+					},
+					selected_group: function (new_val, old_val) {
+						var self = this;
+						//self.options_user=dict_users[new_val];
+						select_options.options_user = [];
+						select_options.options_user.push({
+							text: "不选择",
+							value: 0
+						});
+						$.map(dict_users[new_val], function (obj_user) {
+							select_options.options_user.push({
+								text: obj_user.username,
+								value: obj_user.uid
+							});
+						});
+						//select_options.options_user.push({text:obj.name,value:obj.did})
+					}
+				},
+				mounted() {
+					this.dateDefind();
+				},
+				methods: {
+					summit: function () {
+						//注意若想让vue中的方法访问data，需要使用this，最好通过self=this的方式
+						var self = this;
+						init_table('http://127.0.0.1:8000/duty/schedulelist/',{
+							user_id: self.selected_user,
+							group_id: self.selected_group,
+							selected_date: self.selected_date
+						})
+						
+						
+						
+					},
+					dateDefind: function () {
+						var d, s;
+						var self = this;
+						d = new Date();
+						s = d.getFullYear() + "-"; //取年份
+						s = s + (d.getMonth() + 1) + "-"; //取月份
+						s += d.getDate() + " "; //取日期
+						self.time = s;
+						//初始化
+						$('#datetimepicker').datetimepicker({
+							// startDate: s,
+							minView: "month", //选择日期后，不会再跳转去选择时分秒
+							language: 'zh-CN',
+							format: 'yyyy-mm-dd',
+							todayBtn: 1,
+							autoclose: 1
+						});
+						//当选择器隐藏时，讲选择框只赋值给data里面的time
+						$('#datetimepicker').datetimepicker()
+							.on('hide', function (ev) {
+								var value = $("#datetimepicker").val();
+								self.selected_date = value;
+							});
+					},
+				}
+			});
+
+			$btnsearch = $('#btn_search');
+
+		}
+
+		//初始化table
+		function init_table(get_url, get_data) {
 			var vm = new Vue({
 				el: "#table_parent",
 				data: {
@@ -217,11 +341,9 @@
 			$my_delbtn = $("#btn_delete");
 
 			$my_delbtn.click(function () {
-				// alert("点击删除按钮");
+
 			});
 			$my_addbtn.click(function () {
-				// alert("点击添加按钮");
-				// alert("点击查询");
 				//append 	data 	添加数据到表格在现有数据之后。
 				$my_table.bootstrapTable('append', newData());
 				//scrollTo 	value 	滚动到指定位置，单位为 px，设置 'bottom' 表示跳到最后。
@@ -229,32 +351,19 @@
 
 				init_control();
 			});
-			// $add_btn.onClick=function () {
-			// 	alert("新增操作");
-			// 	//append 	data 	添加数据到表格在现有数据之后。
-			// 	// $my_table.bootstrapTable('append', newData());
-			// 	//scrollTo 	value 	滚动到指定位置，单位为 px，设置 'bottom' 表示跳到最后。
-			// 	// $my_table.bootstrapTable('scrollTo','bottom');
-			// };
 
 			var $query_btn = $("#btn_query");
-			// $("#btn_query").click(function(){
-			// 	alert("点击查询");
-			// });
 
 			$query_btn.click(function () {
 				alert("点击查询");
 			});
 
 			init_control();
-
-			// $("#btn_query").click=function(){
-			// 	alert("点击查询");
-			// }
-			var url = 'http://127.0.0.1:8000/duty/schedulelist/';
+			//var url = get_url;
 			$.ajax({
 				type: 'GET',
-				url: url,
+				url: get_url,
+				data:get_data,
 				dataType: 'json',
 				async: false,
 				success: function (data) {
@@ -337,22 +446,34 @@
 
 				],
 				onEditableSave: function (field, row, oldValue, $el) {
-					//alert(row);
+
 				},
 				onClickRow: function (row, $element) {
-					//row是当前行的一些元素，$element是当前选中行的jq对象
-					//可以通过xx.get(0)的方式获取该dom元素
 					curRow = row;
 				},
 				//加载成功后执行
 				onLoadSuccess: function (aa, bb, cc) {
-					init_control();
-					// $('#tb_user').bootstrapTable('hideColumn', 'id');
+					init_control();					
 				}
 
 			});
-			init_datetime();
+			//init_datetime();
 			$('#tb_user').bootstrapTable('hideColumn', 'id');
+		}
+
+		// var $add_btn = $("#btn_add");
+		var $my_table;
+		var $my_addbtn;
+		var $my_delbtn;
+		var curRow = {};
+		var department_id;
+		// 家中
+		// var group_id=4;
+		// 单位
+		var group_id = 1;
+		$(function () {
+			init_search_bar();
+			init_table();
 		});
 
 		function tablerowDepartmentEdit(value, row, index) {
@@ -529,34 +650,6 @@
 						2、创建向后台提交的数据
 					*/
 					getSelectDataAndPost(params, 'user', 'http://127.0.0.1:8000/duty/modity/');
-					/*
-					console.log(params);
-					var duty_data = new Object();
-					duty_data.id = curRow.id;
-					// 以下信息是对于修改非用户时提交时所用的
-					duty_data.did = curRow.rDepartmentDuty.did.did;
-					duty_data.duid = curRow.rDepartmentDuty.duid.duid;
-					duty_data.modity_id = params.value;
-					duty_data.code = 'user';
-					//序列化
-					var duty_data_json = JSON.stringify(duty_data);
-					var url_post = 'http://127.0.0.1:8000/duty/modity/';
-					//post到后台
-					$.ajax({
-						type: 'POST',
-						url: url_post,
-						data: duty_data,
-						dataType: 'json'
-					});
-					*/
-
-					//var duty_data={
-					//id=curRow.id
-					//duty_id=params.value //获取当前选中的option对应的key
-
-					//}
-					//return None;
-
 				},
 				mode: "inline", //编辑框的模式：支持popup和inline两种模式，默认是popup            
 			});
@@ -621,19 +714,6 @@
 			*/
 			alert(index + val);
 		}
-
-		function init_datetime() {
-			$('.form_date').datetimepicker({
-				language: 'fr',
-				weekStart: 1,
-				todayBtn: 1,
-				autoclose: 1,
-				todayHighlight: 1,
-				startView: 2,
-				minView: 2,
-				forceParse: 0
-			});
-		}
 	</script>
 </head>
 
@@ -647,33 +727,27 @@
 					<form id="formSearch" class="form-horizontal">
 						<div class="form-group" style="margin-top:15px">
 							<label class="control-label col-sm-1" for="txt_search_departmentname">姓名</label>
-							<div class="col-sm-2">
-								<select class="form-control">
-									<option>值班员A</option>
-									<option>值班员B</option>
+							<div class="col-md-2">
+								<select class="form-control" v-model="selected_user">
+									<option v-for='option in options_user' v-bind:value="option.value">
+										{{option.text}}
+									</option>
 								</select>
 							</div>
 							<label class="control-label col-sm-1" for="txt_search_departmentname">组名</label>
-							<div class="col-sm-2">
-								<select class="form-control">
-									<option>风暴潮</option>
-									<option>海浪</option>
+							<div class="col-md-2">
+								<select class="form-control" v-model="selected_group">
+									<option v-for='option in options_group' v-bind:value="option.value">
+										{{option.text}}
+									</option>
 								</select>
 							</div>
 							<label class="control-label col-sm-1" for="txt_search_statu">日期</label>
-							<div class="col-sm-2">
-								<!-- <input type="text" class="form-control" id="txt_search_statu"> -->
-								<!-- <div class="input-group date form_datetime col-md-12" data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p"
-								 data-link-field="dtp_input1">
-									<input class="form-control" size="16" type="text" value="" readonly>
-									<span class="input-group-addon">
-										<span class="glyphicon glyphicon-th"></span>
-									</span>
-								</div> -->
+							<div class="col-md-2">
 								<div class="form-group">
 									<div class="input-group date form_date col-md-12" data-date="" data-date-format="yyyy MM dd  " data-link-field="dtp_input2"
 									    data-link-format="yyyy-mm-dd">
-										<input class="form-control" size="16" type="text" value="" readonly>
+										<input id="datetimepicker" class="form-control" size="16" type="text" value="">
 										<span class="input-group-addon">
 											<span class="glyphicon glyphicon-calendar"></span>
 										</span>
@@ -682,8 +756,9 @@
 									<br/>
 								</div>
 							</div>
-							<div class="col-sm-4 col-md-2" style="text-align:left;">
-								<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
+							<div class="col-md-2" style="text-align:left;">
+								<!-- <button type="submit" id="btn_search" type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button> -->
+								<button type="submit" id="btn_search" style="margin-left:50px" v-on:click="summit()" id="btn_query" class="btn btn-primary">查询</button>
 							</div>
 						</div>
 					</form>
