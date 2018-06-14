@@ -41,7 +41,7 @@
 		}
 		$(function() {
 			$.ajax({
-				url: "data.json", //json文件位置
+				url: "data_small.json", //json文件位置
 				type: "GET", //请求方式为get
 				dataType: "json", //返回数据格式为json
 				success: function(data) { //请求成功完成后要执行的方法 
@@ -55,11 +55,20 @@
 						hs_date.push(value.tdate);
 						console.log(value.tdate);
 					});
+					//获取最大值与最小值
+					var hs_max=Math.max.apply(null,hs_values);
+					var hs_min=Math.min.apply(null,hs_values);
+					
 					var option = {
 						tooltip: {
 							show: true
 						},
 						legend: {
+							orient:'horizontal',
+							x:'center',
+							y:'top',
+							textStyle: {color: 'white',fontWeigth:'normal',fontSize:16},
+							borderWidth:2,
 							data: ['波浪']
 						},
 						xAxis: [{
@@ -83,6 +92,7 @@
 									color: '#FFFFFF'
 								}
 							},
+							max:hs_max>2.5?hs_max:2.5
 						}],
 						series: [{
 							"name": "波浪", //需要与legend中的data相同

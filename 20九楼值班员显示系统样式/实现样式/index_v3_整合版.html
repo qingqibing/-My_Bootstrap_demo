@@ -47,8 +47,8 @@
 			} */
 
 		#ul_nav li a {
-			box-shadow: 0 0 15px black;
-			background: #333399;
+			box-shadow: 0 0 15px rgb(88, 13, 13);
+			background: #2169c7d2;
 			color: white;
 			/* transform: rotate(-20deg); */
 			transform: skewY(-20deg);
@@ -67,7 +67,7 @@
 
 		#ul_nav li a:hover {
 			box-shadow: 0 0 15px black;
-			background: #272736;
+			background: #1111a18e;
 			color: white;
 			transform: skewY(-20deg);
 			height: 80px;
@@ -80,6 +80,12 @@
 			transform: rotate(10deg);
 			/* transform:rotateX(-20deg); */
 			/* transform: rotateY(-20deg); */
+		}
+		#nav{
+			margin-left: 40px;
+			margin-top: 100px;
+			position: fixed;
+			z-index: 2;
 		}
 	</style>
 </head>
@@ -94,9 +100,46 @@
 		</div>
 	</nav>
 	<div id="main" style="">
+		<div id="nav" class="col-md-2" style="padding-left: 0px;">
+			<ul id="ul_nav" class="nav nav-pills nav-stacked col-md-12">
+				<li class="col-md-12">
+					<!--data-toggle，用于告诉 js需要对按钮做什么-->
+					<!--collapse即是折叠-->
+					<!--<a href="#sub1" data-toggle="collapse">系统功能</a>-->
+					<!--data-target指示要切换到哪一个元素-->
+					<a href="#" data-toggle="collapse" class='active' data-target="#sub1">
+						<span class='transform_font'>测试部门1&nbsp;</span>
+					</a>
+					<a href="#" data-toggle="collapse" data-target="#sub1">
+						<span class='transform_font'>测试部门2&nbsp;</span>
+					</a>
+					<a href="#" data-toggle="collapse" data-target="#sub1">
+						<span class='transform_font'>测试部门3&nbsp;</span>
+					</a>
+					<a href="#" data-toggle="collapse" data-target="#sub1">
+						<span class='transform_font'>测试部门4&nbsp;</span>
+					</a>
+					<a href="#" data-toggle="collapse" data-target="#sub1">
+						<span class='transform_font'>测试部门5&nbsp;</span>
+					</a>
+					<a href="#" data-toggle="collapse" data-target="#sub1">
+						<span class='transform_font'>测试部门6&nbsp;</span>
+					</a>
+					<a href="#" data-toggle="collapse" data-target="#sub1">
+						<span class='transform_font'>测试部门7&nbsp;</span>
+					</a>
+					<!-- <ul id="sub1" class="nav collapse">
+								<li>
+									<a href="#"><span class="glyphicon glyphicon-user"></span>&nbsp;XX1组</a>
+								</li>						
+								
+							</ul> -->
+				</li>
+			</ul>
+		</div>
 		<section>
 			<div class="">
-				<img class="background-img" src="img/background/haitan.jpg">
+				<!-- <img class="background-img" src="img/background/haitan2.jpg"> -->
 			</div>
 		</section>
 		<div id="content" class="col-md-12">
@@ -149,7 +192,7 @@
 						</div>
 					</div>
 				</div>
-			
+
 			</div>
 
 			<div class="row content-border ">
