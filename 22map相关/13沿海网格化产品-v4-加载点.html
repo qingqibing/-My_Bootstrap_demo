@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+	<script type="application/javascript" src="js/bootstrap.min.js"></script>
+	<!--<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>-->
+	<script type="application/javascript" src="js/map/leaflet.js"></script>
+	<script type="application/javascript" src="js/map/leaflet.shpfile.js"></script>
+	<script type="application/javascript" src="js/map/shp.js"></script>
+
+	<link rel="stylesheet" href="css/map/leaflet.css" />
+	<link rel="stylesheet" href="css/style.css" media="all" />
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/flatui/flat-ui.css">
+	<style type="text/css">
+		/*对于使用了bootstrap的navbar并固定在顶部时下面的div填充满整个屏幕的解决办法*/
+
+		html,
+		body {
+			height: 100%;
+			margin: 0px;
+			padding: 0px;
+			background-color: #BBBBBB;
+			padding-top: 25px;
+		}
+
+		#main {
+			position: absolute;
+			top: 53px;
+			bottom: 0px;
+			width: 100%;
+		}
+
+		#mycontent {
+			position: absolute;
+			top: 53px;
+			bottom: 0px;
+			width: 100%;
+		}
+
+		#nav {
+			height: 100%;
+			background: #00B83F;
+		}
+
+		#content {
+			background-color: #F5E79E;
+			height: 100%;
+		}
+
+		#ul_nav {
+			position: absolute;
+			height: 100%;
+		}
+
+		.row-margin-top {
+			margin-top: 10px;
+		}
+
+		.form-horizontal .form-group {
+			margin-left: 0px;
+		}
+
+		.col-padding-2 {
+			padding-left: 2px;
+			padding-right: 2px;
+		}
+
+		.col-padding-left-2 {
+			padding-left: 2px;
+		}
+
+		.mycol_disPadding {
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+
+		.info {
+			padding: 6px 8px;
+			font: 14px/16px Arial, Helvetica, sans-serif;
+			background: white;
+			background: rgba(255, 255, 255, 0.8);
+			box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+			border-radius: 5px;
+		}
+
+		.info h4 {
+			margin: 0 0 5px;
+			color: #777;
+		}
+
+		.legend {
+			text-align: left;
+			line-height: 18px;
+			color: #555;
+		}
+
+		.legend i {
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 8px;
+			opacity: 0.7;
+		}
+
+		#basemap {
+			position: relative;
+		}
+
+		#mybar {
+			position: absolute;
+			z-index: 999;
+			/*top:-500px;*/
+			top: 100px;
+			right: 10px;
+			width: 400px;
+		}
+	</style>
+</head>
+
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" style="margin-bottom: 0px;">
+		<div class="navbar-header" id="my_navbar">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse">
+				<span class="sr-only">Toggle navigation</span>
+			</button>
+			<a class="navbar-brand" href="#">沿海网格化显示系统</a>
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<div class="navbar-form navbar-left">
+				<div class="form-group">
+					<input id="search_code" type="text" class="form-control" placeholder="网格编号">
+				</div>
+				<button onclick="my_onclick()" class="btn btn-default">搜索</button>
+			</div>
+		</div>
+	</nav>
+	<div id="main" style="">
+		<div id="content" class="col-md-12 mycol_disPadding">
+			<!--中间的导航栏-->
+			
+			<!--下部的巨幕-->
+			<div id="mycontent" class="col-md-12 mycol_disPadding" style="width: 100%;">
+				<div id="basemap" style="height: 100%; width: 100%;">
+					<div class="leaflet-control-container">
+						<div class="leaflet-top leaflet-left">
+							<div class="leaflet-control-zoom leaflet-bar leaflet-control">
+								<a class="leaflet-control-zoom-in" href="http://leafletjs.com/examples/choropleth/example.html#" title="Zoom in" role="button"
+								 aria-label="Zoom in">+</a>
+								<a class="leaflet-control-zoom-out" href="http://leafletjs.com/examples/choropleth/example.html#" title="Zoom out" role="button"
+								 aria-label="Zoom out">−</a>
+							</div>
+						</div>
+						<div class="leaflet-top leaflet-right">
+							<!--<div class="info leaflet-control">
+									<h4>网格概述</h4>未选择网格
+								</div>-->
+						</div>
+						<div class="leaflet-bottom leaflet-left"></div>
+						<div class="leaflet-bottom leaflet-right">
+							<div class="info legend leaflet-control">
+								<i style="background:blue"></i> 0-2
+								<br>
+								<i style="background:yellow"></i> 2-4
+								<br>
+								<i style="background:orange"></i> 4-8
+								<br>
+								<i style="background:red"></i> 8-12
+								<br>
+							</div>
+							<div class="leaflet-control-attribution leaflet-control">
+								<!--<a href="http://leafletjs.com/" title="A JS library for interactive maps">Leaflet</a> | Map data ©
+									<a href="http://openstreetmap.org/">OpenStreetMap</a> contributors,
+									<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery ©-->
+								<a href="http://nmefc.com/">nmefc</a>版权所有 ©
+								<a href="http://nmefc.com/">nmefc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+
+							</div>
+						</div>
+					</div>
+					<div id="mybar" style="height:400px"></div>
+				</div>
+			</div>
+		</div>
+		
+		<script type="application/javascript" src="js/map/maptiles.js"></script>
+		<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
+		<script type="application/javascript">
+			var forecast_dict = new Array();
+			var forecast_dict_test = {};
+
+
+			var features_arr = [];
+
+
+			function my_onclick() {
+				var temp_code = $("#search_code").val();
+				showAndPointTargetArea(temp_code);
+				
+			}
+
+			function highlightFeature(e) {
+				var layer = e.target;
+
+				layer.setStyle({
+					weight: 5,
+					color: '#666',
+					dashArray: '',
+					fillOpacity: 0.7
+				});
+
+				if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+					layer.bringToFront();
+				}
+
+				info.update(layer.feature.properties);
+			}
+
+			function add2Marker(e) {
+				/*
+				119.5140380859375
+				25.621950149536133
+				*/
+				//向指定经纬度打点
+				L.marker([16.5, 115.9]).addTo(mymap).bindPopup("");
+				L.marker([15.5, 114.9]).addTo(mymap).bindPopup("");
+				L.marker([14.5, 113.9]).addTo(mymap).bindPopup("");
+			}
+
+			function resetHighlight(e) {
+				geojson.resetStyle(e.target);
+				info.update();
+			}
+
+			//点击是拉近到当前选中的区域的所在位置，并等比例放大
+			function zoomToFeature(e) {
+				//1 垃圾视角，并等比例放大
+				//getBounds() return一个 LatLngBounds
+				mymap.fitBounds(e.target.getBounds());
+				var code = e.target.feature.properties.Code;
+				//2 弹出modal框，加载
+				//					loaderrmsg();
+			}
+
+			var geojson;
+
+			function mystyle(feature) {
+				return {
+					weight: 2,
+					opacity: 1,
+					color: 'white',
+					dashArray: '3',
+					fillOpacity: 0.7,
+					fillColor: getColor(feature.properties.density)
+				};
+			}
+
+
+			//echarts控件相关
+
+			//将字典转成arr
+			var arr_keys_forecastextreme = [];
+			var arr_values_forecastextreme = [];
+
+
+			//将字典转为arr
+			
+			//比较算法
+			function compare_forecast(prop) {
+				return function (a, b) {
+					var value_a = a[prop];
+					var value_b = b[prop];
+					return value_b - value_a;
+				}
+			}
+
+			/*
+			 * 根据指定的code的key找到对应的code，并打点
+			 * 
+			 */
+			function showAndPointTargetArea(code) {
+				//每次打点之前，需要先判断point_marker是否为空，为空需要先去掉
+				if (point_marker != null) {
+					mymap.removeLayer(point_marker);
+				}
+
+				var target_area = null;
+				$.each(features_arr, function (index, val) {
+					if (val.properties.Code == code) {
+
+						target_area = val;
+					}
+					//						index;
+				})
+				if (target_area != null) {
+					var latlon_arr = target_area.geometry.bbox;
+					/*
+					 * 119.12344000000051
+						25.263725000000193
+						119.5140380859375
+						25.621950149536133
+					 * lon：经度
+					 * lat：维度
+					 */
+					//计算中位点
+					var point_lat = (latlon_arr[1] + latlon_arr[3]) / 2;
+					var point_lon = (latlon_arr[0] + latlon_arr[2]) / 2;
+					//						point_marker=L.marker([point_lon, point_lat]).addTo(mymap).bindPopup("I am a green leaf.");
+					point_marker = L.marker([point_lat, point_lon]).addTo(mymap).bindPopup("I am a green leaf.");
+					mymap.setView([point_lat, point_lon], 8);
+				}
+
+			}
+
+			var point_marker = null;
+
+			$(function () {
+				
+				var features_arr = [];
+				add2Marker();
+
+				//对forecast_dict进行排序
+				
+				mymap.fitBounds([
+					[20.5, 110],
+					[20.05, 109]
+				]);
+			})
+		</script>
+		<style>
+			#mytest {
+				background: #FFFFFF;
+			}
+		</style>
+</body>
+
+</html>
