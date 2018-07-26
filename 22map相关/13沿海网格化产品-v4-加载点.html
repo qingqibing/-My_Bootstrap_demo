@@ -121,6 +121,10 @@
 			right: 10px;
 			width: 400px;
 		}
+		.myform{
+            border:1px dashed blue;
+            display: inline-block;
+        }
 	</style>
 </head>
 
@@ -144,7 +148,7 @@
 	<div id="main" style="">
 		<div id="content" class="col-md-12 mycol_disPadding">
 			<!--中间的导航栏-->
-			
+
 			<!--下部的巨幕-->
 			<div id="mycontent" class="col-md-12 mycol_disPadding" style="width: 100%;">
 				<div id="basemap" style="height: 100%; width: 100%;">
@@ -188,7 +192,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<script type="application/javascript" src="js/map/maptiles.js"></script>
 		<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
 		<script type="application/javascript">
@@ -202,7 +206,7 @@
 			function my_onclick() {
 				var temp_code = $("#search_code").val();
 				showAndPointTargetArea(temp_code);
-				
+
 			}
 
 			function highlightFeature(e) {
@@ -228,9 +232,15 @@
 				25.621950149536133
 				*/
 				//向指定经纬度打点
-				L.marker([16.5, 115.9]).addTo(mymap).bindPopup("");
+				// L.marker([16.5, 115.9]).addTo(mymap).bindPopup("");
 				L.marker([15.5, 114.9]).addTo(mymap).bindPopup("");
 				L.marker([14.5, 113.9]).addTo(mymap).bindPopup("");
+			}
+
+			function addDiv2Marker() {
+				var myIcon = L.divIcon({className:'myform'},{html:'<div>测试测试</div>'});
+				// you can set .my-div-icon styles in CSS
+				L.marker([16.5, 115.9], { icon: myIcon }).addTo(mymap);
 			}
 
 			function resetHighlight(e) {
@@ -270,7 +280,7 @@
 
 
 			//将字典转为arr
-			
+
 			//比较算法
 			function compare_forecast(prop) {
 				return function (a, b) {
@@ -321,16 +331,17 @@
 			var point_marker = null;
 
 			$(function () {
-				
+
 				var features_arr = [];
 				add2Marker();
 
 				//对forecast_dict进行排序
-				
+
 				mymap.fitBounds([
 					[20.5, 110],
 					[20.05, 109]
 				]);
+				addDiv2Marker();
 			})
 		</script>
 		<style>
