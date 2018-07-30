@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+	<script type="application/javascript" src="js/bootstrap.min.js"></script>
+	<!--<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>-->
+	<script type="application/javascript" src="js/map/leaflet.js"></script>
+	<script type="application/javascript" src="js/map/leaflet.shpfile.js"></script>
+	<script type="application/javascript" src="js/map/shp.js"></script>
+
+	<link rel="stylesheet" href="css/map/leaflet.css" />
+	<link rel="stylesheet" href="css/style.css" media="all" />
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/flatui/flat-ui.css">
+	<style type="text/css">
+		/*对于使用了bootstrap的navbar并固定在顶部时下面的div填充满整个屏幕的解决办法*/
+
+		html,
+		body {
+			height: 100%;
+			margin: 0px;
+			padding: 0px;
+			background-color: #BBBBBB;
+			padding-top: 25px;
+		}
+
+		#myform {
+			/* border: 2px solid white; */
+			display: inline-block;
+			background: rgba(0, 0, 255, 0.829);
+			text-align: center;
+			color: aliceblue;
+			box-shadow: 10px 10px 5px #888888;
+			box-shadow: 0 0 10px whitesmoke;
+			/* 边角圆滑处理 */
+			border-radius: 10px;
+		}
+		#myform .table{
+			margin-bottom: 0px;
+		}
+		#myform_1{
+			/* border: 2px solid white; */
+			background: rgba(0, 0, 255, 0.829);
+			text-align: center;
+			color: aliceblue;
+			box-shadow: 10px 10px 5px #888888;
+		}
+		.surge{
+			background: yellow;
+			color:rgb(0, 80, 251);
+		}
+		.tide{
+			background: red;
+		}
+		#myform table tr td {
+			width: 50
+		}
+	</style>
+</head>
+
+<body>
+	<div id="myform">
+		<table border="1">
+			<tr>
+				<td colspan="2">海洋站A</td>
+			</tr>
+			<tr>
+				<td width="100">5.2</td>
+				<td width="100">07-21</td>
+			</tr>
+			<tr>
+				<td width="100">2.9</td>
+				<td>07-28</td>
+			</tr>
+		</table>
+	</div>
+	<div id="myform">
+		<table class="table table-bordered" border="1">
+			<tr>
+				<td rowspan="2">海洋站A</td>
+				<td class="surge" width="100">5.2</td>
+				<td class="surge" width="100">07-21 08</td>
+			</tr>
+			<tr>
+				<td class="tide" width="100">2.9</td>
+				<td class="tide">07-28 16</td>
+			</tr>
+		</table>
+	</div>
+	<div id="myform_1" item-width="120px">
+			<table class="table table-bordered" border="1">
+				<tr>
+					<td rowspan="2">XX_1</td>
+					<td class="surge" width="100">5.2</td>
+					<td class="surge" width="100">07-21 08</td>
+				</tr>
+				<tr>
+					<td class="tide" width="100">2.9</td>
+					<td class="tide">07-28 16</td>
+				</tr>
+			</table>
+		</div>
+</body>
+
+</html>

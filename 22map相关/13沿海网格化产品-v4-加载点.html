@@ -121,6 +121,54 @@
 			right: 10px;
 			width: 400px;
 		}
+
+		.myform {
+			width: 160px;
+			/* border: 2px solid white; */
+			display: inline-block;
+			background: rgba(0, 0, 255, 0.829);
+			text-align: center;
+			color: aliceblue;
+			/* box-shadow: 10px 10px 5px #888888; */
+			box-shadow: 0 0 5px whitesmoke;
+			/* 边角圆滑处理 */
+			border-radius: 5px;
+		}
+
+		.myform .mytable {
+			margin-bottom: 0px;
+		}
+
+		.surge {
+			background: yellow;
+			color: rgb(0, 80, 251);
+		}
+
+		.tide {
+			background: red;
+		}
+
+		.least {
+			background: blue;
+			color: white;
+		}
+
+		.icon_default {}
+
+		.medium {
+			background: yellow;
+			color: rgb(0, 80, 251);
+		}
+
+		.more {
+			background: orange;
+			color: white;
+		}
+
+		.most {
+			background: red;
+			color: white;
+		}
 	</style>
 </head>
 
@@ -144,7 +192,7 @@
 	<div id="main" style="">
 		<div id="content" class="col-md-12 mycol_disPadding">
 			<!--中间的导航栏-->
-			
+
 			<!--下部的巨幕-->
 			<div id="mycontent" class="col-md-12 mycol_disPadding" style="width: 100%;">
 				<div id="basemap" style="height: 100%; width: 100%;">
@@ -188,7 +236,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<script type="application/javascript" src="js/map/maptiles.js"></script>
 		<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
 		<script type="application/javascript">
@@ -196,13 +244,30 @@
 			var forecast_dict_test = {};
 
 
+			//var str = "js实现用{two}自符串替换占位符{two} {three}  {one} ".format({one: "I",two: "LOVE",three: "YOU"});
+			//var str2 = "js实现用{1}自符串替换占位符{1} {2}  {0} ".format("I","LOVE","YOU");
+			String.prototype.format = function () {
+				if (arguments.length == 0) return this;
+				var param = arguments[0];
+				var s = this;
+				if (typeof (param) == 'object') {
+					for (var key in param)
+						s = s.replace(new RegExp("\\{" + key + "\\}", "g"), param[key]);
+					return s;
+				} else {
+					for (var i = 0; i < arguments.length; i++)
+						s = s.replace(new RegExp("\\{" + i + "\\}", "g"), arguments[i]);
+					return s;
+				}
+			}
+
 			var features_arr = [];
 
 
 			function my_onclick() {
 				var temp_code = $("#search_code").val();
 				showAndPointTargetArea(temp_code);
-				
+
 			}
 
 			function highlightFeature(e) {
@@ -227,10 +292,142 @@
 				119.5140380859375
 				25.621950149536133
 				*/
+
 				//向指定经纬度打点
-				L.marker([16.5, 115.9]).addTo(mymap).bindPopup("");
-				L.marker([15.5, 114.9]).addTo(mymap).bindPopup("");
-				L.marker([14.5, 113.9]).addTo(mymap).bindPopup("");
+				L.marker([19.99,110.18]).addTo(mymap).bindPopup("");
+				L.marker([18.55,108.59]).addTo(mymap).bindPopup("");
+				L.marker([18.28,109.19]).addTo(mymap).bindPopup("");
+				L.marker([19.03,108.57]).addTo(mymap).bindPopup("");
+				L.marker([19.15,110.57]).addTo(mymap).bindPopup("");
+				L.marker([19.52,110.80]).addTo(mymap).bindPopup("");
+			}
+
+			function getAlarmLevel(val) {
+				/*
+					func:根据传入的值返回预警报等级
+					params:
+						val:增水或潮位值
+					return:
+						警报等级（str）
+				*/
+				/*
+				自定义的等级共五种
+					无警报：    norm
+					蓝色：0-2   info  least
+					黄色：2-4   2nd   medium
+					橙色：4-8   3rd   more
+					红色：8-12  4th   most
+				*/
+				var level = 'norm';
+				if (val < 2) {
+					level = 'least';
+				}
+				else if (val < 4 & val >= 2) {
+					level = 'medium';
+				}
+				else if (val < 8 & val > 4) {
+					level = "more";
+				}
+				else if (val > 8) {
+					level = 'most';
+				}
+				return level;
+			}
+
+			function createStationIcon(name, surge, surge_dt, tide, tide_dt) {
+				/*
+					name:海洋站名称
+					surge:增水
+					surge_dt:最大增水出现时间
+					tide:最高潮位
+					tide_dt：最高潮位出现时间
+				*/
+				this.name = name;
+				this.surge = surge;
+				this.surge_dt = surge_dt;
+				this.surge_cls = ''
+				this.tide = tide;
+				this.tide_dt = tide_dt;
+				this.tide_cls = ''
+				this.surge_cls = getAlarmLevel(this.surge);
+				this.tide_cls = getAlarmLevel(this.tide);
+				//需要根据传入的增水以及警戒潮位为添加不同的样式
+				//
+				/*
+				自定义的等级共五种
+					无警报：    norm
+					蓝色：0-2   1st
+					黄色：2-4   2nd
+					橙色：4-8   3rd
+					红色：8-12  4th
+				*/
+				this.toStr = function () {
+					var html_str = '<div class="myform"><table ><tr><td width="100" rowspan="2">{0}</td><td class="{1}" width="100">{2}</td><td class="{3}" width="100">{4} </td></tr><tr><td class="{5}" width="100">{6}</td><td class="{7}">{8}</td></tr></table></div>'.format(this.name, this.surge_cls, this.surge, this.surge_cls, this.surge_dt, this.tide_cls, this.tide, this.tide_cls, this.tide_dt);
+					return html_str;
+				};
+			}
+
+			function addDiv2Marker() {
+				// var myIcon = L.divIcon({
+				// 	className:'myform',
+				// 	html:'<div><span>20.8</span></div>'
+				// });
+				var obj_1 = new createStationIcon('秀英', 1.5, '08-12 03', 2.9, '08-09 22');
+
+				var obj_2 = new createStationIcon('莺歌海', 3.2, '08-11 14', 4.5, '08-10 19');
+
+				var obj_3 = new createStationIcon('三亚', 6.9, '08-11 14', 8.2, '08-10 19');
+				var obj_4 = new createStationIcon('东方', 1.5, '08-12 03', 2.9, '08-09 22');
+
+				var obj_5 = new createStationIcon('博鳌', 3.2, '08-11 14', 4.5, '08-10 19');
+
+				var obj_6 = new createStationIcon('清澜', 6.9, '08-11 14', 8.2, '08-10 19');
+
+				var busIcon_1 = L.divIcon({
+					className: 'icon_default',
+					html: obj_1.toStr(),
+					//坐标，[相对于原点的水平位置（左加右减），相对原点的垂直位置（上加下减）]
+					iconAnchor: [-20, 30]					
+
+				});
+				var busIcon_2 = L.divIcon({
+					className: 'icon_default',
+					html: obj_2.toStr(),
+					iconAnchor: [-20, 30]
+				});
+				var busIcon_3 = L.divIcon({
+					className: 'icon_default',
+					html: obj_3.toStr(),
+					iconAnchor:  [-20, 30]
+				});
+				var busIcon_4 = L.divIcon({
+					className: 'icon_default',
+					html: obj_4.toStr(),
+					iconAnchor: [-20, 30]	
+				});
+				var busIcon_5 = L.divIcon({
+					className: 'icon_default',
+					html: obj_5.toStr(),
+					iconAnchor: [-20, 30]
+				});
+				var busIcon_6 = L.divIcon({
+					className: 'icon_default',
+					html: obj_6.toStr(),
+					iconAnchor:  [-20, 30]
+				});
+				
+				//秀英
+				L.marker([19.99,110.18], { icon: busIcon_1 }).addTo(mymap);
+				//莺歌海
+				L.marker([18.55,108.59], { icon: busIcon_2 }).addTo(mymap);
+				//三亚
+				L.marker([18.28,109.19], { icon: busIcon_3 }).addTo(mymap);
+				//东方 
+				L.marker([19.03,108.57], { icon: busIcon_4 }).addTo(mymap);
+				//博鳌
+				L.marker([19.15,110.57], { icon: busIcon_5 }).addTo(mymap);
+				//清澜
+				L.marker([19.52,110.80], { icon: busIcon_6 }).addTo(mymap);
 			}
 
 			function resetHighlight(e) {
@@ -270,7 +467,7 @@
 
 
 			//将字典转为arr
-			
+
 			//比较算法
 			function compare_forecast(prop) {
 				return function (a, b) {
@@ -321,16 +518,17 @@
 			var point_marker = null;
 
 			$(function () {
-				
+
 				var features_arr = [];
 				add2Marker();
 
 				//对forecast_dict进行排序
-				
+
 				mymap.fitBounds([
 					[20.5, 110],
 					[20.05, 109]
 				]);
+				addDiv2Marker();
 			})
 		</script>
 		<style>
