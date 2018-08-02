@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+	<script type="application/javascript" src="js/bootstrap.min.js"></script>
+	<script type="application/javascript" src="js/select/bootstrap-select.js"></script>
+
+	<link rel="stylesheet" href="css/map/leaflet.css" />
+	<link rel="stylesheet" href="css/style.css" media="all" />
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/flatui/flat-ui.css">
+	<link rel="stylesheet" href="css/select/bootstrap-select.css">
+	<style type="text/css">
+		/*对于使用了bootstrap的navbar并固定在顶部时下面的div填充满整个屏幕的解决办法*/
+
+		html,
+		body {
+			height: 100%;
+			margin: 0px;
+			padding: 0px;
+			background-color: #BBBBBB;
+			padding-top: 25px;
+		}
+
+		#main {
+			position: absolute;
+			top: 53px;
+			bottom: 0px;
+			width: 100%;
+		}
+
+		#mycontent {
+			position: absolute;
+			top: 53px;
+			bottom: 0px;
+			width: 100%;
+		}
+
+		#nav {
+			height: 100%;
+			background: #00B83F;
+		}
+
+		#content {
+			background-color: #F5E79E;
+			height: 100%;
+		}
+
+		#ul_nav {
+			position: absolute;
+			height: 100%;
+		}
+
+		.row-margin-top {
+			margin-top: 10px;
+		}
+
+		.form-horizontal .form-group {
+			margin-left: 0px;
+		}
+
+		.col-padding-2 {
+			padding-left: 2px;
+			padding-right: 2px;
+		}
+
+		.col-padding-left-2 {
+			padding-left: 2px;
+		}
+
+		.mycol_disPadding {
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+
+		.info {
+			padding: 6px 8px;
+			font: 14px/16px Arial, Helvetica, sans-serif;
+			background: white;
+			background: rgba(255, 255, 255, 0.8);
+			box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+			border-radius: 5px;
+		}
+
+		.info h4 {
+			margin: 0 0 5px;
+			color: #777;
+		}
+
+		.legend {
+			text-align: left;
+			line-height: 18px;
+			color: #555;
+		}
+
+		.legend i {
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 8px;
+			opacity: 0.7;
+		}
+
+		#basemap {
+			position: relative;
+		}
+
+		#mybar {
+			position: absolute;
+			z-index: 999;
+			/*top:-500px;*/
+			top: 100px;
+			right: 10px;
+			width: 400px;
+		}
+
+		#selectmarker {
+			margin-top: 5px;
+		}
+	</style>
+</head>
+
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" style="margin-bottom: 0px;">
+		<div class="navbar-header" id="my_navbar">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse">
+				<span class="sr-only">Toggle navigation</span>
+			</button>
+			<a class="navbar-brand" href="#">沿海网格化显示系统</a>
+		</div>
+	</nav>
+	<div id="main" style="">
+		<div id="content" class="col-md-12 mycol_disPadding">
+			<!--中间的导航栏-->
+			<div class="col-md-12 mycol_disPadding">
+				<nav class="navbar navbar-default" style="margin-bottom: 0px;">
+					<div class="container-fluid">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+							    aria-expanded="false">
+								<span class="sr-only">Toggle navigation</span>
+
+							</button>
+							<a class="navbar-brand" href="#">位置</a>
+						</div>
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							<ul class="nav navbar-nav">
+								<li class="active">
+									<a href="#">测试显示
+										<span class="sr-only">(current)</span>
+									</a>
+								</li>
+								<!-- <li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">加载内容
+										<span class="caret"></span>
+									</a>
+									<ul class="dropdown-menu">
+										<li >
+											<input type="checkbox">沿海网格
+										</li>
+										<li>
+											<a href="#">风暴潮及增水</a>
+										</li>										
+									</ul>
+								</li>		 -->
+								<li id="selectmarker">
+									<select class="selectpicker" data-style="btn-success" multiple title="选择加载图层">
+										<option value="1">沿海网格</option>
+										<option value="2">风暴潮及增水</option>
+									</select>
+								</li>
+
+							</ul>
+							<form class="navbar-form navbar-left">
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="网格名称">
+								</div>
+								<button type="submit" class="btn btn-default">搜索</button>
+							</form>
+							<ul class="nav navbar-nav navbar-right">
+								<li>
+									<a href="#">
+										<span class="glyphicon glyphicon-zoom-in"></span>放大</a>
+								</li>
+								<li>
+									<a href="#">
+										<span class="glyphicon glyphicon-zoom-out"></span>缩小</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+
+			</div>
+			<!--下部的巨幕-->
+			<div id="mycontent" class="col-md-12 mycol_disPadding" style="width: 100%;">
+
+			</div>
+		</div>
+		<script type="application/javascript">			
+			$(function () {
+				$('.selectpicker').selectpicker('val','1');
+				$('.selectpicker').selectpicker('val');
+				$('.selectpicker').on('changed.bs.select',function(e,index,val){
+					//思路
+					/*
+						由于获取不到选中的值，只能通过$('.selectpicker').selectpicker('val')取到当前选中的select的val，
+						所以每次点击时，获取当前选中的值
+						并执行其响应操作
+
+					*/
+					// console.log(e);
+					// console.log(index);
+					var select_val= $('.selectpicker').selectpicker('val');
+					console.log(select_val);
+				});
+			})
+		</script>
+		<style>
+			#mytest {
+				background: #FFFFFF;
+			}
+		</style>
+</body>
+
+</html>
