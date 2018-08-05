@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+	<script type="application/javascript" src="js/bootstrap.min.js"></script>
+	<!--<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>-->
+	<script type="application/javascript" src="js/map/leaflet.js"></script>
+	<script type="application/javascript" src="js/map/leaflet.shpfile.js"></script>
+	<script type="application/javascript" src="js/map/shp.js"></script>
+
+	<link rel="stylesheet" href="css/map/leaflet.css" />
+	<link rel="stylesheet" href="css/style.css" media="all" />
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/flatui/flat-ui.css">
+	<style type="text/css">
+		/*对于使用了bootstrap的navbar并固定在顶部时下面的div填充满整个屏幕的解决办法*/
+
+		html,
+		body {
+			height: 100%;
+			margin: 0px;
+			padding: 0px;
+			background-color: #BBBBBB;
+			padding-top: 25px;
+		}
+
+		#main {
+			position: absolute;
+			top: 53px;
+			bottom: 0px;
+			width: 100%;
+		}
+
+		#mycontent {
+			position: absolute;
+			top: 53px;
+			bottom: 0px;
+			width: 100%;
+		}
+
+		#nav {
+			height: 100%;
+			background: #00B83F;
+		}
+
+		#content {
+			background-color: #F5E79E;
+			height: 100%;
+		}
+
+		#ul_nav {
+			position: absolute;
+			height: 100%;
+		}
+
+		.row-margin-top {
+			margin-top: 10px;
+		}
+
+		.form-horizontal .form-group {
+			margin-left: 0px;
+		}
+
+		.col-padding-2 {
+			padding-left: 2px;
+			padding-right: 2px;
+		}
+
+		.col-padding-left-2 {
+			padding-left: 2px;
+		}
+
+		.mycol_disPadding {
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+
+		.info {
+			padding: 6px 8px;
+			font: 14px/16px Arial, Helvetica, sans-serif;
+			background: white;
+			background: rgba(255, 255, 255, 0.8);
+			box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+			border-radius: 5px;
+		}
+
+		.info h4 {
+			margin: 0 0 5px;
+			color: #777;
+		}
+
+		.legend {
+			text-align: left;
+			line-height: 18px;
+			color: #555;
+		}
+
+		.legend i {
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 8px;
+			opacity: 0.7;
+		}
+
+		#basemap {
+			position: relative;
+		}
+
+		#mybar {
+			position: absolute;
+			z-index: 999;
+			/*top:-500px;*/
+			top: 100px;
+			right: 10px;
+			width: 400px;
+		}
+
+		.myform {
+			width: 160px;
+			/* border: 2px solid white; */
+			display: inline-block;
+			background: rgba(0, 0, 255, 0.829);
+			text-align: center;
+			color: aliceblue;
+			/* box-shadow: 10px 10px 5px #888888; */
+			box-shadow: 0 0 5px whitesmoke;
+			/* 边角圆滑处理 */
+			border-radius: 5px;
+		}
+
+		.myform .mytable {
+			margin-bottom: 0px;
+		}
+
+		.surge {
+			background: yellow;
+			color: rgb(0, 80, 251);
+		}
+
+		.tide {
+			background: red;
+		}
+
+		.least {
+			background: blue;
+			color: white;
+		}
+
+		.icon_default {}
+
+		.medium {
+			background: yellow;
+			color: rgb(0, 80, 251);
+		}
+
+		.more {
+			background: orange;
+			color: white;
+		}
+
+		.most {
+			background: red;
+			color: white;
+		}
+	</style>
+</head>
+
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" style="margin-bottom: 0px;">
+		<div class="navbar-header" id="my_navbar">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse">
+				<span class="sr-only">Toggle navigation</span>
+			</button>
+			<a class="navbar-brand" href="#">沿海网格化显示系统</a>
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<div class="navbar-form navbar-left">
+				<div class="form-group">
+					<input id="search_code" type="text" class="form-control" placeholder="网格编号">
+				</div>
+				<button onclick="my_onclick()" class="btn btn-default">搜索</button>
+			</div>
+		</div>
+	</nav>
+	<div id="main" style="">
+		<div id="content" class="col-md-12 mycol_disPadding">
+			<!--中间的导航栏-->
+
+			<!--下部的巨幕-->
+			<div id="mycontent" class="col-md-12 mycol_disPadding" style="width: 100%;">
+				<div id="basemap" style="height: 100%; width: 100%;">
+					<div class="leaflet-control-container">
+						<div class="leaflet-top leaflet-left">
+							<div class="leaflet-control-zoom leaflet-bar leaflet-control">
+								<a class="leaflet-control-zoom-in" href="http://leafletjs.com/examples/choropleth/example.html#" title="Zoom in" role="button"
+								    aria-label="Zoom in">+</a>
+								<a class="leaflet-control-zoom-out" href="http://leafletjs.com/examples/choropleth/example.html#" title="Zoom out" role="button"
+								    aria-label="Zoom out">−</a>
+							</div>
+						</div>
+						<div class="leaflet-top leaflet-right">
+							<!--<div class="info leaflet-control">
+									<h4>网格概述</h4>未选择网格
+								</div>-->
+						</div>
+						<div class="leaflet-bottom leaflet-left"></div>
+						<div class="leaflet-bottom leaflet-right">
+							<div class="info legend leaflet-control">
+								<i style="background:blue"></i> 0-2
+								<br>
+								<i style="background:yellow"></i> 2-4
+								<br>
+								<i style="background:orange"></i> 4-8
+								<br>
+								<i style="background:red"></i> 8-12
+								<br>
+							</div>
+							<div class="leaflet-control-attribution leaflet-control">
+								<!--<a href="http://leafletjs.com/" title="A JS library for interactive maps">Leaflet</a> | Map data ©
+									<a href="http://openstreetmap.org/">OpenStreetMap</a> contributors,
+									<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery ©-->
+								<a href="http://nmefc.com/">nmefc</a>版权所有 ©
+								<a href="http://nmefc.com/">nmefc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+
+							</div>
+						</div>
+					</div>
+					<div id="mybar" style="height:400px"></div>
+				</div>
+			</div>
+		</div>
+
+		<script type="application/javascript" src="js/map/maptiles.js"></script>
+		<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
+		<script type="application/javascript">
+			var forecast_dict = new Array();
+			var forecast_dict_test = {};
+
+
+			//var str = "js实现用{two}自符串替换占位符{two} {three}  {one} ".format({one: "I",two: "LOVE",three: "YOU"});
+			//var str2 = "js实现用{1}自符串替换占位符{1} {2}  {0} ".format("I","LOVE","YOU");
+			String.prototype.format = function () {
+				if (arguments.length == 0) return this;
+				var param = arguments[0];
+				var s = this;
+				if (typeof (param) == 'object') {
+					for (var key in param)
+						s = s.replace(new RegExp("\\{" + key + "\\}", "g"), param[key]);
+					return s;
+				} else {
+					for (var i = 0; i < arguments.length; i++)
+						s = s.replace(new RegExp("\\{" + i + "\\}", "g"), arguments[i]);
+					return s;
+				}
+			}
+
+			var features_arr = [];
+
+
+			function my_onclick() {
+				var temp_code = $("#search_code").val();
+				showAndPointTargetArea(temp_code);
+
+			}
+
+			function highlightFeature(e) {
+				var layer = e.target;
+
+				layer.setStyle({
+					weight: 5,
+					color: '#666',
+					dashArray: '',
+					fillOpacity: 0.7
+				});
+
+				if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+					layer.bringToFront();
+				}
+
+				info.update(layer.feature.properties);
+			}
+
+			function addDiv2Marker(storm_obj) {
+
+				L.marker([storm_obj.lat, storm_obj.lon]).addTo(mymap).bindPopup("");
+
+				var obj_1 = new createStationIcon(storm_obj.name, storm_obj.surge_val, storm_obj.surge_dt, storm_obj.tide_val, storm_obj.tide_dt);
+
+				var busIcon_1 = L.divIcon({
+					className: 'icon_default',
+					html: obj_1.toStr(),
+					//坐标，[相对于原点的水平位置（左加右减），相对原点的垂直位置（上加下减）]
+					iconAnchor: [-20, 30]
+
+				});
+
+				//秀英
+				L.marker([storm_obj.lat, storm_obj.lon], {
+					icon: busIcon_1
+				}).addTo(mymap);
+			}
+
+			function add2Marker(e) {
+				/*
+				119.5140380859375
+				25.621950149536133
+				*/
+
+				//向指定经纬度打点
+				L.marker([19.99, 110.18]).addTo(mymap).bindPopup("");
+				L.marker([18.55, 108.59]).addTo(mymap).bindPopup("");
+				L.marker([18.28, 109.19]).addTo(mymap).bindPopup("");
+				L.marker([19.03, 108.57]).addTo(mymap).bindPopup("");
+				L.marker([19.15, 110.57]).addTo(mymap).bindPopup("");
+				L.marker([19.52, 110.80]).addTo(mymap).bindPopup("");
+			}
+
+			function getAlarmLevel(val) {
+				/*
+					func:根据传入的值返回预警报等级
+					params:
+						val:增水或潮位值
+					return:
+						警报等级（str）
+				*/
+				/*
+				自定义的等级共五种
+					无警报：    norm
+					蓝色：0-2   info  least
+					黄色：2-4   2nd   medium
+					橙色：4-8   3rd   more
+					红色：8-12  4th   most
+				*/
+				var level = 'norm';
+				if (val < 2) {
+					level = 'least';
+				} else if (val < 4 & val >= 2) {
+					level = 'medium';
+				} else if (val < 8 & val > 4) {
+					level = "more";
+				} else if (val > 8) {
+					level = 'most';
+				}
+				return level;
+			}
+
+			function StormData(code, name, lat, lon, area, surge_val, surge_dt, tide_val, tide_dt, nowdate) {
+
+				this.code = code;
+				this.name = name;
+				this.lat = lat;
+				this.lon = lon;
+				this.area = area;
+				this.surge_val = surge_val;
+				this.surge_dt = surge_dt;
+				this.tide_val = tide_val;
+				this.tide_dt = tide_dt;
+
+			}
+
+			function createStationIcon(name, surge, surge_dt, tide, tide_dt) {
+				/*
+					name:海洋站名称
+					surge:增水
+					surge_dt:最大增水出现时间
+					tide:最高潮位
+					tide_dt：最高潮位出现时间
+				*/
+				this.name = name;
+				this.surge = surge;
+				this.surge_dt = surge_dt;
+				this.surge_cls = ''
+				this.tide = tide;
+				this.tide_dt = tide_dt;
+				this.tide_cls = ''
+				this.surge_cls = getAlarmLevel(this.surge);
+				this.tide_cls = getAlarmLevel(this.tide);
+				//需要根据传入的增水以及警戒潮位为添加不同的样式
+				//
+				/*
+				自定义的等级共五种
+					无警报：    norm
+					蓝色：0-2   1st
+					黄色：2-4   2nd
+					橙色：4-8   3rd
+					红色：8-12  4th
+				*/
+				this.toStr = function () {
+					var html_str =
+						'<div class="myform"><table ><tr><td width="100" rowspan="2">{0}</td><td class="{1}" width="100">{2}</td><td class="{3}" width="100">{4} </td></tr><tr><td class="{5}" width="100">{6}</td><td class="{7}">{8}</td></tr></table></div>'
+						.format(this.name, this.surge_cls, this.surge, this.surge_cls, this.surge_dt, this.tide_cls, this.tide, this.tide_cls,
+							this.tide_dt);
+					return html_str;
+				};
+			}
+
+			function getStormData() {
+				$.ajax({
+					url: './data/storm_data.json',
+					type: "GET",
+					dataType: "json",
+					success: function (data) {
+
+						console.log(data);
+						return (data);
+					}
+				})
+			}
+
+			function loadStationData() {
+				//获取全部海洋站信息
+				var station_data = null;
+				$.ajax({
+					url: './data/station_data.json',
+					type: 'GET',
+					dataType: 'json',
+					async: false,
+					success: function (data) {
+						// console.log(data);
+						station_data = data;
+					}
+				})
+				return station_data;
+			}
+
+			function loadStormData() {
+				var storm_data = [];
+				//获取当日的风暴潮预报值
+				$.ajax({
+					url: './data/storm_data.json',
+					type: "GET",
+					dataType: "json",
+					async: false,
+					success: function (data) {
+						// console.log(data);
+						storm_data = data;
+					}
+				})
+				return storm_data;
+			}
+
+			function addDiv2Marker_bakup() {
+				// var myIcon = L.divIcon({
+				// 	className:'myform',
+				// 	html:'<div><span>20.8</span></div>'
+				// });
+				var obj_1 = new createStationIcon('秀英', 1.5, '08-12 03', 2.9, '08-09 22');
+
+				var obj_2 = new createStationIcon('莺歌海', 3.2, '08-11 14', 4.5, '08-10 19');
+
+				var obj_3 = new createStationIcon('三亚', 6.9, '08-11 14', 8.2, '08-10 19');
+				var obj_4 = new createStationIcon('东方', 1.5, '08-12 03', 2.9, '08-09 22');
+
+				var obj_5 = new createStationIcon('博鳌', 3.2, '08-11 14', 4.5, '08-10 19');
+
+				var obj_6 = new createStationIcon('清澜', 6.9, '08-11 14', 8.2, '08-10 19');
+
+				var busIcon_1 = L.divIcon({
+					className: 'icon_default',
+					html: obj_1.toStr(),
+					//坐标，[相对于原点的水平位置（左加右减），相对原点的垂直位置（上加下减）]
+					iconAnchor: [-20, 30]
+
+				});
+				var busIcon_2 = L.divIcon({
+					className: 'icon_default',
+					html: obj_2.toStr(),
+					iconAnchor: [-20, 30]
+				});
+				var busIcon_3 = L.divIcon({
+					className: 'icon_default',
+					html: obj_3.toStr(),
+					iconAnchor: [-20, 30]
+				});
+				var busIcon_4 = L.divIcon({
+					className: 'icon_default',
+					html: obj_4.toStr(),
+					iconAnchor: [-20, 30]
+				});
+				var busIcon_5 = L.divIcon({
+					className: 'icon_default',
+					html: obj_5.toStr(),
+					iconAnchor: [-20, 30]
+				});
+				var busIcon_6 = L.divIcon({
+					className: 'icon_default',
+					html: obj_6.toStr(),
+					iconAnchor: [-20, 30]
+				});
+
+				//秀英
+				L.marker([19.99, 110.18], {
+					icon: busIcon_1
+				}).addTo(mymap);
+				//莺歌海
+				L.marker([18.55, 108.59], {
+					icon: busIcon_2
+				}).addTo(mymap);
+				//三亚
+				L.marker([18.28, 109.19], {
+					icon: busIcon_3
+				}).addTo(mymap);
+				//东方 
+				L.marker([19.03, 108.57], {
+					icon: busIcon_4
+				}).addTo(mymap);
+				//博鳌
+				L.marker([19.15, 110.57], {
+					icon: busIcon_5
+				}).addTo(mymap);
+				//清澜
+				L.marker([19.52, 110.80], {
+					icon: busIcon_6
+				}).addTo(mymap);
+			}
+
+			function resetHighlight(e) {
+				geojson.resetStyle(e.target);
+				info.update();
+			}
+
+			//点击是拉近到当前选中的区域的所在位置，并等比例放大
+			function zoomToFeature(e) {
+				//1 垃圾视角，并等比例放大
+				//getBounds() return一个 LatLngBounds
+				mymap.fitBounds(e.target.getBounds());
+				var code = e.target.feature.properties.Code;
+				//2 弹出modal框，加载
+				//					loaderrmsg();
+			}
+
+			var geojson;
+
+			function mystyle(feature) {
+				return {
+					weight: 2,
+					opacity: 1,
+					color: 'white',
+					dashArray: '3',
+					fillOpacity: 0.7,
+					fillColor: getColor(feature.properties.density)
+				};
+			}
+
+
+			//echarts控件相关
+
+			//将字典转成arr
+			var arr_keys_forecastextreme = [];
+			var arr_values_forecastextreme = [];
+
+
+			//将字典转为arr
+
+			//比较算法
+			function compare_forecast(prop) {
+				return function (a, b) {
+					var value_a = a[prop];
+					var value_b = b[prop];
+					return value_b - value_a;
+				}
+			}
+
+			/*
+			 * 根据指定的code的key找到对应的code，并打点
+			 * 
+			 */
+			function showAndPointTargetArea(code) {
+				//每次打点之前，需要先判断point_marker是否为空，为空需要先去掉
+				if (point_marker != null) {
+					mymap.removeLayer(point_marker);
+				}
+
+				var target_area = null;
+				$.each(features_arr, function (index, val) {
+					if (val.properties.Code == code) {
+
+						target_area = val;
+					}
+					//						index;
+				})
+				if (target_area != null) {
+					var latlon_arr = target_area.geometry.bbox;
+					/*
+					 * 119.12344000000051
+						25.263725000000193
+						119.5140380859375
+						25.621950149536133
+					 * lon：经度
+					 * lat：维度
+					 */
+					//计算中位点
+					var point_lat = (latlon_arr[1] + latlon_arr[3]) / 2;
+					var point_lon = (latlon_arr[0] + latlon_arr[2]) / 2;
+					//						point_marker=L.marker([point_lon, point_lat]).addTo(mymap).bindPopup("I am a green leaf.");
+					point_marker = L.marker([point_lat, point_lon]).addTo(mymap).bindPopup("I am a green leaf.");
+					mymap.setView([point_lat, point_lon], 8);
+				}
+
+			}
+
+			var point_marker = null;
+
+			$(function () {
+
+				var features_arr = [];
+				var station_arr = [];
+				var station_dict = [];
+				var storm_arr = [];
+				var storm_obj_arr = [];
+				//1 先加载station list
+				station_arr = loadStationData();
+				$.each(station_arr, function (index, val) {
+					// console.log(val);
+					station_dict[val.code] = val;
+				});
+				//2 获取返回的当日极值数据
+				storm_arr = loadStormData();
+
+				//3 生成storm对象
+				$.each(storm_arr, function (index, val) {
+					var station_temp = null;
+					if (val.CODE in station_dict) {
+						station_temp = station_dict[val.CODE]
+					}
+					if (station_temp != null) {
+						var obj = new StormData(
+							val.CODE,
+							station_temp.name, station_temp.Lat,
+							station_temp.Lon,
+							station_temp.area,
+							val.Surge_VALUE,
+							val.Surge_DATE,
+							val.Tide_VALUE,
+							val.Tide_DATE);
+						storm_obj_arr.push(obj);
+					}
+
+
+				})
+				// add2Marker();
+				$.each(storm_obj_arr,function(index,val){
+					addDiv2Marker(val);
+				})
+				// addDiv2Marker();
+				mymap.fitBounds([
+					[20.5, 110],
+					[20.05, 109]
+				]);
+
+			})
+		</script>
+		<style>
+			#mytest {
+				background: #FFFFFF;
+			}
+		</style>
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "Surge_DATE": "07-10 15",
+        "Tide_DATE": "07-10 01",
+        "nowdate": "2018-07-10",
+        "Surge_VALUE": 1.5,
+        "Tide_VALUE": 2.9,
+        "CODE": "XYG"
+    },
+    {
+        "id": 2,
+        "Surge_DATE": "07-10 15",
+        "Tide_DATE": "07-10 01",
+        "nowdate": "2018-07-10",
+        "Surge_VALUE": 3.2,
+        "Tide_VALUE": 4.5,
+        "CODE": "YGH"
+    },
+    {
+        "id": 3,
+        "Surge_DATE": "07-10 15",
+        "Tide_DATE": "07-10 01",
+        "nowdate": "2018-07-10",
+        "Surge_VALUE": 6.9,
+        "Tide_VALUE": 8.2,
+        "CODE": "SYA"
+    },
+    {
+        "id": 3,
+        "Surge_DATE": "07-10 15",
+        "Tide_DATE": "07-10 01",
+        "nowdate": "2018-07-10",
+        "Surge_VALUE": 1.5,
+        "Tide_VALUE": 2.9,
+        "CODE": "DFN"
+    },
+    {
+        "id": 3,
+        "Surge_DATE": "07-10 15",
+        "Tide_DATE": "07-10 01",
+        "nowdate": "2018-07-10",
+        "Surge_VALUE": 3.2,
+        "Tide_VALUE": 4.5,
+        "CODE": "BAO"
+    },
+    {
+        "id": 3,
+        "Surge_DATE": "07-10 15",
+        "Tide_DATE": "07-10 01",
+        "nowdate": "2018-07-10",
+        "Surge_VALUE": 6.9,
+        "Tide_VALUE": 8.2,
+        "CODE": "QLA"
+    }
+]

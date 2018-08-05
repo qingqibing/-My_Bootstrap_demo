@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "Surge_DATE": "07-10 15",
+        "Tide_DATE": "07-10 01",
+        "nowdate": "2018-07-10",
+        "Surge_VALUE": 0.87,
+        "Tide_VALUE": 4.73,
+        "CODE": "N01"
+    },
+    {
+        "id": 2,
+        "Surge_DATE": "07-10 15",
+        "Tide_DATE": "07-10 01",
+        "nowdate": "2018-07-10",
+        "Surge_VALUE": 0.87,
+        "Tide_VALUE": 4.73,
+        "CODE": "N02"
+    },
+    {
+        "id": 3,
+        "Surge_DATE": "07-10 15",
+        "Tide_DATE": "07-10 01",
+        "nowdate": "2018-07-10",
+        "Surge_VALUE": 0.87,
+        "Tide_VALUE": 4.73,
+        "CODE": "N03"
+    }
+]

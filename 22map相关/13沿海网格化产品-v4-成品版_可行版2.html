@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+	<script type="application/javascript" src="js/bootstrap.min.js"></script>
+	<!--<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>-->
+	<script type="application/javascript" src="js/map/leaflet.js"></script>
+	<script type="application/javascript" src="js/map/leaflet.shpfile.js"></script>
+	<script type="application/javascript" src="js/map/shp.js"></script>
+
+	<link rel="stylesheet" href="css/map/leaflet.css" />
+	<link rel="stylesheet" href="css/style.css" media="all" />
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/flatui/flat-ui.css">
+	<link rel="stylesheet" href="css/storm/storm.css">
+	<style type="text/css">
+		/*对于使用了bootstrap的navbar并固定在顶部时下面的div填充满整个屏幕的解决办法*/
+
+		html,
+		body {
+			height: 100%;
+			margin: 0px;
+			padding: 0px;
+			background-color: #BBBBBB;
+			padding-top: 25px;
+		}
+
+		#main {
+			position: absolute;
+			top: 53px;
+			bottom: 0px;
+			width: 100%;
+		}
+
+		#mycontent {
+			position: absolute;
+			top: 53px;
+			bottom: 0px;
+			width: 100%;
+		}
+
+		#nav {
+			height: 100%;
+			background: #00B83F;
+		}
+
+		#content {
+			background-color: #F5E79E;
+			height: 100%;
+		}
+
+		#ul_nav {
+			position: absolute;
+			height: 100%;
+		}
+
+		.row-margin-top {
+			margin-top: 10px;
+		}
+
+		.form-horizontal .form-group {
+			margin-left: 0px;
+		}
+
+		.col-padding-2 {
+			padding-left: 2px;
+			padding-right: 2px;
+		}
+
+		.col-padding-left-2 {
+			padding-left: 2px;
+		}
+
+		.mycol_disPadding {
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+
+		.info {
+			padding: 6px 8px;
+			font: 14px/16px Arial, Helvetica, sans-serif;
+			background: white;
+			background: rgba(255, 255, 255, 0.8);
+			box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+			border-radius: 5px;
+		}
+
+		.info h4 {
+			margin: 0 0 5px;
+			color: #777;
+		}
+
+		.legend {
+			text-align: left;
+			line-height: 18px;
+			color: #555;
+		}
+
+		.legend i {
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 8px;
+			opacity: 0.7;
+		}
+
+		#basemap {
+			position: relative;
+		}
+
+		#mybar {
+			position: absolute;
+			z-index: 999;
+			/*top:-500px;*/
+			top: 100px;
+			right: 10px;
+			width: 400px;
+		}
+	</style>
+</head>
+
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" style="margin-bottom: 0px;">
+		<div class="navbar-header" id="my_navbar">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse">
+				<span class="sr-only">Toggle navigation</span>
+			</button>
+			<a class="navbar-brand" href="#">沿海网格化显示系统</a>
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<div class="navbar-form navbar-left">
+				<div class="form-group">
+					<input id="search_code" type="text" class="form-control" placeholder="网格编号">
+				</div>
+				<button onclick="my_onclick()" class="btn btn-default">搜索</button>
+			</div>
+		</div>
+	</nav>
+	<div id="main" style="">
+		<div id="content" class="col-md-12 mycol_disPadding">
+			<!--中间的导航栏-->
+			<div class="col-md-12 mycol_disPadding">
+				<nav class="navbar navbar-default" style="margin-bottom: 0px;">
+					<div class="container-fluid">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+							 aria-expanded="false">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+							<a class="navbar-brand" href="#">位置</a>
+						</div>
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							<!-- 顶部切换不同图层 -->
+							<ul id="top_select_ul" class="nav navbar-nav">
+								<li v-for="item in items" class="{'active':item.code==selected.code}">
+									<a href="#" v-on:click="selectlayer(item.code,item)">{{item.message}}
+										<span class="sr-only">(current)</span>
+									</a>
+								</li>
+							</ul>
+							<ul class="nav navbar-nav navbar-right">
+								<li>
+									<a href="#">
+										<span class="glyphicon glyphicon-zoom-in"></span>放大</a>
+								</li>
+								<li>
+									<a href="#">
+										<span class="glyphicon glyphicon-zoom-out"></span>缩小</a>
+								</li>
+							</ul>
+						</div>
+						<!-- /.navbar-collapse -->
+
+					</div>
+					<!-- /.container-fluid -->
+				</nav>
+
+			</div>
+			<!--下部的巨幕-->
+			<div id="mycontent" class="col-md-12 mycol_disPadding" style="width: 100%;">
+				<div id="basemap" style="height: 100%; width: 100%;">
+					<div class="leaflet-control-container">
+						<div class="leaflet-top leaflet-left">
+							<div class="leaflet-control-zoom leaflet-bar leaflet-control">
+								<a class="leaflet-control-zoom-in" href="http://leafletjs.com/examples/choropleth/example.html#" title="Zoom in" role="button"
+								 aria-label="Zoom in">+</a>
+								<a class="leaflet-control-zoom-out" href="http://leafletjs.com/examples/choropleth/example.html#" title="Zoom out" role="button"
+								 aria-label="Zoom out">−</a>
+							</div>
+						</div>
+						<div class="leaflet-top leaflet-right">
+							<!--<div class="info leaflet-control">
+									<h4>网格概述</h4>未选择网格
+								</div>-->
+						</div>
+						<div class="leaflet-bottom leaflet-left"></div>
+						<div class="leaflet-bottom leaflet-right">
+							<div class="info legend leaflet-control">
+								<i style="background:blue"></i> 0-2
+								<br>
+								<i style="background:yellow"></i> 2-4
+								<br>
+								<i style="background:orange"></i> 4-8
+								<br>
+								<i style="background:red"></i> 8-12
+								<br>
+							</div>
+							<div class="leaflet-control-attribution leaflet-control">
+								<!--<a href="http://leafletjs.com/" title="A JS library for interactive maps">Leaflet</a> | Map data ©
+									<a href="http://openstreetmap.org/">OpenStreetMap</a> contributors,
+									<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery ©-->
+								<a href="http://nmefc.com/">nmefc</a>版权所有 ©
+								<a href="http://nmefc.com/">nmefc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+
+							</div>
+						</div>
+					</div>
+					<div id="mybar" style="height:400px"></div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myProgressLabel">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="mymsgtitle">请稍后</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal">
+							<!--<div class="container">-->
+							<div class="bg-primary col-md-12">
+								<div id="wave_data" style="height:400px;width: 850px;">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="application/javascript" src="js/map/maptiles.js"></script>
+		<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
+		<script type="application/javascript" src="js/vue/vue.js"></script>
+
+		<script type="application/javascript" src="js/common/stringconvert.js"></script>
+		<script type="application/javascript" src="js/map/storm.js"></script>
+		<script type="application/javascript" src="js/map/grid.js"></script>
+		<script type="application/javascript" src="js/map/search.js"></script>
+		<script type="application/javascript" src="js/echarts/rightbar.js"></script>
+		<script type="application/javascript" src="js/echarts/wavebar.js"></script>
+		<script type="application/javascript">
+			var forecast_dict = new Array();
+			var forecast_dict_test = {};
+
+			//顶部切换图层
+			var vm1 = new Vue({
+				el: '#top_select_ul',
+				data: {
+					items: [{ message: '沿海网格', code: 'grid' },
+					{ message: '风暴潮及增水', code: 'storm' }
+					],
+					mylayer: "",
+				},
+				watch: {
+					mylayer: function (new_data, old_data) {
+						var self = this;
+						// self.fillarea(null,new_data);
+						if (new_data === "grid") {
+							loadGridLayer();
+						}
+						else if (new_data === "storm") {
+							loadStormLayer();
+						}
+					}
+				},
+				methods: {
+					//选择图层
+					selectlayer: function (value, item) {
+						// self.selected=
+						this.mylayer = value;
+						console.log(value, item);
+					}
+				}
+			})
+			vm1.mylayer = 'grid';
+			function loadGridLayer() {
+				//加载沿海网格layer
+				alert("我是外部方法test1");
+			}
+			var features_arr = [];
+
+			function my_onclick() {
+				var temp_code = $("#search_code").val();
+				showAndPointTargetArea(temp_code);
+			}
+
+			function resetHighlight(e) {
+				geojson.resetStyle(e.target);
+				info.update();
+			}
+
+			//点击是拉近到当前选中的区域的所在位置，并等比例放大
+			function zoomToFeature(e) {
+				//1 垃圾视角，并等比例放大
+				//getBounds() return一个 LatLngBounds
+				mymap.fitBounds(e.target.getBounds());
+				var code = e.target.feature.properties.Code;
+				//2 弹出modal框，加载
+				//					loaderrmsg();
+			}
+
+			function onEachFeature(feature, layer) {
+				layer.on({
+					mouseover: highlightFeature,
+					mouseout: resetHighlight,
+					click: zoomToFeature
+				});
+			}
+
+			var geojson;
+
+
+
+			var info = L.control();
+
+			info.onAdd = function (map) {
+				this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+				this.update();
+				return this._div;
+			};
+
+			// method that we will use to update the control based on feature properties passed
+			info.update = function (props) {
+				//此处使用了三元表达式
+				this._div.innerHTML = '<h4>网格概述</h4>' + (props ?
+					'<b>网格编号：</b><br />' + props.Code :
+					'未选中');
+			};
+
+
+
+			//加载并显示错误的消息框
+			function loaderrmsg() {
+				/*
+				 * 加载错误信息
+				 * 1、根据后台返回的obj获取message放在modal-body中的mymsgcontent中
+				 * 2、设定mymsgcontent的固定高度
+				 * 3、显示滚动条
+				 * 4、显示modal框				 * 
+				 */
+				var msg = "测试测试测";
+				var title = "海浪有效波高"
+				//				$("mymsgcontent").attr("overflow","auto");
+				document.getElementById("mymsgtitle").innerHTML = title;
+				//				document.getElementById("mymsgcontent").innerHTML = msg;
+				$("#errorModal").modal();
+			}
+
+			info.addTo(mymap);
+
+			//echarts控件相关
+
+			//将字典转成arr
+			var arr_keys_forecastextreme = [];
+			var arr_values_forecastextreme = [];
+
+			function initbar() {
+				var myBar = echarts.init(document.getElementById('mybar'));
+				return myBar;
+			}
+
+			//将字典转为arr
+			function dic2arr(dict) {
+				var arr = [];
+				for (temp in dict) {
+					arr.push({
+						code: temp,
+						value: dict[temp]
+					})
+				}
+				return arr;
+
+			}
+
+			//比较算法
+			function compare_forecast(prop) {
+				return function (a, b) {
+					var value_a = a[prop];
+					var value_b = b[prop];
+					return value_b - value_a;
+				}
+			}
+
+
+
+
+
+
+			var point_marker = null;
+
+			var station_arr = [];
+			var station_dict = [];
+			var storm_arr = [];
+			var storm_obj_arr = [];
+			var my_shp_layer_arr = [];
+
+			var my_shp_layer = null;
+
+			function clearLayer() {
+				$.each(my_shp_layer_arr, function (index, value) {
+					mymap.removeLayer(value);
+				});
+				my_shp_layer_arr = [];
+				if (my_shp_layer != null) {
+					mymap.removeLayer(my_shp_layer);
+				}
+
+			}
+
+			// function addshp(shp_path, dict_area, isremoveLay) {
+			// 	var shape_layer = null;
+			// 	//为当天地图添加图层
+			// 	//注意此处then是异步的，所以无法返回shape_layer;
+			// 	shp(shp_path).then(function (temp_geojson) {
+			// 		geojson = temp_geojson;
+			// 		//do something with your geojson
+			// 		//当前图层不为空且删除图层的标记符为true都满足时，才清空当前图层
+			// 		if (my_shp_layer != null & isremoveLay) {
+			// 			$.each(my_shp_layer_arr, function (index, value) {
+			// 				mymap.removeLayer(value);
+			// 			});
+			// 			my_shp_layer_arr = [];
+			// 			mymap.removeLayer(my_shp_layer);
+			// 		}
+			// 		var shp_layer = addShape(dict_area, temp_geojson, null, null, mymap);
+
+			// 		//geojson = L.geoJson(temp_geojson, {
+			// 		//    style: mystyle,
+			// 		//    onEachFeature: onEachFeature
+			// 		//}).addTo(mymap);
+			// 		my_shp_layer = shp_layer;
+			// 		my_shp_layer_arr.push(shp_layer);
+			// 	}).then(function () {
+			// 		return shape_layer;
+			// 	});
+			// 	return shape_layer;
+			// }
+
+			$(function () {
+				dict_south = random_forecast("S", 51, 9);
+				dict_east = random_forecast("E", 85, 9);
+				dict_north = random_forecast("N", 77, 9);
+				var features_arr = [];
+
+				shp("files/north.zip").then(function (temp_geojson) {
+
+					addShape(dict_north, temp_geojson, null, null, mymap);
+					$.map(temp_geojson.features, function (val, index) {
+						features_arr.append({
+							"code": val.properties.Code,
+							"latlon": val.geometry.bbox
+						});
+					});
+					// console.log(features_arr.count());
+
+				});
+				shp("files/east.zip").then(function (temp_geojson) {
+
+					addShape(dict_east, temp_geojson, null, null, mymap);
+
+				});
+				shp("files/south.zip").then(function (temp_geojson) {
+					//						geojson = temp_geojson;
+					//do something with your geojson
+					addShape(dict_south, temp_geojson, null, null, mymap);
+				});
+				//					var test_dic = forecast_dict;
+				var test_dic = forecast_dict_test;
+				loadWaveData();
+
+				//对forecast_dict进行排序
+				//					var forecast_arr = dic2arr(forecast_dict_test);
+				var forecast_arr = dic2arr(dict_south);
+				forecast_arr = forecast_arr.sort(compare_forecast('value'));
+				//从数组中取出前10个值
+				var forecast_top10 = forecast_arr.slice(0, 15);
+
+				for (var i = 0; i < forecast_top10.length; i++) {
+					arr_keys_forecastextreme.push(forecast_top10[i].code);
+					arr_values_forecastextreme.push(forecast_top10[i].value);
+				}
+
+				var bar = initbar();
+				loadbar(bar, arr_keys_forecastextreme, arr_values_forecastextreme);
+
+				// var station_arr = [];
+				// var station_dict = [];
+				// var storm_arr = [];
+				// var storm_obj_arr = [];
+
+				//以下内容暂时注释掉——放在loadStormLayer方法中
+				//1 先加载station list
+				// station_arr = loadStationData();
+				// $.each(station_arr, function (index, val) {
+				// 	// console.log(val);
+				// 	station_dict[val.code] = val;
+				// });
+				// //2 获取返回的当日极值数据
+				// storm_arr = loadStormData();
+
+				// //3 生成storm对象
+				// $.each(storm_arr, function (index, val) {
+				// 	var station_temp = null;
+				// 	if (val.CODE in station_dict) {
+				// 		station_temp = station_dict[val.CODE]
+				// 	}
+				// 	if (station_temp != null) {
+				// 		var obj = new StormData(
+				// 			val.CODE,
+				// 			station_temp.name, station_temp.Lat,
+				// 			station_temp.Lon,
+				// 			station_temp.area,
+				// 			val.Surge_VALUE,
+				// 			val.Surge_DATE,
+				// 			val.Tide_VALUE,
+				// 			val.Tide_DATE);
+				// 		storm_obj_arr.push(obj);
+				// 	}
+
+
+				// })
+				// // add2Marker();
+				// $.each(storm_obj_arr, function (index, val) {
+				// 	addDiv2Marker(val);
+				// })
+
+
+				mymap.fitBounds([
+					[20.5, 110],
+					[20.05, 109]
+				]);
+			})
+		</script>
+		<style>
+			#mytest {
+				background: #FFFFFF;
+			}
+		</style>
+</body>
+
+</html>

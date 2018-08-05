@@ -366,6 +366,17 @@
 					return html_str;
 				};
 			}
+			
+			function loadStormData(){
+				$.ajax({
+					url:'./data/storm_data.json',
+					type:"GET",
+					dataType:"json",
+					success:function(data){
+						console.log(data);
+					}
+				})
+			}
 
 			function addDiv2Marker() {
 				// var myIcon = L.divIcon({
@@ -521,7 +532,7 @@
 
 				var features_arr = [];
 				add2Marker();
-
+				loadStormData();
 				//对forecast_dict进行排序
 
 				mymap.fitBounds([
