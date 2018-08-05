@@ -282,6 +282,16 @@
 					}
 				},
 				methods: {
+					selectarea: function (code, item) {
+						var self = this;
+						self.layer = item;
+					},
+					fillarea: function (value, item) {
+						var self = this;
+						self.layer = item;
+						//						alert(value+":"+item);
+
+					},
 					//选择图层
 					selectlayer: function (value, item) {
 						// self.selected=
@@ -968,144 +978,236 @@
 			var station_dict = [];
 			var storm_arr = [];
 			var storm_obj_arr = [];
-			var my_shp_layer_arr = [];
 
-			var my_shp_layer = null;
 
-			function clearLayer() {
-				$.each(my_shp_layer_arr, function (index, value) {
-					mymap.removeLayer(value);
-				});
-				my_shp_layer_arr = [];
-				if (my_shp_layer != null) {
+			function fillarea(area) {
+				var date = new Date();
+				//var date_str=getDateStr();
+				var dict_area = null;
+				var new_layer = null;
+				switch (area) {
+
+					//北海
+					case 'n':
+						dict_area = loadAreaMaxData_byDate(date, area);
+						//dict_area=loadAreaMaxData(date_str,area);
+						//缩放并定位到指定海区
+						mymap.setView([38.3, 123], 7);
+
+						new_layer = addshp("{% static 'files/north.zip'%}", dict_area, true);
+						break;
+					//东海
+					case 'e':
+						dict_area = loadAreaMaxData_byDate(date, area);
+						//    dict_area=loadAreaMaxData(date_str,area);
+						mymap.setView([28.6, 125.35], 6);
+
+						new_layer = addshp("{% static 'files/east.zip'%}", dict_area, true);
+						break;
+					//南海
+					case 's':
+						dict_area = loadAreaMaxData_byDate(date, area);
+						//dict_area=loadAreaMaxData(date_str,area);
+						mymap.setView([20.2, 113.04], 7);
+
+						new_layer = addshp("{% static 'files/south.zip'%}", dict_area, true);
+						break;
+					//全国
+					case 'a':
+						dict_area = loadAreaMaxData_byDate(date, area);
+						//dict_area=loadAreaMaxData(date_str,area);
+						addshp("{% static 'files/north.zip'%}", dict_area, false);
+						addshp("{% static 'files/east.zip'%}", dict_area, false);
+						addshp("{% static 'files/south.zip'%}", dict_area, false);
+						break;
+				}
+				return [dict_area, new_layer];
+			}
+
+			function load_targetAreaMaxData(date, area) {
+				if (area != null) {
+					var targetUrl = "/"
+					var url_arr = new Array();
+					url_arr.push("forecast");
+					url_arr.push("daily");
+					url_arr.push(date);
+					url_arr.push(area);
+					targetUrl += url_arr.join("/");
+					targetUrl += "/";
+					console.log(targetUrl)
+					//根据传入的area请求后返回字典
+					{
+						var data_checkarea = null;
+						$.ajax({
+
+							url: targetUrl,
+							async: false,    //同步请求时页面锁死
+							success: function (data) {
+
+								data_checkarea = data
+
+							},
+
+						});
+						return data_checkarea;
+					}
+
+
+				}}
+
+				function loadAreaMaxData_byDate(date, area) {
+					//从后台获取指定时间，指定海区的极值数据，并以dict的方式返回
+					var data_checkarea = [];
+					var index = 0;
+					var target_date = date;
+					while (data_checkarea.length < 1 && index < 6) {
+						index += 1;
+						var date_str = getDateStr(target_date);
+						//alert(date_str);
+						data_checkarea = load_targetAreaMaxData(date_str, area);
+
+						//讲当前日期往前推一天
+						date = getYesterday(target_date);
+						if (data_checkarea != 0) {
+							break;
+						}
+					}
+
+					//var data_checkarea= load_targetAreaMaxData(date_str,area);
+					var dict_area = json2dict(data_checkarea);
+					return dict_area;
+				}
+
+				function getDateStr(date) {
+					var year = date.getFullYear();
+					var month = date.getMonth() + 1;
+					var day = date.getDate()
+					if (month < 10) {
+						month = '0' + month;
+					}
+					if (day < 10) {
+						day = '0' + day;
+					}
+					return mydate_str = year + month + day;
+				}
+
+				function clearLayer() {
+					$.each(my_shp_layer_arr, function (index, value) {
+						mymap.removeLayer(value);
+					});
+					my_shp_layer_arr = [];
 					mymap.removeLayer(my_shp_layer);
 				}
 
-			}
+				function addshp(shp_path, dict_area, isremoveLay) {
+					var shape_layer = null;
+					//为当天地图添加图层
+					//注意此处then是异步的，所以无法返回shape_layer;
+					shp(shp_path).then(function (temp_geojson) {
+						geojson = temp_geojson;
+						//do something with your geojson
+						//当前图层不为空且删除图层的标记符为true都满足时，才清空当前图层
+						if (my_shp_layer != null & isremoveLay) {
+							$.each(my_shp_layer_arr, function (index, value) {
+								mymap.removeLayer(value);
+							});
+							my_shp_layer_arr = [];
+							mymap.removeLayer(my_shp_layer);
+						}
+						var shp_layer = addShape(dict_area, temp_geojson, null, null, mymap);
 
-			function addshp(shp_path, dict_area, isremoveLay) {
-				var shape_layer = null;
-				//为当天地图添加图层
-				//注意此处then是异步的，所以无法返回shape_layer;
-				shp(shp_path).then(function (temp_geojson) {
-					geojson = temp_geojson;
-					//do something with your geojson
-					//当前图层不为空且删除图层的标记符为true都满足时，才清空当前图层
-					if (my_shp_layer != null & isremoveLay) {
-						$.each(my_shp_layer_arr, function (index, value) {
-							mymap.removeLayer(value);
-						});
-						my_shp_layer_arr = [];
-						mymap.removeLayer(my_shp_layer);
-					}
-					var shp_layer = addShape(dict_area, temp_geojson, null, null, mymap);
-
-					//geojson = L.geoJson(temp_geojson, {
-					//    style: mystyle,
-					//    onEachFeature: onEachFeature
-					//}).addTo(mymap);
-					my_shp_layer = shp_layer;
-					my_shp_layer_arr.push(shp_layer);
-				}).then(function () {
-					return shape_layer;
-				});
-				return shape_layer;
-			}
-
-			$(function () {
-				dict_south = random_forecast("S", 51, 9);
-				dict_east = random_forecast("E", 85, 9);
-				dict_north = random_forecast("N", 77, 9);
-				var features_arr = [];
-
-				shp("files/north.zip").then(function (temp_geojson) {
-
-					addShape(dict_north, temp_geojson, null, null, mymap);
-					$.map(temp_geojson.features, function (val, index) {
-						features_arr.append({
-							"code": val.properties.Code,
-							"latlon": val.geometry.bbox
-						});
+						//geojson = L.geoJson(temp_geojson, {
+						//    style: mystyle,
+						//    onEachFeature: onEachFeature
+						//}).addTo(mymap);
+						my_shp_layer = shp_layer;
+						my_shp_layer_arr.push(shp_layer);
+					}).then(function () {
+						return shape_layer;
 					});
-					// console.log(features_arr.count());
-
-				});
-				shp("files/east.zip").then(function (temp_geojson) {
-
-					addShape(dict_east, temp_geojson, null, null, mymap);
-
-				});
-				shp("files/south.zip").then(function (temp_geojson) {
-					//						geojson = temp_geojson;
-					//do something with your geojson
-					addShape(dict_south, temp_geojson, null, null, mymap);
-				});
-				//					var test_dic = forecast_dict;
-				var test_dic = forecast_dict_test;
-				loadWaveData();
-
-				//对forecast_dict进行排序
-				//					var forecast_arr = dic2arr(forecast_dict_test);
-				var forecast_arr = dic2arr(dict_south);
-				forecast_arr = forecast_arr.sort(compare_forecast('value'));
-				//从数组中取出前10个值
-				var forecast_top10 = forecast_arr.slice(0, 15);
-
-				for (var i = 0; i < forecast_top10.length; i++) {
-					arr_keys_forecastextreme.push(forecast_top10[i].code);
-					arr_values_forecastextreme.push(forecast_top10[i].value);
+					return shape_layer;
 				}
 
-				var bar = initbar();
-				loadbar(bar, arr_keys_forecastextreme, arr_values_forecastextreme);
+				$(function () {
+					var dict_target = null;
+					var text_index = 0;
+					var out_geo_layer = null;
 
-				// var station_arr = [];
-				// var station_dict = [];
-				// var storm_arr = [];
-				// var storm_obj_arr = [];
+					var vm1 = new Vue({
+						el: '#top_nav_ul',
+						data: {
+							items: [
+								{ message: '北海', code: 'n' },
+								{ message: '东海', code: 'e' },
+								{ message: '南海', code: 's' },
+								{ message: '全国', code: 'a' }],
+							//注意selected是items中的obj
+							selected: null,
+							out_shape_layer: null,
+						},
+						watch: {
+							selected: function (new_data, old_data) {
+								console.log('修改为：' + new_data);
+								var self = this;
+								self.fillarea(new_data.code, self.selected);
+							}
+						},
+						methods: {
+							selectarea: function (code, item) {
+								console.log('执行选中操作：' + code);
+								var self = this;
+								self.selected = item;
+							},
+							//注意加载页面时，需要执行加载全国的事件
+							fillarea: function (value, item) {
+								//此处的item是vm.data中的items
+								//
+								console.log("执行填充操作：" + value);
+								this.selected = item;
+								text_index += 1;
+								//将字典转成arr
+								var arr_keys_forecastextreme = [];
+								var arr_values_forecastextreme = [];
+								var arr_obj_forecastextreme = [];
 
-				//以下内容暂时注释掉——放在loadStormLayer方法中
-				//1 先加载station list
-				// station_arr = loadStationData();
-				// $.each(station_arr, function (index, val) {
-				// 	// console.log(val);
-				// 	station_dict[val.code] = val;
-				// });
-				// //2 获取返回的当日极值数据
-				// storm_arr = loadStormData();
+								var info = fillarea(value);
+								dict_target = info[0];
+								out_geo_layer = info[1];
+								//从当前地图中删除当前海区的layer，前提是当前海区的layer不为null，否则会报错
+								if (dict_target != null) {
+									var forecast_arr = dic2arr(dict_target);
+									var forecast_arr_obj = [];
+									$.each(forecast_arr, function (index, obj) {
+										forecast_arr_obj.push(
+											{
+												"code": obj.value.CODE,
+												"HS_VALUE": obj.value.HS_VALUE
+											})
+									})
+									forecast_arr = forecast_arr_obj.sort(compare_forecast('HS_VALUE'));
+									//从数组中取出前10个值
+									var forecast_top10 = forecast_arr.slice(0, 15);
 
-				// //3 生成storm对象
-				// $.each(storm_arr, function (index, val) {
-				// 	var station_temp = null;
-				// 	if (val.CODE in station_dict) {
-				// 		station_temp = station_dict[val.CODE]
-				// 	}
-				// 	if (station_temp != null) {
-				// 		var obj = new StormData(
-				// 			val.CODE,
-				// 			station_temp.name, station_temp.Lat,
-				// 			station_temp.Lon,
-				// 			station_temp.area,
-				// 			val.Surge_VALUE,
-				// 			val.Surge_DATE,
-				// 			val.Tide_VALUE,
-				// 			val.Tide_DATE);
-				// 		storm_obj_arr.push(obj);
-				// 	}
+									for (var i = 0; i < forecast_top10.length; i++) {
+										arr_keys_forecastextreme.push(forecast_top10[i].code);
 
+										arr_values_forecastextreme.push(forecast_top10[i].HS_VALUE);
+									}
 
-				// })
-				// // add2Marker();
-				// $.each(storm_obj_arr, function (index, val) {
-				// 	addDiv2Marker(val);
-				// })
+									var bar = initbar();
+									loadbar(bar, arr_keys_forecastextreme, arr_values_forecastextreme);
+								}
+							}
+						}
+					});
 
+					vm1.selected = { message: '全国', code: 'a' };
 
-				mymap.fitBounds([
-					[20.5, 110],
-					[20.05, 109]
-				]);
-			})
+					mymap.fitBounds([
+						[20.5, 110],
+						[20.05, 109]
+					]);
+				})
 		</script>
 		<style>
 			#mytest {
