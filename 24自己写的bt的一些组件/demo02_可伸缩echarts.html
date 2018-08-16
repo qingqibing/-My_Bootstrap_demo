@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/datetime/bootstrap-datetimepicker.js"></script>
+    <link rel="stylesheet" href="js/datetime/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <style>
+        /* .col-small{
+            width: 50%;
+        } */
+
+        .col-small .form-control {
+            width: 50%;
+        }
+
+        .echarts-box {
+            border: 1px dashed red;
+            height: 250px;
+            width: 200px;
+            background: red;
+        }
+
+        .whole_right_bar {
+            position: relative;
+            float: right;
+            margin-right: 10px;
+        }
+
+        .whole_right_bar .circle {
+            /* display: inline-block; */
+            width: 30px;
+            height: 30px;
+            /* 圆角百分比 */
+            border-radius: 50%;
+            margin: 30px auto;
+            /* border: 2px solid #e4007e; */
+            text-align: center;
+            position: relative;
+            /* bottom: 0px; */
+            /* margin-top: 90px; */
+            top: 210px;
+            margin: 0px;
+            float: left;
+            line-height: 200px;
+            font-weight: bold;
+            font-size: 24px;
+            background: rgba(41, 68, 219, 0.377);
+
+        }
+
+        /* .whole_right_bar .circle .myIcon {
+            position: absolute;
+            left: 2.5px;
+        } */
+
+        #circle-span {
+            position: absolute;
+            left: 2.5px;
+        }
+
+        .container {
+            /* height: 0;
+            transform: height 1s;
+            overflow: hidden; */
+            display: inline-block;
+            height: 250px;
+            width: 0;
+            position: relative;
+            overflow: hidden;
+            transition: width 0.6s;
+            /* -webkit-transition: height 0.6s; */
+            /* -moz-transition: height 0.6s;
+            -o-transition: height 0.6s; */
+        }
+    </style>
+</head>
+
+<body>
+    <p>右侧伸缩
+        <a href="javascript:" id="button" onclick="test()">测试</a>
+    </p>
+
+    <div class="whole_right_bar">
+        <div class="circle" onclick="test()">
+            <span id="circle-span" class="glyphicon glyphicon-minus myIcon" aria-hidden="true"></span>
+        </div>
+        <div id="more" class="container">
+            <div class="echarts-box">
+            </div>
+        </div>
+
+
+    </div>
+
+</body>
+<script>
+    var display = false;
+
+    function test() {
+        display = !display;
+        var more = document.getElementById('more');
+        var icon = document.getElementById('circle-span');
+        // more.style.height = display ? "100px" : "0px";
+        more.style.width = display ? "100px" : "0px";
+        icon.className = display ? "glyphicon glyphicon-minus" : "glyphicon glyphicon-plus"
+        return false;
+    }
+</script>
+
+</html>
