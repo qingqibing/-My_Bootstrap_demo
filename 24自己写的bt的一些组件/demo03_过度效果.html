@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/datetime/bootstrap-datetimepicker.js"></script>
+    <link rel="stylesheet" href="js/datetime/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <style>
+        /* .col-small{
+            width: 50%;
+        } */
+
+        .col-small .form-control {
+            width: 50%;
+        }
+
+        .echarts-box {
+            border: 1px dashed red;
+            height: 250px;
+            width: 200px;
+            background: red;
+        }
+        .container {
+            /* height: 0;
+            transform: height 1s;
+            overflow: hidden; */
+            display: inline-block;
+            height: 250px;
+            width: 0;
+            position: relative;
+            overflow: hidden;
+            transition: width 0.6s;
+            /* -webkit-transition: height 0.6s; */
+            /* -moz-transition: height 0.6s;
+            -o-transition: height 0.6s; */
+        }
+
+
+        @keyframes fade-in {
+            0% {
+                opacity: 0;
+            }
+            /*初始状态 透明度为0*/
+            40% {
+                opacity: 0.5;
+            }
+            /*过渡状态 透明度为0*/
+            100% {
+                opacity: 1;
+            }
+            /*结束状态 透明度为1*/
+        }
+
+        @-webkit-keyframes fade-in {
+            /*针对webkit内核*/
+            0% {
+                opacity: 0;
+            }
+            40% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        #whole_right_bar {
+            animation: fade-in;
+            /*动画名称*/
+            animation-duration: 4s;
+            /*动画持续时间*/
+            -webkit-animation: fade-in 4s;
+            /*针对webkit内核*/
+        }
+    </style>
+</head>
+
+<body>
+    <p>右侧伸缩
+        <a href="javascript:" id="button" onclick="test()">测试</a>
+    </p>
+
+    <div id="whole_right_bar">
+        
+        <div id="more" class="container">
+            <div class="echarts-box">
+            </div>
+        </div>
+
+
+    </div>
+
+</body>
+<script>
+    var display = false;
+
+    function test() {
+        display = !display;
+        var more = document.getElementById('more');
+        var icon = document.getElementById('circle-span');
+        // more.style.height = display ? "100px" : "0px";
+        more.style.width = display ? "100px" : "0px";
+        icon.className = display ? "glyphicon glyphicon-minus" : "glyphicon glyphicon-plus"
+        return false;
+    }
+</script>
+
+</html>

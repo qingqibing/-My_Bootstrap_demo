@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/datetime/bootstrap-datetimepicker.js"></script>
+    <link rel="stylesheet" href="js/datetime/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
+    <style>
+        /* .col-small{
+            width: 50%;
+        } */
+
+        .col-small .form-control {
+            width: 50%;
+        }
+
+        #whole_right_bar_out {
+            height: 500px;
+            width: 500px;
+        }
+
+        .mybar_right_out {
+            position: absolute;
+            right:0px;
+            height: 400px;
+            width: 400px;
+            background: #adff2f;
+            animation-name: move-out;
+            /*动画名称*/
+            animation-duration: 2s;
+            /* 设定动画完成后的状态 */
+            animation-fill-mode: forwards;
+            /*动画持续时间*/
+            /* -webkit-animation: move-out 2s; */
+            /*针对webkit内核*/
+        }
+        .mybar_right_in {
+            position: absolute;
+            right:0px;
+            height: 400px;
+            width: 400px;
+            background: #adff2f;
+            animation-name: move-in;
+            /*动画名称*/
+            animation-duration: 2s;
+            /* 设定动画完成后的状态 */
+            animation-fill-mode: forwards;
+            /*动画持续时间*/
+            /* -webkit-animation: move-out 2s; */
+            /*针对webkit内核*/
+        }
+        /* 移出效果：从左边向外部移出 */
+        @keyframes move-out {
+            0%{
+                left:0px;
+            }
+            100%{
+                left:-400px;
+            }            
+        }
+        /* 渐入效果：从左边外侧移入 */
+        @keyframes move-in {
+            0%{
+                left:-400px;
+            }
+            100%{
+                left:0px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <p>右侧伸缩
+        <a href="javascript:" id="button" onclick="test()">测试</a>
+    </p>
+
+    <div class="whole_right_bar_out">
+        <!-- 渐入 -->
+        <!-- <div id="mybar" class="mybar_right_in"></div> -->
+        <!-- 渐出 -->
+        <div id="mybar" class="mybar_right_in"></div>
+    </div>
+
+</body>
+<script>
+    var display = false;
+
+    function test() {
+        display = !display;
+        var bar = document.getElementById('mybar');
+        // var icon = document.getElementById('circle-span');
+        // more.style.height = display ? "100px" : "0px";
+        // more.style.width = display ? "100px" : "0px";
+        bar.className = display ? "mybar_right_in" : "mybar_right_out"
+        return false;
+    }
+</script>
+
+</html>
