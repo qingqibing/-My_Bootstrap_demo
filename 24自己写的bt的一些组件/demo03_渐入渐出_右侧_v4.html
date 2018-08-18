@@ -23,7 +23,7 @@
 
         * {
             overflow: hidden;
-            background-color: aqua;
+            /* background-color: aqua; */
         }
 
         .whole_right_bar_out {
@@ -37,18 +37,20 @@
 
         #show_btn {
             float: left;
+            position: absolute;
+            left: -50px;
             width: 50px;
             height: 100%;
             /* 文字垂直排列 */
             writing-mode: vertical-rl;
             /* 垂直排列居中 */
             text-align: center;
-            color: white;
+            color: blue;
             font-weight: bolder ;
             font-family:"Microsoft YaHei";
             /* 设置左上及左下边角圆滑处理 */
-            /* border-top-left-radius: 2em;
-            border-bottom-left-radius: 2em; */
+            border-top-left-radius: 2em;
+            border-bottom-left-radius: 2em;
 
         }
 
@@ -63,6 +65,7 @@
 
         #mybar {
             background: #adff2f;
+            height: 100%;
         }
 
         .mybar_right_out {
