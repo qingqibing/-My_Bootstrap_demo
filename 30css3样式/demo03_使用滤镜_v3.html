@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<script src="js/jquery-3.2.1.js"></script>
+
+	<link href="css/bootstrap.css" rel="stylesheet" />
+	<link href="css/bootstrap-theme.css" rel="stylesheet" />
+
+	<style type="text/css">
+		html,
+		body {
+			height: 100%;			
+		}
+
+		#center_Body {
+			/* background:linear-gradient(135deg,#32607e8f 25%,#0ac29dbd 75%);  */
+			height: 100%;
+			/* 使用此种方式可以实现滤镜的遮罩 */
+			/* background: black; */
+			/* 尝试使用图片作为背景 */
+			background: url('./img/other/background_1.jpg');
+			background-size: cover;
+			filter: opacity(50%);
+			/*opacity: .5;*/
+		}
+		#mycontent {
+			background:linear-gradient(135deg,#32607e8f 25%,#0ac29dbd 75%); 
+			height: 100%;			
+		}
+	</style>
+</head>
+
+<body>
+	<div id="center_Body">
+		<div id="mycontent" class="">
+		</div>
+	</div>
+</body>
+
+</html>
