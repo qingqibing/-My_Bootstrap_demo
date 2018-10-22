@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="application/javascript" src="js/bootstrap.min.js"></script>
+		<style type="text/css">
+			/*p {
+				height: 30px;
+				line-height: 30px;
+				width: 100px;
+				overflow: hidden;
+			}*/
+			/*对于只有一行内容的div来说,
+			 * 只需要将实际高度height设置与行高line-height相同即可*/
+			/*.text {
+				border-style: solid;
+				border-width: 2px;
+				border-color: #0044CC;
+				width: 200px;
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+			}*/
+			/*方式2 
+			 * 在div中加入display:table ,
+			 * 子div中加入display:table-cell，
+			 * 并加入vertical-align:middle*/
+			/*.text {
+				border-style: solid;
+				border-width: 2px;
+				border-color: #0044CC;
+				width: 200px;
+				height: 50px;
+				display:table-cell;
+				vertical-align: middle;
+				text-align: center;
+			}*/
+			/*方式3:*/
+			
+			.text {
+				padding: 25px;
+				border: 1px solid #FF0099;
+				background-color: #FFCCFF;
+				width: 500px;
+			}
+			/*不可行*/
+			
+			.center {
+				display: table;
+				box-orient: horizontal;
+				box-pack: center;
+				box-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="center">
+			<div class="text">
+				测试文字
+			</div>
+			<div class="text">
+				测试文字
+			</div>
+			<div class="text">
+				测试文字
+			</div>
+		</div>
+
+	</body>
+
+</html>
