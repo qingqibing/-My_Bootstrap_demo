@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="application/javascript" src="js/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.js"></script>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.css" />
+		<link rel="stylesheet" href="css/styles.css">
+		<style type="text/css">
+			html,
+			body {
+				height: 100%;
+				margin: 0px;
+				padding: 0px;
+				/*background-color: #BBBBBB;*/
+				padding-top: 25px;
+				background: #8ea3e3;
+			}
+			
+			.phoneframe {
+				position: absolute;
+				bottom: 100px;
+				height: 80px;
+				width: 150px;
+				display: flex;
+				flex-flow: row wrap;
+				justify-content: center;
+				/*align-content: center;*/
+				background: whitesmoke;
+				border-radius:0.8em;
+				overflow: hidden;
+			}
+			
+			.phoneframe>.phone-department {
+				height: 30px;
+				width: 100px;
+				background: #e74c3c;
+				color: #ffffff;
+				/*justify-content: center;
+				align-items: center;*/
+				vertical-align: middle;
+				line-height: 30px;
+				text-align: center;
+			}
+			.phoneframe>.phone-content {
+				/*width: 50px;*/
+				height: 30px;
+				flex-grow: 1;
+				background: #d16f1f;
+				color: #ffffff;
+				/*justify-content: center;
+				align-items: center;*/
+				/*注意下面这种方式只对行内元素有效,对快内元素无效!!注意*/
+				/*vertical-align: middle;*/
+				line-height: 30px;
+				text-align: center;
+				display: table-cell;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div>
+			<div class="phoneframe">
+				<div class="phone-department">预警室</div>
+				<div class="phone-content">电话</div>
+				<h2 class="phone">62105805</h1>
+			</div>
+		</div>
+
+	</body>
+
+</html>
