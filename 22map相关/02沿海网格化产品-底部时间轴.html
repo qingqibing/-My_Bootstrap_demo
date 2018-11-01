@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="application/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="application/javascript" src="js/bootstrap.min.js"></script>
+		<!--<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>-->
+		<script type="application/javascript" src="js/map/leaflet.js"></script>
+		<script type="application/javascript" src="js/map/leaflet.shpfile.js"></script>
+		<script type="application/javascript" src="js/map/shp.js"></script>
+
+		<link rel="stylesheet" href="css/map/leaflet.css" />
+		<link rel="stylesheet" href="css/style.css" media="all" />
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<link rel="stylesheet" href="css/flatui/flat-ui.css">
+		<style type="text/css">
+			/*对于使用了bootstrap的navbar并固定在顶部时下面的div填充满整个屏幕的解决办法*/
+			
+			html,
+			body {
+				height: 100%;
+				margin: 0px;
+				padding: 0px;
+				background-color: #BBBBBB;
+				padding-top: 25px;
+			}
+			
+			#main {
+				position: absolute;
+				top: 53px;
+				bottom: 53px;
+				width: 100%;
+			}
+			
+			.my-bar {
+				position: absolute;
+				left: 45px;
+				right: 0;
+				bottom: 150px;
+				white-space: nowrap;
+				width: 1000px;
+			}
+			
+			#calendar {}
+			
+			#calendar div {
+				display: inline-block;
+				box-sizing: border-box;
+				text-align: left;
+				padding: 6px 0 0 8px;
+				font-size: 12px;
+				line-height: 1;
+				height: 26px;
+				white-space: nowrap;
+				overflow: hidden;
+				width: 10%;
+				/*字体*/
+				text-shadow: 0 0 4px black;
+				color: #fff3e1;
+				/*加入边框样式*/
+				border-left: 1px solid black;
+				/*border-right:1px solid black;*/
+			}
+			
+			#playpause {
+				position: absolute;
+				top: -12px;
+				left: 5px;
+				z-index: 10;
+			}
+			
+			.play-pause {
+				display: block;
+				font-size: 25px;
+				color: #9D0300;
+				width: 1.2em;
+				height: 1.2em;
+				border-radius: 1.2em;
+				box-shadow: 0 0 4px 0 black;
+				background-color: #e5e5e5;
+			}
+			
+			.progress-line {
+				height: 6px;
+				cursor: pointer;
+				position: relative;
+				border: 10px solid transparent;
+				border-right-color: transparent;
+				border-right-style: solid;
+				border-right-width: 10px;
+				border-left-color: transparent;
+				border-left-style: solid;
+				border-left-width: 10px;
+				background-clip: padding-box;
+				border-right: none;
+				border-left: none;
+				top: -10px;
+				-webkit-transition: width ease-in-out .7s;
+				transition: width ease-in-out .7s;
+			}
+			
+			.progress-line .played {
+				background-color: #e5e5e5;
+				height: 6px;
+				float: left;
+				border-top-left-radius: 3px;
+				border-bottom-left-radius: 3px;
+				width: 15%;
+			}
+			
+			.progress-line .avbl {
+				height: 6px;
+				background-color: rgba(0, 0, 0, 0.6);
+				width: 100%;
+				border-radius: 6px;
+			}
+			
+			#msg {
+				position: absolute;
+				display: none;
+			}
+			
+			.iconfont,
+			[data-icon]::before,
+			[data-icon-after]::after {
+				font-family: iconfont;
+				font-variant: normal;
+				text-transform: none;
+				line-height: 1;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="my-bar">
+			<div class="progress-line" style="width: 966.617px;">
+				<div id="played" class="played" style="width: 10px;"></div>
+				<div class="avbl"></div><i style="left: 85.6454px;"></i></div>
+			<div id="playpause" class="play-pause iconfont clickable off"></div>
+			<div id="calendar">
+				<div class="">01日</div>
+				<div>02日</div>
+				<div>03日</div>
+				<div>04日</div>
+				<div>05日</div>
+				<div>06日</div>
+			</div>
+		</div>
+		<div id="msg">显示数值</div>
+		<script type="application/javascript">
+			var dates=["01-00时","01-06时","01-12时","01-18时","02-00时","02-06时"]
+			$(".progress-line").mousemove(function(e) {
+				//				this.dragging ? this.ghost.style.opacity = 0 : this.updateGhost(e)
+			})
+
+			// 鼠标点击后触发的事件
+			$(".progress-line").mouseup(function(e) {
+				//				console.log(e)
+				// 1 计算整个进度条的长度
+				var lenTotal = e.currentTarget.clientWidth
+				// 2-1 计算后除以41分
+				// 2-2计算每一个格子的宽度
+				var cellWidth = lenTotal / 41
+				// 3 获取鼠标选中的点的位置
+				var lenTarget = e.offsetX
+				// 4 然后获取该位置属于的格子
+				var indexTarget = lenTarget / cellWidth
+				indexTarget = parseInt(indexTarget)
+				// 5 将进度条中的填色部分宽度改变
+				document.getElementsByClassName("played")[0].style.width = e.offsetX + ".px";
+				// 6 显示数值
+				var msg=document.getElementById("msg");
+				msg.style.display = "block";
+				msg.style.left = e.clientX + 10+".px"; 
+				msg.style.top = e.clientY -35+".px";
+				msg.innerText=dates[indexTarget];
+//				msg.html(dates[indexTarget]);
+				console.log(indexTarget)
+			})
+		</script>
+	</body>
+
+</html>
