@@ -160,9 +160,10 @@
 				<div>05日</div>
 				<div>06日</div>
 			</div>
-		</div>
-		<div id="msg">显示数值</div>
+			<div id="msg">显示数值</div>
 		<div id="staticmsg">显示数值</div>
+		</div>
+		
 		<script type="application/javascript">
 			var dates=["01-00时","01-06时","01-12时","01-18时","02-00时","02-06时"]
 			$(".progress-line").mousemove(function(e) {
@@ -187,8 +188,8 @@
 				// 6 显示数值
 				var msg=document.getElementById("staticmsg");
 				msg.style.display = "block";
-				msg.style.left = e.clientX + 10+".px"; 
-				msg.style.top = e.clientY -45+".px";
+				msg.style.left = e.offsetX + 10+".px"; 
+				msg.style.top = e.offsetY -45+".px";
 				msg.innerText=dates[indexTarget];
 //				msg.html(dates[indexTarget]);
 //				console.log(indexTarget)
@@ -211,8 +212,8 @@
 				// 6 显示数值
 				var msg=document.getElementById("msg");
 				msg.style.display = "block";
-				msg.style.left = e.clientX + 10+".px"; 
-				msg.style.top = e.clientY -35+".px";
+				msg.style.left = e.offsetX + 10+".px"; 
+				msg.style.top = e.offsetY -35+".px";
 				msg.innerText=dates[indexTarget];
 //				msg.html(dates[indexTarget]);
 //				console.log(indexTarget)
