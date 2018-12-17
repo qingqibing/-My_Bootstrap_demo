@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/jquery-3.2.1.js"></script>
+
+		<link href="css/bootstrap.css" rel="stylesheet" />
+		<link href="css/bootstrap-theme.css" rel="stylesheet" />
+
+		<style type="text/css">
+			#center_Body {
+				overflow: auto;
+				width: 100%;
+				top: 0px;
+				bottom: 0px;
+				position: absolute;
+			}
+			
+			#mycontent {
+				height: 100%;
+				/*background-color: #B92C28;*/
+			}
+			.hasborder{
+				border: 1px dashed greenyellow;
+				height:50%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="center_Body">
+			<div id="mycontent" class="">
+				<!--中间的导航栏-->
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-success"><span class="glyphicon glyphicon-play" aria-hidden="true">开始</span> </button>
+					<button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-pause" aria-hidden="true">暂停</span></button>
+					<button type="button" class="btn btn-danger"><span class="glyphicon glyphicon glyphicon-stop" aria-hidden="true">终止</span></button>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
