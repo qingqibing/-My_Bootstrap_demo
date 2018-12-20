@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/jquery-3.2.1.js"></script>
+
+		<link href="css/bootstrap.css" rel="stylesheet" />
+		<link href="css/bootstrap-theme.css" rel="stylesheet" />
+		<script src="js/bootstrap.js"></script>
+		<!-- ECharts单文件引入 -->
+		<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
+
+		<style type="text/css">
+			body {
+				text-align: center;
+				background: #000066;
+			}
+			
+			#center_Body {
+				overflow: auto;
+				width: 100%;
+				top: 0px;
+				bottom: 0px;
+				position: absolute;
+				margin: 0 auto;
+				/*display: flex;
+				justify-content: center;*/
+				/*flex-direction: column;*/
+			}
+			
+			#main_content {
+				background: #000080;
+				width: 100%;
+				height: 100%;
+				/*height: 800px;*/
+			}
+			
+			.pie_layout {
+				background: #006DCC;
+				widows: 100%;
+				height: 300px;
+			}
+			
+			.content {
+				width: 100%;
+				top: 50px;
+				bottom: 270px;
+				position: absolute;
+				margin: 0 auto;
+			}
+			
+			#center_Body .col-md-9 {
+				height: 100%;
+			}
+			
+			#center_Body .col-md-3 {
+				height: 100%;
+			}
+			
+			.area_pie {
+				height: 23%;
+				/*width: 500px;*/
+				margin-bottom: 20px;
+			}
+			
+			.bottom_content {
+				overflow: auto;
+				width: 100%;
+				/*top: 0px;*/
+				bottom: 0px;
+				height: 260px;
+				position: absolute;
+			}
+			
+			#detial_chart {
+				height: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="center_Body">
+			<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+				<div class="container-fluid">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+						<a class="navbar-brand" href="#">志愿船舶显示系统</a>
+					</div>
+
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li class="active">
+								<a href="#">船舶地图<span class="sr-only">(current)</span></a>
+							</li>
+							<li>
+								<a href="#">状态显示</a>
+							</li>
+							<li>
+								<a href="#">数据查询</a>
+							</li>
+						</ul>
+					</div>
+					<!-- /.navbar-collapse -->
+				</div>
+				<!-- /.container-fluid -->
+			</nav>
+			<div class="content">
+				<div class="col-md-9">
+					<div id="main_content"></div>
+				</div>
+				<div class="col-md-3">
+					<!--<div class="pie_layout"></div>-->
+					<div class="area_pie" id='mypie'></div>
+					<div class="area_pie" id='n_area'></div>
+					<div class="area_pie" id='e_area'></div>
+					<div class="area_pie" id='s_area'></div>
+				</div>
+			</div>
+			<div class="bottom_content">
+				<ul id="mytabs" class="nav nav-tabs">
+					<li role="presentation" class="active">
+						<a href="#">降水</a>
+					</li>
+					<li role="presentation">
+						<a href="#">能见度</a>
+					</li>
+					<li role="presentation">
+						<a href="#">风向</a>
+					</li>
+				</ul>
+				<div id="detial_chart"></div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				// 基于准备好的dom，初始化echarts图表
+				var myChart = echarts.init(document.getElementById('mypie'));
+				var myChart_n = echarts.init(document.getElementById('n_area'));
+				var myChart_e = echarts.init(document.getElementById('e_area'));
+				var myChart_s = echarts.init(document.getElementById('s_area'));
+				var myChart_bottom = echarts.init(document.getElementById('detial_chart'));
+				var option = {
+					backgroundColor: '#2c343c',
+
+					title: {
+						text: '海区船舶数量',
+						left: 'center',
+						top: 20,
+						textStyle: {
+							color: '#ccc'
+						}
+					},
+
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b} : {c} ({d}%)"
+					},
+
+					visualMap: {
+						show: false,
+						min: 80,
+						max: 600,
+						inRange: {
+							colorLightness: [0, 1]
+						}
+					},
+					series: [{
+						name: '当前船舶数量',
+						type: 'pie',
+						radius: '55%',
+						center: ['50%', '50%'],
+						data: [{
+								value: 15,
+								name: '北海分局'
+							},
+							{
+								value: 20,
+								name: '东海分局'
+							},
+							{
+								value: 18,
+								name: '南海分局'
+							}
+						].sort(function(a, b) {
+							return a.value - b.value;
+						}),
+						roseType: 'radius',
+						label: {
+							normal: {
+								textStyle: {
+									color: 'rgba(255, 255, 255, 0.3)'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								lineStyle: {
+									color: 'rgba(255, 255, 255, 0.3)'
+								},
+								smooth: 0.2,
+								length: 10,
+								length2: 20
+							}
+						},
+						itemStyle: {
+							normal: {
+								color: '#c23531',
+								shadowBlur: 200,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+						},
+
+						animationType: 'scale',
+						animationEasing: 'elasticOut',
+						animationDelay: function(idx) {
+							return Math.random() * 200;
+						}
+					}]
+				};
+				var option_n = {
+					backgroundColor: '#2c343c',
+
+					title: {
+						text: '北海海区',
+						left: 'center',
+						top: 20,
+						textStyle: {
+							color: '#ccc'
+						}
+					},
+
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b} : {c} ({d}%)"
+					},
+
+					visualMap: {
+						show: false,
+						min: 80,
+						max: 600,
+						inRange: {
+							colorLightness: [0, 1]
+						}
+					},
+					series: [{
+						name: '船舶传输',
+						type: 'pie',
+						radius: '55%',
+						center: ['50%', '50%'],
+						data: [{
+								value: 10,
+								name: '正常'
+							},
+							{
+								value: 1,
+								name: '迟到'
+							},
+							{
+								value: 2,
+								name: '未到'
+							},
+							{
+								value: 2,
+								name: '缺失'
+							}
+						].sort(function(a, b) {
+							return a.value - b.value;
+						}),
+						roseType: 'radius',
+						label: {
+							normal: {
+								textStyle: {
+									color: 'rgba(255, 255, 255, 0.3)'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								lineStyle: {
+									color: 'rgba(255, 255, 255, 0.3)'
+								},
+								smooth: 0.2,
+								length: 10,
+								length2: 20
+							}
+						},
+						itemStyle: {
+							normal: {
+								color: '#c23531',
+								shadowBlur: 200,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+						},
+
+						animationType: 'scale',
+						animationEasing: 'elasticOut',
+						animationDelay: function(idx) {
+							return Math.random() * 200;
+						}
+					}]
+				};
+				var option_e = {
+					backgroundColor: '#2c343c',
+
+					title: {
+						text: '东海海区',
+						left: 'center',
+						top: 20,
+						textStyle: {
+							color: '#ccc'
+						}
+					},
+
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b} : {c} ({d}%)"
+					},
+
+					visualMap: {
+						show: false,
+						min: 80,
+						max: 600,
+						inRange: {
+							colorLightness: [0, 1]
+						}
+					},
+					series: [{
+						name: '当前船舶数量',
+						type: 'pie',
+						radius: '55%',
+						center: ['50%', '50%'],
+						data: [{
+								value: 14,
+								name: '正常'
+							},
+							{
+								value: 3,
+								name: '迟到'
+							},
+							{
+								value: 2,
+								name: '未到'
+							},
+							{
+								value: 1,
+								name: '缺失'
+							}
+						].sort(function(a, b) {
+							return a.value - b.value;
+						}),
+						roseType: 'radius',
+						label: {
+							normal: {
+								textStyle: {
+									color: 'rgba(255, 255, 255, 0.3)'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								lineStyle: {
+									color: 'rgba(255, 255, 255, 0.3)'
+								},
+								smooth: 0.2,
+								length: 10,
+								length2: 20
+							}
+						},
+						itemStyle: {
+							normal: {
+								color: '#c23531',
+								shadowBlur: 200,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+						},
+
+						animationType: 'scale',
+						animationEasing: 'elasticOut',
+						animationDelay: function(idx) {
+							return Math.random() * 200;
+						}
+					}]
+				};
+				var option_s = {
+					backgroundColor: '#2c343c',
+
+					title: {
+						text: '南海海区',
+						left: 'center',
+						top: 20,
+						textStyle: {
+							color: '#ccc'
+						}
+					},
+
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b} : {c} ({d}%)"
+					},
+
+					visualMap: {
+						show: false,
+						min: 80,
+						max: 600,
+						inRange: {
+							colorLightness: [0, 1]
+						}
+					},
+					series: [{
+						name: '南海',
+						type: 'pie',
+						radius: '55%',
+						center: ['50%', '50%'],
+						data: [{
+								value: 10,
+								name: '正常'
+							},
+							{
+								value: 4,
+								name: '迟到'
+							},
+							{
+								value: 1,
+								name: '未到'
+							},
+							{
+								value: 3,
+								name: '缺失'
+							}
+						].sort(function(a, b) {
+							return a.value - b.value;
+						}),
+						roseType: 'radius',
+						label: {
+							normal: {
+								textStyle: {
+									color: 'rgba(255, 255, 255, 0.3)'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								lineStyle: {
+									color: 'rgba(255, 255, 255, 0.3)'
+								},
+								smooth: 0.2,
+								length: 10,
+								length2: 20
+							}
+						},
+						itemStyle: {
+							normal: {
+								color: '#c23531',
+								shadowBlur: 200,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+						},
+
+						animationType: 'scale',
+						animationEasing: 'elasticOut',
+						animationDelay: function(idx) {
+							return Math.random() * 200;
+						}
+					}]
+				};
+
+				var line_option = {
+					tooltip: {
+						show: true
+					},
+					legend: {
+						data: ['波浪']
+					},
+					xAxis: [{
+						type: 'category',
+						data: ["2018-2-1 15:00", "2018-2-1 16:00", "2018-2-1 17:00", "2018-2-1 18:00", "2018-2-1 19:00", "2018-2-1 20:00", "2018-2-1 21:00", "2018-2-1 22:00", "2018-2-1 23:00", "2018-2-2 00:00", "2018-2-2 01:00", "2018-2-2 02:00", "2018-2-1 15:00", "2018-2-1 16:00", "2018-2-1 17:00", "2018-2-1 18:00", "2018-2-1 19:00", "2018-2-1 20:00", "2018-2-1 21:00", "2018-2-1 22:00", "2018-2-1 23:00", "2018-2-2 00:00", "2018-2-2 01:00", "2018-2-2 02:00"],
+						//使用以下方式实现显示全部x坐标上的点
+						"axisLabel": {
+							interval: 0,
+							textStyle: {
+								color: '#FFFFFF'
+							}
+						},
+						show: false
+
+						//                  interval:0   
+					}],
+					yAxis: [{
+						type: 'value',
+						"axisLabel": {
+							//					interval: 0,
+							textStyle: {
+								color: '#FFFFFF'
+							}
+						},
+					}],
+					series: [{
+						"name": "波浪", //需要与legend中的data相同
+						"type": "line",
+						smooth: true, //不是折线，是曲线
+						itemStyle: {
+							normal: {
+								//设置折点的颜色
+								color: '#F0FFFF',
+								//注意lineStyle需要卸载normal里面
+								//自定义折线颜色
+								lineStyle: {
+									color: '#B0E0E6'
+								},
+								//自定义折线下区域的颜色
+								areaStyle: {
+									color: '#1abc9c'
+								},
+								label: {
+									show: true //显示每个点的值
+								}
+							}
+
+						}, //向下填充区域
+						"data": [0.37, 0.34, 0.32, 0.30, 0.29, 0.28, 0.27, 0.26, 0.25, 0.24, 0.23, 0.22, 0.37, 0.34, 0.32, 0.30, 0.29, 0.28, 0.27, 0.26, 0.25, 0.24, 0.23, 0.22],
+						//					label: {
+						//						normal: {
+						//							show: true
+						//						}
+						//					}
+					}, ]
+				};
+				// 为echarts对象加载数据
+				myChart.setOption(option);
+				myChart_n.setOption(option_n);
+				myChart_e.setOption(option_e);
+				myChart_s.setOption(option_s);
+				myChart_bottom.setOption(line_option);
+			})
+		</script>
+	</body>
+
+</html>>
