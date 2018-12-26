@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+
+	<!-- <link href="css/bootstrap.css" rel="stylesheet" /> -->
+	<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+	<!-- <link href="css/bootstrap-theme.css" rel="stylesheet" /> -->
+	<link href="js/bootstrap-table.css" rel="stylesheet" />
+	<link href="js/editable/css/bootstrap-editable.css" rel="stylesheet" />
+	<!-- 注意这个样式（非min.css的文件）样式会有问题？？？？ -->
+	<!-- <link src="js/datetime/bootstrap-datetimepicker.css" rel="stylesheet"/> -->
+	<link href="js/datetime/bootstrap-datetimepicker.min.css" rel="stylesheet">
+	<!-- <link href="js/datetime/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"> -->
+
+	<script src="js/jquery-3.2.1.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/common/moment.js"></script>
+	<!--加入bootstrap的js文件-->
+	<script src="js/bootstrap-table.js"></script>
+	<script src="js/editable/js/bootstrap-editable.js"></script>
+	<!-- 该插件的说明详见：https://github.com/wenzhixin/bootstrap-table/tree/master/src/extensions/editable -->
+	<!-- <script src="js/editable/js/bootstrap-table-editable.js"></script> -->
+	<!-- <script src="js/editable/bootstrap-table-editable_new.js"></script> -->
+
+	<script src="js/common/dateFormart.js"></script>
+	<script src="js/datetime/bootstrap-datetimepicker.js"></script>
+	<script src="js/vue.js"></script>
+	<!-- <script src="js/editable/js/bootstrap-table-editable.js"></script> -->
+	<style>
+		html,
+		body {
+			/* background: linear-gradient(45deg,
+			#fb3 25%, #58a 0,#58a 50%,
+			#fb3 0, #58a 75%,#58a 0);
+			background-size:30px 30px; */
+			/* background: linear-gradient(45deg, 
+			#fb3 25%, #58a 0, #58a 50%, 
+			#fb3 0, #fb3 75%, #58a 0);  */
+			/* background: linear-gradient(blue,red);  */
+			/* background: linear-gradient(to top right,blue,red);  */
+			/* background:linear-gradient(90deg,yellow 0%,blue 50%,yellow 75%) */
+			/* 从位置0处开始，填充黄色，一直渐变到位置75%处，填充蓝色
+				角度为90度，相当于水平
+			 */
+			/* background:linear-gradient(90deg,yellow 0%,blue 75%) */
+			/* background:linear-gradient(80deg,red 30%,orange 10%,yellow 60%,blue 40%); */
+			background: linear-gradient(45deg, rgb(74, 74, 156) 50%, rgb(46, 37, 158) 50%);
+			height: 100%;
+			/* background-size:100% 500px; */
+			/* background-size: 300px 300px; */
+		}
+
+		#tb_user {
+			/* background: rgb(20, 20, 128) !important; */
+			/* font:rgb(195, 195, 206); */
+			color: rgb(77, 235, 247);
+			/* border: none; */
+			/* border:0;
+			border-style: none; */
+			/* border-color: rgb(46, 41, 41); */
+			/* 边框合并 */
+			/* 注意边框合并是将||合并成| */
+			/* 为何没有效果 */
+			/* border-collapse: collapse; */
+			/* cellspacing:0; */
+		}
+
+		/* 去掉边框 */
+
+		#tb_user {
+			border: none;
+		}
+
+		#table_parent .bootstrap-table .fixed-table-container {
+			border: none;
+		}
+
+	
+		/* 设置panel-body的背景色 */
+
+		.table-parent-panel {
+			/* background: rgb(111, 134, 170); */
+			/* background-color: rgba(red, green, blue, alpha) */
+			background: rgba(29, 22, 124, 0.6);
+		}
+
+		/* 查询条件框中的panel body */
+
+		#formSearch label {
+			color: rgb(255, 255, 255);
+		}
+
+		/* .panel-body,
+		.pandel-body > panel{
+			background:  rgb(119, 113, 206,0.2);
+		} */
+
+		.panel-body>.panel {
+			background: rgb(19, 8, 184, 0.4);
+		}
+
+		.panel-body {
+			/* background:  rgb(119, 113, 206,0.2); */
+		}
+	</style>
+	<script type="application/javascript">
+		var select_user_dict = {
+			//			"1": "值班员A",
+			//			"2": "值班员B",
+			//			"3": "值班员C"
+		}
+
+		var select_duty_dict = {
+			//			1: "主班",
+			//			2: "副班"
+		}
+		// var $add_btn = $("#btn_add");
+
+		function newData() {
+			var id = "-999";
+			// var rows = {};
+			var row = {
+				id: id,
+				"dutydate": "2018/4/1",
+				"duty": "",
+				"MainUser": "1"
+			};
+			return row;
+		}
+
+		var search_vm = new Vue({
+			el: 'panel_search',
+			data: {
+				username: '',
+				pageSize: 0,
+				pageNumber: 0,
+				username: '',
+				groupname: '',
+				groupid: '',
+				dutyid: '',
+				nowdate: ''
+			}
+		})
+
+		function loadTable() {
+
+
+		}
+
+		//初始化搜索栏
+		function init_search_bar() {
+			//初始化搜索栏
+			//vue可以通过定义多个Vue对象的方式为不同的div绑定事件或者监听对象
+			var select_options = {
+				selected_user: 1,
+				options_user: [],
+				selected_group: 2,
+				options_group: [],
+				selected_date: null
+			};
+
+			// 初始化datetimepicker
+
+			select_options.options_user = [
+			
+			]
+
+			select_options.options_group = [
+				
+			];
+			var get_groupAnduser_url = 'http://127.0.0.1:8000/duty/grouplist/';
+			var post_data = {
+				department_id: 1
+			};
+			var dict_users = {};
+			$.ajax({
+				type: 'GET',
+				url: get_groupAnduser_url,
+				dataType: 'json',
+				data: {
+					post_data
+				},
+				async: false,
+				success: function (data) {
+					/*
+                          1、遍历一级，存入group中
+                          2、
+                        */
+					dict_users = {};
+					$.map(data, function (obj) {
+						select_options.options_group.push({
+							text: obj.name,
+							value: obj.did
+						});
+						if (obj.uid.length > 1) {
+							dict_users[obj.did] = obj.uid;
+						}
+					});
+					console.log(data);
+				}
+
+			})
+			select_options.selected = 3;
+			select_options.selected_group = 2;
+			var search_url = 'http://127.0.0.1:8000/duty/schedulelist/';
+			var select_vm = new Vue({
+				el: '#formSearch',
+				data: select_options,
+				watch: {
+					/*
+                            监听：
+                                选中的用户，
+                                选中的群组
+    
+                        */
+					selected_user: function (new_val, old_val) {
+
+					},
+					selected_group: function (new_val, old_val) {
+						var self = this;
+						//self.options_user=dict_users[new_val];
+						select_options.options_user = [];
+						select_options.options_user.push({
+							text: "不选择",
+							value: 0
+						});
+						$.map(dict_users[new_val], function (obj_user) {
+							select_options.options_user.push({
+								text: obj_user.username,
+								value: obj_user.uid
+							});
+						});
+						//select_options.options_user.push({text:obj.name,value:obj.did})
+					}
+				},
+				mounted() {
+					this.dateDefind();
+				},
+				methods: {
+					summit: function () {
+						//注意若想让vue中的方法访问data，需要使用this，最好通过self=this的方式
+						var self = this;
+						init_table('http://127.0.0.1:8000/duty/schedulelist/',{
+							user_id: self.selected_user,
+							group_id: self.selected_group,
+							selected_date: self.selected_date
+						})
+						
+						
+						
+					},
+					dateDefind: function () {
+						var d, s;
+						var self = this;
+						d = new Date();
+						s = d.getFullYear() + "-"; //取年份
+						s = s + (d.getMonth() + 1) + "-"; //取月份
+						s += d.getDate() + " "; //取日期
+						self.time = s;
+						//初始化
+						$('#datetimepicker').datetimepicker({
+							// startDate: s,
+							minView: "month", //选择日期后，不会再跳转去选择时分秒
+							language: 'zh-CN',
+							format: 'yyyy-mm-dd',
+							todayBtn: 1,
+							autoclose: 1
+						});
+						//当选择器隐藏时，讲选择框只赋值给data里面的time
+						$('#datetimepicker').datetimepicker()
+							.on('hide', function (ev) {
+								var value = $("#datetimepicker").val();
+								self.selected_date = value;
+							});
+					},
+				}
+			});
+
+			$btnsearch = $('#btn_search');
+
+		}
+
+		function getSelectData(index, val) {
+			// 思路
+			/*
+				思路：
+				获取所有选中行
+
+
+			*/
+			alert(index + val);
+		}
+	</script>
+</head>
+
+<body>
+	<div class="container">
+
+		<div class="panel-body" style="padding-bottom:0px;">
+			<div class="panel panel-primary">
+				<div class="panel-heading">查询条件</div>
+				<div class="panel-body table-parent-panel">
+					<form id="formSearch" class="form-horizontal">
+						<div class="form-group" style="margin-top:15px">
+							<label class="control-label col-sm-1" for="txt_search_departmentname">姓名</label>
+							<div class="col-md-2">
+								<select class="form-control" v-model="selected_user">
+									<option v-for='option in options_user' v-bind:value="option.value">
+										{{option.text}}
+									</option>
+								</select>
+							</div>
+							<label class="control-label col-sm-1" for="txt_search_departmentname">组名</label>
+							<div class="col-md-2">
+								<select class="form-control" v-model="selected_group">
+									<option v-for='option in options_group' v-bind:value="option.value">
+										{{option.text}}
+									</option>
+								</select>
+							</div>
+							<label class="control-label col-sm-1" for="txt_search_statu">日期</label>
+							<div class="col-md-2">
+								<div class="form-group">
+									<div class="input-group date form_date col-md-12" data-date="" data-date-format="yyyy MM dd  " data-link-field="dtp_input2"
+									    data-link-format="yyyy-mm-dd">
+										<input id="datetimepicker" class="form-control" size="16" type="text" value="">
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+									<input type="hidden" id="dtp_input2" value="" />
+									<br/>
+								</div>
+							</div>
+							<div class="col-md-2" style="text-align:left;">
+								<!-- <button type="submit" id="btn_search" type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button> -->
+								<button type="button" id="btn_search" style="margin-left:50px" v-on:click="summit()" id="btn_query" class="btn btn-primary">查询</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+		</div>
+</body>
+
+</html>
