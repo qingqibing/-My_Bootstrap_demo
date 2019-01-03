@@ -60,36 +60,31 @@
 						<div class="modal-body">
 							<div>
 								<form class="form-horizontal">
-									<!--输入权限名称以及是否选中信息-->
-									<!--权限基本信息-->
-									<fieldset>
-										<!--域的标题-->
-										<legend>船舶基本信息</legend>
-										<div class="form-group">
-											<label class="col-sm-2 control-label" for="ds_username">呼号</label>
-											<label class="col-sm-4 control-label" for="ds_username">BBX_A</label>
-											<!--<div class="col-sm-4">
-												<input class="form-control" id="ds_username" type="text" placeholder="Forecast" />
-											</div>-->
-											<label class="col-sm-2 control-label" for="ds_username">名称</label>
-											<label class="col-sm-4 control-label" for="ds_username">雪龙号</label>
-											<!--<div class="col-sm-4">
-												<input class="form-control" id="ds_username" type="text" placeholder="Index" />
-											</div>-->
-										</div>
-										<div class="form-group">
-											<div class="col-sm-4">
-												<input class="form-control" id="ds_host" type="text" placeholder="" />
-											</div>
-											<label class="col-sm-2 control-label" for="ds_host">顺序</label>
-											<div class="col-sm-4">
-												<div id="slider"></div>
+									<div class="col-sm-12">
+										<div class="panel panel-default">
+											<div class="panel-heading">船舶基础信息</div>
+											<div class="panel-body table-responsive">
+												<table class="table table-striped table-hover table-bordered">
+													<thead>
+														<th>#</th>
+														<th>呼号</th>
+														<th>船舶名称/th>
+															<th>所属海区</th>
+															<th>吨位</th>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>BBX_A</td>
+															<td>雪龙号</td>
+															<td>东海</td>
+															<td>5000</td>
+														</tr>
+													</tbody>
+												</table>
 											</div>
 										</div>
-										<!--<div class="form-group">
-										
-									</div>-->
-									</fieldset>
+									</div>
 								</form>
 								<ul id="mytabs" class="nav nav-tabs">
 									<li role="presentation" class="active">
