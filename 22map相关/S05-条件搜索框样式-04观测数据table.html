@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title></title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <style type="text/css">
+      /*对于使用了bootstrap的navbar并固定在顶部时下面的div填充满整个屏幕的解决办法*/
+
+      html,
+      body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+        background-color: #bbbbbb;
+        padding-top: 25px;
+      }
+      .card-my-end {
+        background: linear-gradient(
+          to right,
+          #1a6865 30%,
+          rgba(4, 107, 114, 0.639)
+        );
+        font-size: 90%;
+        text-shadow: 2px 2px 8px rgb(33, 32, 32);
+      }
+      .card-my-end-body {
+        background: linear-gradient(
+          to right,
+          #248e8a 30%,
+          rgba(4, 107, 114, 0.639)
+        );
+        padding: 8px 8px 8px 8px;
+      }
+      .table-my-typhoon {
+        background: linear-gradient(
+          to right,
+          #1a6865 30%,
+          rgba(4, 107, 114, 0.639)
+        );
+      }
+      .table-my-typhoon th {
+        font-size: 85%;
+        color: rgb(255, 196, 0);
+        padding-top: 8px;
+        padding-bottom: 8px;
+        font-weight: 400;
+        text-shadow: 2px 2px 8px rgb(33, 32, 32);
+      }
+
+      .table-my-typhoon td {
+        font-size: 85%;
+        color: rgb(255, 255, 255);
+        padding-top: 8px;
+        padding-bottom: 8px;
+        font-weight: 400;
+        text-shadow: 2px 2px 8px rgb(33, 32, 32);
+      }
+      .table-my-station {
+        background: linear-gradient(
+          to right,
+          #328a87 30%,
+          rgba(47, 113, 118, 0.639)
+        );
+      }
+      .table-my-station th {
+        font-size: 85%;
+        color: rgb(255, 196, 0);
+        padding-top: 8px;
+        padding-bottom: 8px;
+        font-weight: 400;
+        text-shadow: 2px 2px 8px rgb(33, 32, 32);
+      }
+
+      .table-my-station td {
+        font-size: 85%;
+        color: rgb(255, 255, 255);
+        padding-top: 8px;
+        padding-bottom: 8px;
+        font-weight: 400;
+        text-shadow: 2px 2px 8px rgb(33, 32, 32);
+      }
+      .table-my-station tr:hover {
+        font-size: 105%;
+        color: rgb(255, 255, 255);
+        background: rgba(111, 238, 204, 0.557);
+        padding-top: 8px;
+        padding-bottom: 8px;
+        font-weight: 600;
+        text-shadow: 2px 2px 8px rgb(33, 32, 32);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="card col-md-12 text-white">
+        <div class="card-header card-my-end">
+          观测数据
+        </div>
+        <div class="card-body card-my-end-body">
+          <table class="table text-white table-my-typhoon">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">当前时间</th>
+                <th scope="col">气压</th>
+                <th scope="col">最大风速</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td scope="row">1</td>
+                <td>2019-02-27</td>
+                <td>1002.2</td>
+                <td>3.5</td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table text-white table-my-station">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">站位</th>
+                <th scope="col">波向</th>
+                <th scope="col">有效波高</th>
+                <th scope="col">潮位</th>
+                <th scope="col">风速</th>
+                <th scope="col">风向</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td scope="row">1</td>
+                <td>福鼎</td>
+                <td>35</td>
+                <td>2.5</td>
+                <td>1.7</td>
+                <td>5.2</td>
+                <td>120</td>
+              </tr>
+              <tr>
+                <td scope="row">2</td>
+                <td>平潭</td>
+                <td>35</td>
+                <td>2.5</td>
+                <td>1.7</td>
+                <td>5.2</td>
+                <td>120</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

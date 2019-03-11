@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title></title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <style type="text/css">
+      /*对于使用了bootstrap的navbar并固定在顶部时下面的div填充满整个屏幕的解决办法*/
+
+      html,
+      body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+        background-color: #bbbbbb;
+        padding-top: 25px;
+      }
+      #end_bar_div {
+        display: -webkit-box;
+        z-index: 1999;
+      }
+
+      .list-group-item {
+        color: black;
+      }
+
+      /* 自定义的末级菜单样式 */
+      .card-my-end-header {
+        background: linear-gradient(
+          to right,
+          #1a6865 30%,
+          rgba(4, 107, 114, 0.639)
+        );
+        font-size: 90%;
+        text-shadow: 2px 2px 8px rgb(33, 32, 32);
+      }
+      .list-my-group-item {
+        color: rgb(4, 4, 4);
+        font-size: 85%;
+        background: rgba(184, 206, 200, 0.557);
+        padding-top: 5px;
+        padding-bottom: 5px;
+        font-weight: 400;
+        text-shadow: 2px 2px 8px rgb(33, 32, 32);
+      }
+      .list-my-group-item:hover {
+        color: rgb(255, 255, 255);
+        font-size: 85%;
+        background: rgba(111, 238, 204, 0.557);
+        padding-top: 5px;
+        padding-bottom: 5px;
+        font-weight: 600;
+      }
+      .card-my-end-body {
+        background: linear-gradient(
+          to right,
+          #248e8a 30%,
+          rgba(4, 107, 114, 0.639)
+        );
+        padding: 8px 8px 8px 8px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="condition" class="col-md-12">
+        <div class="card-header card-my-end-header text-white">
+          台风编号：code_a
+        </div>
+        <div class="card-body card-my-end-body">
+          <div class="row">
+            <div class="col">
+              <ul class="list-group">
+                <li class="list-group-item list-my-group-item">
+                  1950 10-20 19:00
+                </li>
+                <li class="list-group-item list-my-group-item">
+                  1950 10-21 02:00
+                </li>
+                <li class="list-group-item list-my-group-item">
+                  1950 10-21 06:00
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
