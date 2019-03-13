@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title></title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <style type="text/css">
+      /*对于使用了bootstrap的navbar并固定在顶部时下面的div填充满整个屏幕的解决办法*/
+
+      html,
+      body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+        background-color: #bbbbbb;
+      }
+      div {
+        border: 1px dashed;
+      }
+      .total {
+        flex-direction: column;
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+      .header {
+        background: red;
+        width: 100%;
+        flex: 1;
+      }
+      .body {
+        background: rgb(158, 203, 158);
+        flex: 10;
+        display: flex;
+      }
+      .footer {
+        background: green;
+        width: 100%;
+        flex: 1;
+      }
+      .right-bar {
+        order: -1;
+        flex: 1;
+        background: blue;
+      }
+      .content {
+        flex: 8;
+        background: rgb(193, 90, 189);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="total">
+      <div class="header">header</div>
+      <div class="body">
+        <div class="right-bar">bar</div>
+        <div class="content">content</div>
+      </div>
+      <div class="footer">footer</div>
+    </div>
+  </body>
+</html>
