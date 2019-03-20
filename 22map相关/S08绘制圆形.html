@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <script
+      type="application/javascript"
+      src="js/jquery-1.11.1.min.js"
+    ></script>
+    <script type="application/javascript" src="js/bootstrap.min.js"></script>
+    <!--<script type="application/javascript" src="js/knockout-3.4.2.debug.js"></script>-->
+    <script type="application/javascript" src="js/map/leaflet.js"></script>
+    <script
+      type="application/javascript"
+      src="js/map/leaflet.shpfile.js"
+    ></script>
+    <script type="application/javascript" src="js/map/shp.js"></script>
+
+    <link rel="stylesheet" href="css/map/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css" media="all" />
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/flatui/flat-ui.css" />
+  </head>
+  <body>
+    <div>
+      <div id="map" style="height: 1080px;width: 1920px">8</div>
+    </div>
+
+    <script>
+      var map = L.map("map", {
+        zoomControl: false,
+        center: [39.85, 116.4],
+        zoom: 12
+      });
+      L.circle([39.85, 116.4], 5000, {
+        color: "red", //颜色
+        fillColor: "#f03",
+        fillOpacity: 0, //透明度
+        dashArray: "5" //设置虚线
+      }).addTo(map);
+      L.tileLayer(
+        "http://webrd0{s}.is.autonavi.com/appmaptile?" +
+          "lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}",
+        { subdomains: ["1", "2", "3", "4"] }
+      ).addTo(map);
+    </script>
+  </body>
+</html>
