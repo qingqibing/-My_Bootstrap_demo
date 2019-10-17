@@ -1,59 +1,157 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title></title>
     <!-- <link rel="stylesheet" type="text/css" href="css/semantic.css" /> -->
-    <link rel="stylesheet" type="text/css" href="css/semantic.min.css" />
+    <link rel="stylesheet" type="text/css" href="dist/semantic.css" />
     <!-- <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
       crossorigin="anonymous"
     ></script> -->
     <script src="js/jquery-1.11.1.min.js"></script>
-    <script src="js/semantic.js"></script>
-</head>
+    <!-- <script src="js/semantic.js"></script> -->
+    <script src="dist/semantic.js"></script>
+    <!--- Example Javascript -->
+    <script>
+      $(document).ready(function() {
+        $(".ui.dropdown").dropdown();
 
-<body>
+        $(".ui.buttons .dropdown.button").dropdown({
+          action: "combo"
+        });
+      });
+    </script>
+  </head>
+
+  <body>
     <div id="select_bar">
-        <div class="ui container">
-            <p>cececece</p>
+      <div class="ui container">
+        <p>cececece</p>
+      </div>
+      <select class="ui dropdown">
+        <option value="">Gender</option>
+        <option value="1">Male</option>
+        <option value="0">Female</option>
+      </select>
+      <button class="ui primary button">Login</button>
+      <div class="ui label">
+        <i class="mail icon"></i>
+        <font style="vertical-align: inherit;">
+          <font style="vertical-align: inherit;"> 23 </font>
+        </font>
+      </div>
+      <div class="column">
+        <div class="ui styled accordion">
+          <div class="active title">
+            <i class="dropdown icon"></i
+            ><font style="vertical-align: inherit;"
+              ><font style="vertical-align: inherit;">
+                什么是狗？
+              </font></font
+            >
+          </div>
+          <div class="active content">
+            <p>
+              <font style="vertical-align: inherit;"
+                ><font style="vertical-align: inherit;"
+                  >狗是一种驯养的动物。</font
+                ><font style="vertical-align: inherit;"
+                  >它以忠诚和忠实着称，可以在世界各地的许多家庭中受到欢迎。</font
+                ></font
+              >
+            </p>
+          </div>
+          <div class="title">
+            <i class="dropdown icon"></i
+            ><font style="vertical-align: inherit;"
+              ><font style="vertical-align: inherit;">
+                那儿有什么样的狗？
+              </font></font
+            >
+          </div>
+          <div class="content">
+            <p>
+              There are many breeds of dogs. Each breed varies in size and
+              temperament. Owners often select a breed of dog that they find to
+              be compatible with their own lifestyle and desires from a
+              companion.
+            </p>
+          </div>
+          <div class="title">
+            <i class="dropdown icon"></i
+            ><font style="vertical-align: inherit;"
+              ><font style="vertical-align: inherit;">
+                你如何养狗？
+              </font></font
+            >
+          </div>
+          <div class="content">
+            <p>
+              Three common ways for a prospective owner to acquire a dog is from
+              pet shops, private owners, or shelters.
+            </p>
+            <p>
+              A pet shop may be the most convenient way to buy a dog. Buying a
+              dog from a private owner allows you to assess the pedigree and
+              upbringing of your dog before choosing to take it home. Lastly,
+              finding your dog from a shelter, helps give a good home to a dog
+              who may not find one so readily.
+            </p>
+          </div>
         </div>
-        <select class="ui dropdown">
-            <option value="">Gender</option>
-            <option value="1">Male</option>
-            <option value="0">Female</option>
-        </select>
-        <button class="ui primary button">Login</button>
-        <div class="ui label">
-            <i class="mail icon"></i>
-            <font style="vertical-align: inherit;">
-                <font style="vertical-align: inherit;"> 23 </font>
-            </font>
+      </div>
+
+      <div class="column">
+        <div class="ui floating search dropdown button">
+          <span class="text">Search Dropdown</span>
+          <div class="menu">
+            <div class="item">Arabic</div>
+            <div class="item">Chinese</div>
+            <div class="item">Danish</div>
+            <div class="item">Dutch</div>
+            <div class="item">English</div>
+            <div class="item">French</div>
+            <div class="item">German</div>
+            <div class="item">Greek</div>
+            <div class="item">Hungarian</div>
+            <div class="item">Italian</div>
+            <div class="item">Japanese</div>
+            <div class="item">Korean</div>
+            <div class="item">Lithuanian</div>
+            <div class="item">Persian</div>
+            <div class="item">Polish</div>
+            <div class="item">Portuguese</div>
+            <div class="item">Russian</div>
+            <div class="item">Spanish</div>
+            <div class="item">Swedish</div>
+            <div class="item">Turkish</div>
+            <div class="item">Vietnamese</div>
+          </div>
         </div>
+      </div>
     </div>
-</body>
-<style type="text/css">
+  </body>
+  <style type="text/css">
     /*对于使用了bootstrap的navbar并固定在顶部时下面的div填充满整个屏幕的解决办法*/
 
     html,
     body {
-        height: 100%;
-        margin: 0px;
-        padding: 0px;
-        background-color: #bbbbbb;
-        padding-top: 25px;
-        display: flex;
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+      background-color: #bbbbbb;
+      padding-top: 25px;
+      display: flex;
     }
 
     #select_bar {
-        background: #905454;
-        /* display: flex; */
-        height: 500px;
-        width: 500px;
+      background: #905454;
+      /* display: flex; */
+      height: 500px;
+      width: 500px;
     }
-</style>
-
+  </style>
 </html>
