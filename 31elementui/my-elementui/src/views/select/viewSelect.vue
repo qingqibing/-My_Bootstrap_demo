@@ -5,9 +5,9 @@
     <div class="show">
       <div class="row">
         <span>显示模式</span>
-        <el-select v-model="value" placeholder="请选择">
+        <el-select v-model="valueShowTypes" placeholder="请选择">
           <el-option
-            v-for="item in options"
+            v-for="item in optionsShowTypes"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -16,9 +16,9 @@
       </div>
       <div class="row">
         <span>权重</span>
-        <el-select v-model="value" placeholder="请选择">
+        <el-select v-model="valueFactors" placeholder="请选择">
           <el-option
-            v-for="item in options"
+            v-for="item in optionsFactors"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -42,30 +42,30 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 @Component({})
 export default class viewSelect extends Vue {
   mydata: any = null;
-  options = [];
-  value = "";
+  optionsFactors = [];
+  valueFactors = "";
+  optionsShowTypes = [];
+  valueShowTypes = "";
   mounted() {
     console.log("select 加载成功");
-    this.options = [
+    this.optionsFactors = [
       {
-        value: "选项1",
-        label: "黄金糕"
+        value: "thickness",
+        label: "油膜厚度"
       },
       {
-        value: "选项2",
-        label: "双皮奶"
+        value: "mass",
+        label: "油膜质量"
+      }
+    ];
+    this.optionsShowTypes = [
+      {
+        value: "scatter",
+        label: "散点"
       },
       {
-        value: "选项3",
-        label: "蚵仔煎"
-      },
-      {
-        value: "选项4",
-        label: "龙须面"
-      },
-      {
-        value: "选项5",
-        label: "北京烤鸭"
+        value: "heatmap",
+        label: "热图"
       }
     ];
   }
@@ -93,6 +93,7 @@ export default class viewSelect extends Vue {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-left: 30px;
 }
 .el-select {
   width: 60%;
