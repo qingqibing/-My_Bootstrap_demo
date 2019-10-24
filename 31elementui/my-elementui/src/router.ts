@@ -6,6 +6,7 @@ import DaysComp from "./views/timebar/DayCardV1/DaysComp.vue";
 import DayComp2 from "./views/timebar/DayCardV2/DayComp.vue";
 import DaysComp2 from "./views/timebar/DayCardV2/DaysComp.vue";
 import oilDetail from "./views/oilModelDetial/oilModelDetial.vue";
+import rightBarContent from "./views/content/rightInfoBar.vue";
 Vue.use(Router)
 
 export default new Router({
@@ -41,6 +42,11 @@ export default new Router({
             path: '/oildetail',
             name: '溢油的基础信息div',
             component: oilDetail
+        },
+        {
+            path: '/right',
+            name: '右侧整合的div',
+            component: rightBarContent
         }
     ]
 })

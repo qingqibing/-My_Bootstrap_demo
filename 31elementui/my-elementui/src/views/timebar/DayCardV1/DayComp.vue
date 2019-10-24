@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="timebar" class="col-md-3">
     <transition name="fade">
       <div class="day">
         <div class="title">{{daynum}}天</div>
@@ -15,6 +15,9 @@
   </div>
 </template>
 <style scoped>
+#timebar {
+  /* width: 200px; */
+}
 .day {
   display: inline-block;
   background: linear-gradient(
@@ -33,7 +36,8 @@
   cursor: pointer;
   color: white;
   padding: 5px;
-  width: 22em;
+  /* todo:[*] 19-10-24 暂时不使用相对长度（需要修改） */
+  /* width: 22em; */
   border-style: solid;
   border-width: 1px;
   border-color: gray;
