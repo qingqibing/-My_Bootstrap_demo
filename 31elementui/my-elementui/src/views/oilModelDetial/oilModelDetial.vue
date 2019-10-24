@@ -59,14 +59,6 @@ export default class center_map extends Vue {
 }
 </script>
 <style scoped>
-html,
-body {
-  height: 100%;
-  margin: 0px;
-  padding: 0px;
-  background-color: #bbbbbb;
-  padding-top: 25px;
-}
 
 #myform {
   /* border: 2px solid white; */
@@ -86,14 +78,15 @@ body {
   /* background: linear-gradient(rgb(150, 210, 225), rgb(93, 134, 181)); */
   background: rgb(49, 159, 178);
   color: rgb(161, 251, 246);
-  text-shadow: 2px 2px 2px 10px rgb(161, 251, 246);
+  text-shadow: 2px 2px 1px 5px rgb(161, 251, 246);
   font-weight: 400;
 }
 
 #oil_detail .card-body {
   /* background: #2367e4bd; */
   background: rgb(45, 93, 133);
-  color: rgb(161, 251, 246);
+  color: rgb(240, 237, 56);
+  font-weight: 500;
 }
 
 #myform .table {
