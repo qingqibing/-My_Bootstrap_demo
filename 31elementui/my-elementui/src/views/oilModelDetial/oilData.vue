@@ -69,9 +69,10 @@ body {
   /* width: 200px; */
 }
 #oil_detail .card-header {
-  /* background: #17a3b8bd; */
+  background: #125a8abd;
   /* background: linear-gradient(rgb(150, 210, 225), rgb(93, 134, 181)); */
-  background: rgb(49, 159, 178);
+  /* background: rgb(49, 159, 178); */
+  /* background: linear-gradient(rgb(50, 157, 150), rgb(49, 59, 89)); */
   color: rgb(161, 251, 246);
   text-shadow: 2px 2px 2px 10px rgb(161, 251, 246);
   font-weight: 400;
@@ -79,8 +80,12 @@ body {
 
 #oil_detail .card-body {
   /* background: #2367e4bd; */
-  background: rgb(45, 93, 133);
+  /* background: rgb(45, 93, 133); */
+  background: linear-gradient(rgb(50, 157, 150), rgb(49, 59, 89));
   color: rgb(161, 251, 246);
+  /* 底部圆角 */
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 #myform .table {
@@ -113,8 +118,8 @@ body {
 
 /* 注意card有一个左右15px的padding */
 .card {
-  padding-left: 0px;
-  padding-right: 0px;
+  /* padding-left: 0px;
+  padding-right: 0px; */
   /* 需要去掉bt自带的1px的边框 */
   border: 0px;
 }
@@ -123,6 +128,9 @@ body {
   margin-left: -21px;
   margin-right: -21px;
   margin-bottom: -21px;
+  /* 底部圆角 */
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 /* 底部div */
@@ -135,10 +143,21 @@ body {
   /* border: 1px; */
   text-align: center;
   /* 设置圆角 */
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+  /* border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px; */
   /* margin-left: -21px;
 				margin-right: -21px; */
+  /* 底部圆角 */
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.typhoon_footer .columnar:first-child {
+    /* 底部最左侧圆角 */
+  border-bottom-left-radius: 10px;
+}
+.typhoon_footer .columnar:last-child{
+  /* 底部最右侧圆角 */
+  border-bottom-right-radius: 10px;
 }
 
 .my_primary {

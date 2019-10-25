@@ -59,7 +59,6 @@ export default class center_map extends Vue {
 }
 </script>
 <style scoped>
-
 #myform {
   /* border: 2px solid white; */
   display: inline-block;
@@ -74,9 +73,9 @@ export default class center_map extends Vue {
 #oil_detail {
 }
 #oil_detail .card-header {
-  /* background: #17a3b8bd; */
+  background: #125a8abd;
   /* background: linear-gradient(rgb(150, 210, 225), rgb(93, 134, 181)); */
-  background: rgb(49, 159, 178);
+  /* background: rgb(49, 159, 178); */
   color: rgb(161, 251, 246);
   text-shadow: 2px 2px 1px 5px rgb(161, 251, 246);
   font-weight: 400;
@@ -84,10 +83,16 @@ export default class center_map extends Vue {
 
 #oil_detail .card-body {
   /* background: #2367e4bd; */
-  background: rgb(45, 93, 133);
+  /* background: rgb(45, 93, 133); */
+  background: linear-gradient(rgb(50, 157, 150), rgb(49, 59, 89));
+  
   color: rgb(240, 237, 56);
   font-weight: 500;
+  /* 底部圆角 */
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
+
 
 #myform .table {
   margin-bottom: 0px;
@@ -119,8 +124,8 @@ export default class center_map extends Vue {
 
 /* 注意card有一个左右15px的padding */
 .card {
-  padding-left: 0px;
-  padding-right: 0px;
+  /* padding-left: 0px;
+  padding-right: 0px; */
   /* 需要去掉bt自带的1px的边框 */
   border: 0px;
 }

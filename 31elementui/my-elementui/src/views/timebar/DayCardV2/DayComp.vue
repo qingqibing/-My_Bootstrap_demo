@@ -1,7 +1,7 @@
 <template>
   <div>
     <transition name="fade">
-      <div class="day">
+      <div class="day col-md-12">
         <div class="title">{{title}}</div>
         <div class="hours">
           <div class="hour" v-for="hour in hoursList" :key="hour.num">
@@ -17,14 +17,27 @@
 <style scoped>
 .day {
   display: inline-block;
-  background: linear-gradient(
+  /* background: linear-gradient(
     135deg,
     rgb(255, 246, 115),
     orange,
     rgb(207, 32, 9),
     rgb(105, 1, 105),
     rgb(3, 60, 114)
-  );
+  ); */
+  /* 色调修改一下 */
+  /* background: linear-gradient(
+    135deg,
+    rgb(255, 246, 115),
+    orange,
+    rgb(207, 32, 9),
+    rgb(105, 1, 105),
+    rgb(3, 60, 114)
+  ); */
+  /* background: linear-gradient(135deg,rgb(88, 243, 181), rgb(57, 153, 174)); */
+  /* background: linear-gradient(135deg,rgb(57, 88, 154), rgb(64, 254, 181)); */
+  /* background: linear-gradient(135deg,rgb(4, 50, 142), rgb(147, 245, 240)); */
+  background: linear-gradient(rgb(50, 157, 150), rgb(49, 59, 89));
   text-align: center;
   padding: 0;
   font-family: 微软雅黑;
@@ -32,8 +45,8 @@
   user-select: none;
   cursor: pointer;
   color: white;
-  padding: 5px;
-  width: 22em;
+  /* padding: 5px; */
+  /* width: 22em; */
   border-style: solid;
   border-width: 1px;
   border-color: gray;
@@ -45,7 +58,7 @@
   box-shadow: 2px 2px 3px black;
 }
 .hour {
-  height: 2em;
+  /* height: 2em; */
   width: 2em;
   /* background: yellowgreen; */
   display: inline-block;

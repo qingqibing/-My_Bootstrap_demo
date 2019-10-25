@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="days_comp" class="col-md-3">
     <div class="title">
       <!-- step:
       <input type="text" v-model="step" />
@@ -15,85 +15,166 @@
     </div>
   </div>
 </template>
-<style scoped>
-</style>
-<script>
-import Day from "./DayComp";
-export default {
-  data() {
-    return {
-      // startDate: new Date(),
-      // step: 1,
-      // count: 20,
-      // index: 5,
-      days: []
-    };
-  },
-  props: ["step", "index", "startDate", "count"],
+<script lang="ts">
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import Day from "@/views/timebar/DayCardV2/DayComp.vue";
+@Component({ components: { Day } })
+export default class DaysComp extends Vue {
+  private days: any[] = [];
 
-  watch: {
-    step() {
-      this.renderDays(this.step, this.index, this.count, this.startDate);
-    },
-    index() {
-      this.renderDays(this.step, this.index, this.count, this.startDate);
+  @Prop(Date)
+  private startDate!: Date;
+
+  @Prop(Number)
+  private step!: number;
+
+  @Prop(Number)
+  private index!: number;
+
+  @Prop(Number)
+  private count!: number;
+
+  private renderDays(
+    step: number,
+    index: number,
+    count: number,
+    startDate: Date
+  ): void {
+    let myself = this;
+    //有一个一共生成多少个块,和当前是第几块
+    // let index = this.index,
+    //   count = this.count,
+    //   step = this.step;
+    if (index > count) {
+      let temp = index;
+      index = count;
+      count = index;
     }
-  },
-  methods: {
-    renderDays(step, index, count, startDate) {
-      //有一个一共生成多少个块,和当前是第几块
-      // let index = this.index,
-      //   count = this.count,
-      //   step = this.step;
-      if (index > count) {
-        var temp = index;
-        index = count;
-        count = index;
+    let newDays: any[] = [];
+    let howManyIndexADay = Math.ceil(24 / step);
+    let howManyDayCards = Math.ceil((count * step) / 24);
+    for (let i = 0; i < howManyDayCards; i++) {
+      let currentDayIndex = 0;
+      if (i * howManyIndexADay < index && (i + 1) * howManyIndexADay > index) {
+        currentDayIndex = index % howManyIndexADay;
+      } else if (i * howManyIndexADay < index) {
+        currentDayIndex = howManyIndexADay;
+      } else {
+        currentDayIndex = 0;
       }
-      let newDays = [];
-      let howManyIndexADay = Math.ceil(24 / step);
-      let howManyDayCards = Math.ceil((count * step) / 24);
-      for (let i = 0; i < howManyDayCards; i++) {
-        let currentDayIndex = 0;
-        if (
-          i * howManyIndexADay < index &&
-          (i + 1) * howManyIndexADay > index
-        ) {
-          currentDayIndex = index % howManyIndexADay;
-        } else if (i * howManyIndexADay < index) {
-          currentDayIndex = howManyIndexADay;
-        } else {
-          currentDayIndex = 0;
-        }
-        newDays.push({
-          title: this.getDate(i),
-          step: Number(this.step),
-          index: currentDayIndex
-        });
-      }
-      this.days = newDays;
-    },
-    getDate(n) {
-      console.log("renderDate:", this.startDate, n);
-      let date = new Date(this.startDate);
-      date.setDate(date.getDate() + n);
-      return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+      newDays.push({
+        title: myself.getDate(i),
+        step: Number(this.step),
+        index: currentDayIndex
+      });
     }
-  },
-  mounted() {
-    this.renderDays();
-  },
-  components: {
-    Day
+    myself.days = newDays;
   }
-};
+
+  private getDate(n: number): string {
+    console.log("renderDate:", this.startDate, n);
+    let date = new Date(this.startDate);
+    date.setDate(date.getDate() + n);
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  }
+
+  mounted() {
+    this.renderDays(this.step, this.index, this.count, this.startDate);
+  }
+  get computedTest() {
+    return null;
+  }
+
+  @Watch("step")
+  onStep(temp: number) {
+    this.renderDays(this.step, this.index, this.count, this.startDate);
+  }
+
+  @Watch("index")
+  onIndex(temp: number) {
+    this.renderDays(this.step, this.index, this.count, this.startDate);
+  }
+}
+// export default {
+//   data() {
+//     return {
+//       // startDate: new Date(),
+//       // step: 1,
+//       // count: 20,
+//       // index: 5,
+//       days: []
+//     };
+//   },
+//   props: ["step", "index", "startDate", "count"],
+
+//   watch: {
+//     step() {
+//       this.renderDays(this.step, this.index, this.count, this.startDate);
+//     },
+//     index() {
+//       this.renderDays(this.step, this.index, this.count, this.startDate);
+//     }
+//   },
+//   methods: {
+//     renderDays(step, index, count, startDate) {
+//       //有一个一共生成多少个块,和当前是第几块
+//       // let index = this.index,
+//       //   count = this.count,
+//       //   step = this.step;
+//       if (index > count) {
+//         var temp = index;
+//         index = count;
+//         count = index;
+//       }
+//       let newDays = [];
+//       let howManyIndexADay = Math.ceil(24 / step);
+//       let howManyDayCards = Math.ceil((count * step) / 24);
+//       for (let i = 0; i < howManyDayCards; i++) {
+//         let currentDayIndex = 0;
+//         if (
+//           i * howManyIndexADay < index &&
+//           (i + 1) * howManyIndexADay > index
+//         ) {
+//           currentDayIndex = index % howManyIndexADay;
+//         } else if (i * howManyIndexADay < index) {
+//           currentDayIndex = howManyIndexADay;
+//         } else {
+//           currentDayIndex = 0;
+//         }
+//         newDays.push({
+//           title: this.getDate(i),
+//           step: Number(this.step),
+//           index: currentDayIndex
+//         });
+//       }
+//       this.days = newDays;
+//     },
+//     getDate(n) {
+//       console.log("renderDate:", this.startDate, n);
+//       let date = new Date(this.startDate);
+//       date.setDate(date.getDate() + n);
+//       return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+//     }
+//   },
+//   mounted() {
+//     this.renderDays();
+//   },
+//   components: {
+//     Day
+//   }
+// };
 </script>
 <style scoped>
 .days {
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.3);
-  display: inline-block;
-  width: 22.7em;
+  /* padding: 10px; */
+  /* background: rgba(0, 0, 0, 0.3); */
+  /* display: inline-block; */
+  /* width: 22.7em; */
   border-radius: 5px;
+}
+</style>
+<style scoped>
+#days_comp{
+
 }
 </style>
