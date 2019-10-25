@@ -1,5 +1,5 @@
 # my-elementui
-
+完成了溢油系统的相关组件
 ## Project setup
 ```
 npm install
@@ -9,21 +9,17 @@ npm install
 ```
 npm run serve
 ```
+---
+[技术类文档放置此处](../README.md)
 
-### Compiles and minifies for production
-```
-npm run build
-```
+---
+修改的进度也在此处展示  
 
-### Run your tests
-```
-npm run test
-```
 
-### Lints and fixes files
-```
-npm run lint
-```
+19-10-25
+- [x] 1. 修改了模型基础信息，预报信息，以及日历的样式
+- [x] 2. 形成了：v1版本  
+  效果如下：
+  ![右侧溢油信息栏](document\img\TIM截图20191025150131.png)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+---
