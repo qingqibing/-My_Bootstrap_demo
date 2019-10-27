@@ -45,14 +45,6 @@ export default class center_map extends Vue {
 }
 </script>
 <style scoped>
-html,
-body {
-  height: 100%;
-  margin: 0px;
-  padding: 0px;
-  background-color: #bbbbbb;
-  padding-top: 25px;
-}
 
 #myform {
   /* border: 2px solid white; */

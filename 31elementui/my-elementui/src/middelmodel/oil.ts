@@ -21,9 +21,21 @@ class OilRealDataMidModel {
     this.waterVal = waterVal;
   }
 }
-
+/**
+ *  
+ *
+ * @class OilModelDetailMidModel
+ */
 class OilModelDetailMidModel{
-    
+    public time:Date;
+    public point:Object;
+    public windFactor:number;
+    public windDir:number;
+    public simulateStep:number;
+    public consoleStep:number;
+    public currentIndeterminacy:number;
+    public windIndeterminacy:number;
+    public equation
 }
 
 export { OilRealDataMidModel };
