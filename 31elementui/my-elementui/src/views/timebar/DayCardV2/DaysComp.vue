@@ -16,10 +16,13 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import Day from "@/views/timebar/DayCardV2/DayComp.vue";
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import Day from '@/views/timebar/DayCardV2/DayComp.vue';
 @Component({ components: { Day } })
 export default class DaysComp extends Vue {
+  get computedTest() {
+    return null;
+  }
   private days: any[] = [];
 
   @Prop(Date)
@@ -34,25 +37,39 @@ export default class DaysComp extends Vue {
   @Prop(Number)
   private count!: number;
 
+  public mounted() {
+    this.renderDays(this.step, this.index, this.count, this.startDate);
+  }
+
+  @Watch('step')
+  public onStep(temp: number) {
+    this.renderDays(this.step, this.index, this.count, this.startDate);
+  }
+
+  @Watch('index')
+  public onIndex(temp: number) {
+    this.renderDays(this.step, this.index, this.count, this.startDate);
+  }
+
   private renderDays(
     step: number,
     index: number,
     count: number,
     startDate: Date
   ): void {
-    let myself = this;
-    //有一个一共生成多少个块,和当前是第几块
+    const myself = this;
+    // 有一个一共生成多少个块,和当前是第几块
     // let index = this.index,
     //   count = this.count,
     //   step = this.step;
     if (index > count) {
-      let temp = index;
+      const temp = index;
       index = count;
       count = index;
     }
-    let newDays: any[] = [];
-    let howManyIndexADay = Math.ceil(24 / step);
-    let howManyDayCards = Math.ceil((count * step) / 24);
+    const newDays: any[] = [];
+    const howManyIndexADay = Math.ceil(24 / step);
+    const howManyDayCards = Math.ceil((count * step) / 24);
     for (let i = 0; i < howManyDayCards; i++) {
       let currentDayIndex = 0;
       if (i * howManyIndexADay < index && (i + 1) * howManyIndexADay > index) {
@@ -72,27 +89,10 @@ export default class DaysComp extends Vue {
   }
 
   private getDate(n: number): string {
-    console.log("renderDate:", this.startDate, n);
-    let date = new Date(this.startDate);
+    console.log('renderDate:', this.startDate, n);
+    const date = new Date(this.startDate);
     date.setDate(date.getDate() + n);
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-  }
-
-  mounted() {
-    this.renderDays(this.step, this.index, this.count, this.startDate);
-  }
-  get computedTest() {
-    return null;
-  }
-
-  @Watch("step")
-  onStep(temp: number) {
-    this.renderDays(this.step, this.index, this.count, this.startDate);
-  }
-
-  @Watch("index")
-  onIndex(temp: number) {
-    this.renderDays(this.step, this.index, this.count, this.startDate);
   }
 }
 // export default {
@@ -174,7 +174,6 @@ export default class DaysComp extends Vue {
 }
 </style>
 <style scoped>
-#days_comp{
-
+#days_comp {
 }
 </style>

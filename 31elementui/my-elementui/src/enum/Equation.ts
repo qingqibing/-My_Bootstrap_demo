@@ -4,7 +4,7 @@
  *
  * @enum {number}
  */
-enum OilEquation{
+enum OilEquation {
     /**
      * 欧拉
      */
@@ -16,8 +16,8 @@ enum OilEquation{
     /**
      * 4阶龙格库塔法
      */
-    FourRungeKutta
+    FourRungeKutta,
 }
-export{
-    OilEquation
+export {
+    OilEquation,
 }

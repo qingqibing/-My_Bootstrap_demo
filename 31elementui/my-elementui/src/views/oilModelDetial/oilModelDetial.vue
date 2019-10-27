@@ -4,57 +4,75 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">时间</div>
-        <div class="col-md-6">2019-02-23</div>
+        <div class="col-md-6">{{oilModelDetailData.time}}</div>
       </div>
       <div class="row">
         <div class="col-md-6">中心位置</div>
-        <div class="col-md-6">18.2,112.0</div>
+        <div class="col-md-6">{{oilModelDetailData.point}}</div>
       </div>
       <div class="row">
         <div class="col-md-6">风偏系数</div>
         <div class="col-md-6">
-          <el-progress :text-inside="true" :stroke-width="26" :percentage="70"></el-progress>
+          <el-progress
+            :text-inside="true"
+            :stroke-width="26"
+            :percentage="oilModelDetailData.windFactor"
+          ></el-progress>
         </div>
       </div>
       <div class="row">
         <div class="col-md-6">风偏角度</div>
-        <div class="col-md-6">12</div>
+        <div class="col-md-6">{{oilModelDetailData.windDir}}</div>
       </div>
       <div class="row">
         <div class="col-md-6">模拟步长</div>
-        <div class="col-md-6">120s</div>
+        <div class="col-md-6">{{oilModelDetailData.simulateStep}}</div>
       </div>
       <div class="row">
         <div class="col-md-6">输出步长</div>
-        <div class="col-md-6">120s</div>
+        <div class="col-md-6">{{oilModelDetailData.consoleStep}}</div>
       </div>
       <div class="row">
         <div class="col-md-6">流场不确定性</div>
         <div class="col-md-6">
-          <el-progress :text-inside="true" :stroke-width="26" :percentage="55"></el-progress>
+          <el-progress
+            :text-inside="true"
+            :stroke-width="26"
+            :percentage="oilModelDetailData.currentIndeterminacy"
+          ></el-progress>
         </div>
       </div>
       <div class="row">
         <div class="col-md-6">风场不确定性</div>
         <div class="col-md-6">
-          <el-progress :text-inside="true" :stroke-width="26" :percentage="70"></el-progress>
+          <el-progress
+            :text-inside="true"
+            :stroke-width="26"
+            :percentage="oilModelDetailData.windIndeterminacy"
+          ></el-progress>
         </div>
       </div>
       <div class="row">
         <div class="col-md-6">求解方法</div>
-        <div class="col-md-6">龙格库塔法</div>
+        <div class="col-md-6">{{oilModelDetailData.equation}}</div>
       </div>
     </div>
   </div>
 </template>
 <script lang='ts'>
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { OilModelDetailMidModel } from '@/middelmodel/oil';
 @Component({})
-export default class center_map extends Vue {
-  mydata: any = null;
-  mounted() {}
+export default class OilModelDetail extends Vue {
   get computedTest() {
     return null;
+  }
+  public mydata: any = null;
+
+  @Prop(Object)
+  private oilModelDetailData!: OilModelDetailMidModel;
+  public mounted() {
+    // let temp = new OilModelDetailMidModel();
   }
 }
 </script>
@@ -85,14 +103,13 @@ export default class center_map extends Vue {
   /* background: #2367e4bd; */
   /* background: rgb(45, 93, 133); */
   background: linear-gradient(rgb(50, 157, 150), rgb(49, 59, 89));
-  
+
   color: rgb(240, 237, 56);
   font-weight: 500;
   /* 底部圆角 */
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
-
 
 #myform .table {
   margin-bottom: 0px;

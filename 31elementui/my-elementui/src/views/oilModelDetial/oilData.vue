@@ -4,29 +4,29 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-4">时间</div>
-        <div class="col-md-8">2019-02-23</div>
+        <div class="col-md-8">{{oilRealData.time}}</div>
       </div>
       <div class="row">
         <div class="col-md-4">中心位置</div>
-        <div class="col-md-8">18.2,112.0</div>
+        <div class="col-md-8">{{oilRealData.point}}</div>
       </div>
       <div class="row row_footer">
         <div class="typhoon_footer">
           <div class="columnar my_primary">
             <div class="main_val">5.6</div>
-            <div class="vice_vak">风速</div>
+            <div class="vice_vak">{{oilRealData.windVal}}</div>
           </div>
           <div class="columnar my_success">
             <div class="main_val">115</div>
-            <div class="vice_vak">风向</div>
+            <div class="vice_vak">{{oilRealData.windDir}}</div>
           </div>
           <div class="columnar my_info">
             <div class="main_val">5.23</div>
-            <div class="vice_vak">流速</div>
+            <div class="vice_vak">{{oilRealData.currentVal}}</div>
           </div>
           <div class="columnar my_danger">
             <div class="main_val">65</div>
-            <div class="vice_vak">流向</div>
+            <div class="vice_vak">{{oilRealData.currentDir}}</div>
           </div>
         </div>
       </div>
@@ -34,18 +34,20 @@
   </div>
 </template>
 <script lang='ts'>
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { OilRealDataMidModel } from '@/middelmodel/oil';
 @Component({})
-export default class center_map extends Vue {
-  mydata: any = null;
-  mounted() {}
+export default class OilData extends Vue {
   get computedTest() {
     return null;
   }
+  public mydata: any = null;
+  @Prop(Object)
+  private oilRealData!: OilRealDataMidModel;
+  public mounted() {}
 }
 </script>
 <style scoped>
-
 #myform {
   /* border: 2px solid white; */
   display: inline-block;
@@ -144,10 +146,10 @@ export default class center_map extends Vue {
   border-bottom-right-radius: 10px;
 }
 .typhoon_footer .columnar:first-child {
-    /* 底部最左侧圆角 */
+  /* 底部最左侧圆角 */
   border-bottom-left-radius: 10px;
 }
-.typhoon_footer .columnar:last-child{
+.typhoon_footer .columnar:last-child {
   /* 底部最右侧圆角 */
   border-bottom-right-radius: 10px;
 }
