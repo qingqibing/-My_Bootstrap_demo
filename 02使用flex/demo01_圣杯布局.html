@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="js/jquery-3.2.1.js"></script>
+
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <link href="css/bootstrap-theme.css" rel="stylesheet" />
+
+    <style type="text/css">
+      .HolyGrail {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+
+      header,
+      footer {
+        flex: 1;
+		background:darkcyan;
+      }
+
+      .HolyGrail-body {
+        display: flex;
+        flex: 4;
+		background: blue;
+      }
+
+      .HolyGrail-content {
+        flex: 1;
+		background: burlywood;
+      }
+
+      .HolyGrail-nav,
+      .HolyGrail-ads {
+        /* 两个边栏的宽度设为12em */
+        flex: 0 0 12em;
+		background: chartreuse;
+      }
+
+      .HolyGrail-nav {
+        /* 导航放到最左边 */
+        order: -1;
+      }
+    </style>
+  </head>
+
+  <body class="HolyGrail">
+    <header>header</header>
+    <div class="HolyGrail-body">
+      <main class="HolyGrail-content">content</main>
+      <nav class="HolyGrail-nav">left</nav>
+      <aside class="HolyGrail-ads">right</aside>
+    </div>
+    <footer>footer</footer>
+  </body>
+</html>
