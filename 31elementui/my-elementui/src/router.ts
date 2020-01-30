@@ -7,6 +7,8 @@ import DayComp2 from "./views/timebar/DayCardV2/DayComp.vue";
 import DaysComp2 from "./views/timebar/DayCardV2/DaysComp.vue";
 import oilDetail from "./views/oilModelDetial/oilModelDetial.vue";
 import rightBarContent from "./views/content/rightInfoBar.vue";
+import RangePie from "./views/pie/rangePie.vue";
+import CustomPie from "./views/pie/customPie.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -47,6 +49,14 @@ export default new Router({
             path: '/right',
             name: '右侧整合的div',
             component: rightBarContent
-        }
+        }, {
+            path: '/rangepie',
+            name: '动态加载的pie',
+            component: RangePie
+        }, {
+            path: '/custompie',
+            name: '南丁格尔图',
+            component: CustomPie
+        },
     ]
 })
